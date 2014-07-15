@@ -24,14 +24,13 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 <head>
 	<?php echo $this->Html->charset(); ?>
 	<title>
-	HDMS - 
-	<?php echo $title_for_layout; ?>
+		<?php echo $cakeDescription ?>:
+		<?php echo $title_for_layout; ?>
 	</title>
 	<?php
 		echo $this->Html->meta('icon');
 
 		echo $this->Html->css('cake.generic');
-		echo $this->Html->css('hat.generic');
 
 		echo $this->fetch('meta');
 		echo $this->fetch('css');
@@ -41,9 +40,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 <body>
 	<div id="container">
 		<div id="header">
-			<h1>
-<?php echo $this->Html->image('ca_logo.png', array('alt' => 'Catcote Academy Logo')); ?>
-<?php echo $this->Html->link('HDMS - Hartlepool Aspire Trust Document Management System', '/'); ?></h1>
+			<h1><?php echo $this->Html->link($cakeDescription, 'http://cakephp.org'); ?></h1>
 		</div>
 		<div id="content">
 

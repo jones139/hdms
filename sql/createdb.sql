@@ -14,6 +14,13 @@ CREATE TABLE users (
     modified datetime default null
 );
 
+drop table if exists facilities;
+create table facilities (
+       id int unsigned primary key,
+       title varchar(20),
+       codestr varchar(5)
+);
+
 drop table if exists doc_statuses;
 create table doc_statuses (
        id int unsigned primary key,
@@ -71,6 +78,11 @@ insert into doc_statuses (id,title) values (0,'Draft');
 insert into doc_statuses (id,title) values (1,'Waiting Approval');
 insert into doc_statuses (id,title) values (2,'Issued');
 insert into doc_statuses (id,title) values (3,'Withdrawn');
+
+insert into facilities (id,title,codestr) values (0,'Hartlepool Aspire Trust','HAT');
+insert into facilities (id,title,codestr) values (1,'Catcote Academy','CA');
+insert into facilities (id,title,codestr) values (2,'Catcote Futures','CF');
+
 
 insert into users (username,role) values ("Graham",1);
 insert into users (username,role) values ("Louise",1);
