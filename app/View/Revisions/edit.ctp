@@ -1,31 +1,77 @@
 <div class="revisions form">
+<?php
+	echo "Logged in as ".$authUserData['title']." (".$authUserData['Role']['title'].')';
+?>
 <?php echo $this->Form->create('Revision'); ?>
 	<fieldset>
-		<legend><?php echo __('Edit Revision'); ?></legend>
+		<legend><?php echo __('Editing Revision '.$this->request->data['Revision']['major_revision'].'_'.$this->request->data['Revision']['minor_revision'].' of document "'.$this->request->data['Doc']['title'].'" ('.$this->request->data['Doc']['docNo'].')');  ?></legend>
 	<?php
-		echo $this->Form->input('id');
-		echo $this->Form->input('doc_id');
-		echo $this->Form->input('major_revision');
-		echo $this->Form->input('minor_revision');
-		echo $this->Form->input('user_id');
-		echo $this->Form->input('doc_status_id');
-		echo $this->Form->input('route_list_id');
+		echo $this->Form->hidden('id');
+		echo $this->Form->hidden('doc_id');
+		echo $this->Form->hidden('major_revision');
+		echo $this->Form->hidden('minor_revision');
+		echo $this->Form->hidden('user_id');
 	?>
 	</fieldset>
-<?php echo $this->Form->end(__('Submit')); ?>
+<?php echo $this->Form->end(); ?>
+
+
+<?php 
+      #############################
+      # File Check out/in section #
+      #############################
+      echo '<h3>Document File</h3>';
+
+      echo '<p>';
+      if ($this->request->data['Revision']['has_native']) {
+      	 echo 'Current File is '.$this->request->data['Revision']['filename'].' (uploaded at '.$this->request->data['Revision']['native_file_date'].').';
+      } else {
+      	 echo 'No File Attached';
+      }
+      echo '</p>';
+      echo '<p>';
+      if ($this->request->data['Revision']['is_checked_out']) {
+          echo "File checked out by ".$this->request->data['Revision']['check_out_user_id']." on ".$this->request->data['Revision']['check_out_date'];
+	  echo '<nbrsp/> ';
+          echo $this->Html->link('Check In File',
+             array('controller'=>'revisions','action'=>'upload_file',
+	                   $this->request->data['Revision']['id']));
+	  echo '<nbrsp/> ';
+          echo $this->Html->link('Cancel Check Out',
+             array('controller'=>'revisions','action'=>'cancel_checkout_file',
+	                   $this->request->data['Revision']['id']));
+      } else {
+      	  echo $this->Html->link('Checkout File',
+          array('controller'=>'revisions','action'=>'checkout_file',
+			    $this->request->data['Revision']['id']));
+      }
+      echo '</p>';
+
+      ######################
+      # Route List Section #
+      ######################
+      echo '<h3>Route List </h3>';
+      echo '<p>';
+      if ($this->request->data['RouteList'][0]['revision_id']) {
+      	  echo $this->Html->link('View Route List',
+          array('controller'=>'route_lists','action'=>'view',
+			    $this->request->data['RouteList'][0]['id']));
+      } else {
+      	 echo 'No Route List Attached';
+      }
+      echo '</p>';
+
+?>
+<?php echo $this->Html->link('Back',
+      array('controller'=>'revisions','action'=>'index')); ?>
+
 </div>
 <div class="actions">
 	<h3><?php echo __('Actions'); ?></h3>
 	<ul>
-
-		<li><?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $this->Form->value('Revision.id')), array(), __('Are you sure you want to delete # %s?', $this->Form->value('Revision.id'))); ?></li>
-		<li><?php echo $this->Html->link(__('List Revisions'), array('action' => 'index')); ?></li>
 		<li><?php echo $this->Html->link(__('List Docs'), array('controller' => 'docs', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Doc'), array('controller' => 'docs', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Users'), array('controller' => 'users', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New User'), array('controller' => 'users', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Doc Statuses'), array('controller' => 'doc_statuses', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Doc Status'), array('controller' => 'doc_statuses', 'action' => 'add')); ?> </li>
+<li><?php echo $this->Html->link(__('List Revisions'), array('action' => 'index')); ?></li>
+		
 		<li><?php echo $this->Html->link(__('List Route Lists'), array('controller' => 'route_lists', 'action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('New Route List'), array('controller' => 'route_lists', 'action' => 'add')); ?> </li>
 	</ul>

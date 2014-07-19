@@ -3,6 +3,7 @@
 	<fieldset>
 		<legend><?php echo __('Add Doc'); ?></legend>
 	<?php
+		echo $this->Form->input('facility_id');
 		echo $this->Form->input('docType');
 		echo $this->Form->input('docNo');
 		echo $this->Form->input('title');
@@ -15,6 +16,8 @@
 	<ul>
 
 		<li><?php echo $this->Html->link(__('List Docs'), array('action' => 'index')); ?></li>
+		<li><?php echo $this->Html->link(__('List Facilities'), array('controller' => 'facilities', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('New Facility'), array('controller' => 'facilities', 'action' => 'add')); ?> </li>
 		<li><?php echo $this->Html->link(__('List Revisions'), array('controller' => 'revisions', 'action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('New Revision'), array('controller' => 'revisions', 'action' => 'add')); ?> </li>
 	</ul>

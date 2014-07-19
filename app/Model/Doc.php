@@ -3,12 +3,28 @@ App::uses('AppModel', 'Model');
 /**
  * Doc Model
  *
+ * @property Facility $Facility
  * @property Revision $Revision
  */
 class Doc extends AppModel {
 
 
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
+
+/**
+ * belongsTo associations
+ *
+ * @var array
+ */
+	public $belongsTo = array(
+		'Facility' => array(
+			'className' => 'Facility',
+			'foreignKey' => 'facility_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		)
+	);
 
 /**
  * hasMany associations

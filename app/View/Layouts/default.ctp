@@ -44,6 +44,21 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 			<h1>
 <?php echo $this->Html->image('ca_logo.png', array('alt' => 'Catcote Academy Logo')); ?>
 <?php echo $this->Html->link('HDMS - Hartlepool Aspire Trust Document Management System', '/'); ?></h1>
+      <?php
+        if ($authUserData['id']) {
+	   echo "Logged in as ";
+	   echo $this->Html->link($authUserData['title'],array('controller'=>'users',
+							'action'=>'view',$authUserData['id']));
+	   echo " (".$authUserData['Role']['title'].') ';
+	   echo $this->Html->link('logout',
+             	array('controller'=>'users','action'=>'logout',
+	           )); 
+	} else {
+	  echo $this->Html->link('login',
+             	array('controller'=>'users','action'=>'login',
+	           ));
+	}     
+	?>
 		</div>
 		<div id="content">
 

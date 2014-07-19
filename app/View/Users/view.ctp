@@ -6,6 +6,11 @@
 			<?php echo h($user['User']['id']); ?>
 			&nbsp;
 		</dd>
+		<dt><?php echo __('Title'); ?></dt>
+		<dd>
+			<?php echo h($user['User']['title']); ?>
+			&nbsp;
+		</dd>
 		<dt><?php echo __('Username'); ?></dt>
 		<dd>
 			<?php echo h($user['User']['username']); ?>
@@ -16,9 +21,19 @@
 			<?php echo h($user['User']['password']); ?>
 			&nbsp;
 		</dd>
+		<dt><?php echo __('Email'); ?></dt>
+		<dd>
+			<?php echo h($user['User']['email']); ?>
+			&nbsp;
+		</dd>
+		<dt><?php echo __('Email Verified'); ?></dt>
+		<dd>
+			<?php echo h($user['User']['email_verified']); ?>
+			&nbsp;
+		</dd>
 		<dt><?php echo __('Role'); ?></dt>
 		<dd>
-			<?php echo h($user['User']['role']); ?>
+			<?php echo $this->Html->link($user['Role']['title'], array('controller' => 'roles', 'action' => 'view', $user['Role']['id'])); ?>
 			&nbsp;
 		</dd>
 		<dt><?php echo __('Created'); ?></dt>
@@ -40,11 +55,50 @@
 		<li><?php echo $this->Form->postLink(__('Delete User'), array('action' => 'delete', $user['User']['id']), array(), __('Are you sure you want to delete # %s?', $user['User']['id'])); ?> </li>
 		<li><?php echo $this->Html->link(__('List Users'), array('action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('New User'), array('action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('List Roles'), array('controller' => 'roles', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('New Role'), array('controller' => 'roles', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('List Notifications'), array('controller' => 'notifications', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('New Notification'), array('controller' => 'notifications', 'action' => 'add')); ?> </li>
 		<li><?php echo $this->Html->link(__('List Revisions'), array('controller' => 'revisions', 'action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('New Revision'), array('controller' => 'revisions', 'action' => 'add')); ?> </li>
 		<li><?php echo $this->Html->link(__('List Route List Entries'), array('controller' => 'route_list_entries', 'action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('New Route List Entry'), array('controller' => 'route_list_entries', 'action' => 'add')); ?> </li>
 	</ul>
+</div>
+<div class="related">
+	<h3><?php echo __('Related Notifications'); ?></h3>
+	<?php if (!empty($user['Notification'])): ?>
+	<table cellpadding = "0" cellspacing = "0">
+	<tr>
+		<th><?php echo __('Id'); ?></th>
+		<th><?php echo __('User Id'); ?></th>
+		<th><?php echo __('Body Text'); ?></th>
+		<th><?php echo __('Active'); ?></th>
+		<th><?php echo __('Revision Id'); ?></th>
+		<th class="actions"><?php echo __('Actions'); ?></th>
+	</tr>
+	<?php foreach ($user['Notification'] as $notification): ?>
+		<tr>
+			<td><?php echo $notification['id']; ?></td>
+			<td><?php echo $notification['user_id']; ?></td>
+			<td><?php echo $notification['body_text']; ?></td>
+			<td><?php echo $notification['active']; ?></td>
+			<td><?php echo $notification['revision_id']; ?></td>
+			<td class="actions">
+				<?php echo $this->Html->link(__('View'), array('controller' => 'notifications', 'action' => 'view', $notification['id'])); ?>
+				<?php echo $this->Html->link(__('Edit'), array('controller' => 'notifications', 'action' => 'edit', $notification['id'])); ?>
+				<?php echo $this->Form->postLink(__('Delete'), array('controller' => 'notifications', 'action' => 'delete', $notification['id']), array(), __('Are you sure you want to delete # %s?', $notification['id'])); ?>
+			</td>
+		</tr>
+	<?php endforeach; ?>
+	</table>
+<?php endif; ?>
+
+	<div class="actions">
+		<ul>
+			<li><?php echo $this->Html->link(__('New Notification'), array('controller' => 'notifications', 'action' => 'add')); ?> </li>
+		</ul>
+	</div>
 </div>
 <div class="related">
 	<h3><?php echo __('Related Revisions'); ?></h3>
@@ -57,7 +111,9 @@
 		<th><?php echo __('Minor Revision'); ?></th>
 		<th><?php echo __('User Id'); ?></th>
 		<th><?php echo __('Doc Status Id'); ?></th>
-		<th><?php echo __('Route List Id'); ?></th>
+		<th><?php echo __('Has Native'); ?></th>
+		<th><?php echo __('Has Pdf'); ?></th>
+		<th><?php echo __('Has Extras'); ?></th>
 		<th class="actions"><?php echo __('Actions'); ?></th>
 	</tr>
 	<?php foreach ($user['Revision'] as $revision): ?>
@@ -68,7 +124,9 @@
 			<td><?php echo $revision['minor_revision']; ?></td>
 			<td><?php echo $revision['user_id']; ?></td>
 			<td><?php echo $revision['doc_status_id']; ?></td>
-			<td><?php echo $revision['route_list_id']; ?></td>
+			<td><?php echo $revision['has_native']; ?></td>
+			<td><?php echo $revision['has_pdf']; ?></td>
+			<td><?php echo $revision['has_extras']; ?></td>
 			<td class="actions">
 				<?php echo $this->Html->link(__('View'), array('controller' => 'revisions', 'action' => 'view', $revision['id'])); ?>
 				<?php echo $this->Html->link(__('Edit'), array('controller' => 'revisions', 'action' => 'edit', $revision['id'])); ?>

@@ -9,7 +9,9 @@
 			<th><?php echo $this->Paginator->sort('minor_revision'); ?></th>
 			<th><?php echo $this->Paginator->sort('user_id'); ?></th>
 			<th><?php echo $this->Paginator->sort('doc_status_id'); ?></th>
-			<th><?php echo $this->Paginator->sort('route_list_id'); ?></th>
+			<th><?php echo $this->Paginator->sort('has_native'); ?></th>
+			<th><?php echo $this->Paginator->sort('has_pdf'); ?></th>
+			<th><?php echo $this->Paginator->sort('has_extras'); ?></th>
 			<th class="actions"><?php echo __('Actions'); ?></th>
 	</tr>
 	</thead>
@@ -23,14 +25,14 @@
 		<td><?php echo h($revision['Revision']['major_revision']); ?>&nbsp;</td>
 		<td><?php echo h($revision['Revision']['minor_revision']); ?>&nbsp;</td>
 		<td>
-			<?php echo $this->Html->link($revision['User']['id'], array('controller' => 'users', 'action' => 'view', $revision['User']['id'])); ?>
+			<?php echo $this->Html->link($revision['User']['title'], array('controller' => 'users', 'action' => 'view', $revision['User']['id'])); ?>
 		</td>
 		<td>
 			<?php echo $this->Html->link($revision['DocStatus']['title'], array('controller' => 'doc_statuses', 'action' => 'view', $revision['DocStatus']['id'])); ?>
 		</td>
-		<td>
-			<?php echo $this->Html->link($revision['RouteList']['id'], array('controller' => 'route_lists', 'action' => 'view', $revision['RouteList']['id'])); ?>
-		</td>
+		<td><?php echo h($revision['Revision']['has_native']); ?>&nbsp;</td>
+		<td><?php echo h($revision['Revision']['has_pdf']); ?>&nbsp;</td>
+		<td><?php echo h($revision['Revision']['has_extras']); ?>&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('View'), array('action' => 'view', $revision['Revision']['id'])); ?>
 			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $revision['Revision']['id'])); ?>
@@ -64,6 +66,8 @@
 		<li><?php echo $this->Html->link(__('New User'), array('controller' => 'users', 'action' => 'add')); ?> </li>
 		<li><?php echo $this->Html->link(__('List Doc Statuses'), array('controller' => 'doc_statuses', 'action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('New Doc Status'), array('controller' => 'doc_statuses', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('List Notifications'), array('controller' => 'notifications', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('New Notification'), array('controller' => 'notifications', 'action' => 'add')); ?> </li>
 		<li><?php echo $this->Html->link(__('List Route Lists'), array('controller' => 'route_lists', 'action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('New Route List'), array('controller' => 'route_lists', 'action' => 'add')); ?> </li>
 	</ul>

@@ -4,6 +4,7 @@
 	<thead>
 	<tr>
 			<th><?php echo $this->Paginator->sort('id'); ?></th>
+			<th><?php echo $this->Paginator->sort('facility_id'); ?></th>
 			<th><?php echo $this->Paginator->sort('docType'); ?></th>
 			<th><?php echo $this->Paginator->sort('docNo'); ?></th>
 			<th><?php echo $this->Paginator->sort('title'); ?></th>
@@ -14,6 +15,9 @@
 	<?php foreach ($docs as $doc): ?>
 	<tr>
 		<td><?php echo h($doc['Doc']['id']); ?>&nbsp;</td>
+		<td>
+			<?php echo $this->Html->link($doc['Facility']['title'], array('controller' => 'facilities', 'action' => 'view', $doc['Facility']['id'])); ?>
+		</td>
 		<td><?php echo h($doc['Doc']['docType']); ?>&nbsp;</td>
 		<td><?php echo h($doc['Doc']['docNo']); ?>&nbsp;</td>
 		<td><?php echo h($doc['Doc']['title']); ?>&nbsp;</td>
@@ -44,6 +48,8 @@
 	<h3><?php echo __('Actions'); ?></h3>
 	<ul>
 		<li><?php echo $this->Html->link(__('New Doc'), array('action' => 'add')); ?></li>
+		<li><?php echo $this->Html->link(__('List Facilities'), array('controller' => 'facilities', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('New Facility'), array('controller' => 'facilities', 'action' => 'add')); ?> </li>
 		<li><?php echo $this->Html->link(__('List Revisions'), array('controller' => 'revisions', 'action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('New Revision'), array('controller' => 'revisions', 'action' => 'add')); ?> </li>
 	</ul>

@@ -55,6 +55,8 @@ class DocsController extends AppController {
 				$this->Session->setFlash(__('The doc could not be saved. Please, try again.'));
 			}
 		}
+		$facilities = $this->Doc->Facility->find('list');
+		$this->set(compact('facilities'));
 	}
 
 /**
@@ -79,6 +81,8 @@ class DocsController extends AppController {
 			$options = array('conditions' => array('Doc.' . $this->Doc->primaryKey => $id));
 			$this->request->data = $this->Doc->find('first', $options);
 		}
+		$facilities = $this->Doc->Facility->find('list');
+		$this->set(compact('facilities'));
 	}
 
 /**

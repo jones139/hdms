@@ -30,4 +30,20 @@ App::uses('Model', 'Model');
  * @package       app.Model
  */
 class AppModel extends Model {
+	public function logDebug($data) {
+	       if (isset($data)) {
+	       	  CakeLog::write('debug',$data);
+	       } else {
+	          CakeLog::write('debug'.'logDebug called without any $data');
+	       }
+	}
+
+function getCurrentUser() {
+   App::uses('CakeSession', 'Model/Datasource');
+  $Session = new CakeSession();
+  $user = $Session->read('Auth.User');
+  $this->logDebug("<pre>".var_dump($user)."</pre>");
+  return $user;
+}
+
 }

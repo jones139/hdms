@@ -15,7 +15,13 @@ class RouteListEntryTest extends CakeTestCase {
 	public $fixtures = array(
 		'app.route_list_entry',
 		'app.route_list',
+		'app.revision',
+		'app.doc',
+		'app.facility',
 		'app.user',
+		'app.role',
+		'app.notification',
+		'app.doc_status',
 		'app.response'
 	);
 

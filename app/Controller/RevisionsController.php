@@ -58,8 +58,7 @@ class RevisionsController extends AppController {
 		$docs = $this->Revision->Doc->find('list');
 		$users = $this->Revision->User->find('list');
 		$docStatuses = $this->Revision->DocStatus->find('list');
-		$routeLists = $this->Revision->RouteList->find('list');
-		$this->set(compact('docs', 'users', 'docStatuses', 'routeLists'));
+		$this->set(compact('docs', 'users', 'docStatuses'));
 	}
 
 /**
@@ -84,11 +83,11 @@ class RevisionsController extends AppController {
 			$options = array('conditions' => array('Revision.' . $this->Revision->primaryKey => $id));
 			$this->request->data = $this->Revision->find('first', $options);
 		}
-		$docs = $this->Revision->Doc->find('list');
-		$users = $this->Revision->User->find('list');
-		$docStatuses = $this->Revision->DocStatus->find('list');
-		$routeLists = $this->Revision->RouteList->find('list');
-		$this->set(compact('docs', 'users', 'docStatuses', 'routeLists'));
+		#$revisions = $this->request->data;
+		#$docs = $this->Revision->Doc->find('list');
+		#$users = $this->Revision->User->find('list');
+		#$docStatuses = $this->Revision->DocStatus->find('list');
+		#$this->set(compact('revisions','docs', 'users', 'docStatuses'));
 	}
 
 /**
@@ -111,4 +110,51 @@ class RevisionsController extends AppController {
 		}
 		return $this->redirect(array('action' => 'index'));
 	}
+
+
+/**
+ * check_in_file method
+ *
+ * @return void
+ */
+	public function check_in_file($id) {
+		if ($this->request->is(array('post','put'))) {
+			if ($this->Revision->check_in_file($this->request->data)) {
+				$this->Session->setFlash(__('File Uploaded.'));
+				return $this->redirect(array('action' => 'edit',$id));
+			} else {
+				$this->Session->setFlash(__('File Upload Failed.'));
+			}
+		}
+		$options = array('conditions' => array('Revision.' . $this->Revision->primaryKey => $id));
+		$this->request->data = $this->Revision->find('first', $options);
+	}
+
+
+/**
+ * checkout_file method
+ *
+ * @return void
+ */
+	public function checkout_file($id) {
+	       $filepath = $this->Revision->checkout_file($id);
+	       echo "<pre>".$filepath."</pre>";
+	       $this->response->file(
+			$filepath,
+    	       		array('download' => true, 'name' => $this->Revision->filename)
+		);
+		return $this->response;
+	}
+
+/**
+ * cancel_checkout_file method
+ *
+ * @return void
+ */
+	public function cancel_checkout_file($id) {
+	       $this->Revision->cancel_checkout_file($id);
+	       return $this->redirect(array('action' => 'edit',$id));
+	}
+
+
 }

@@ -14,8 +14,11 @@ class DocsControllerTest extends ControllerTestCase {
  */
 	public $fixtures = array(
 		'app.doc',
+		'app.facility',
 		'app.revision',
 		'app.user',
+		'app.role',
+		'app.notification',
 		'app.route_list_entry',
 		'app.route_list',
 		'app.response',

@@ -1,17 +1,29 @@
 drop table if exists roles;
 CREATE TABLE roles (
     id INT UNSIGNED PRIMARY KEY,
-    rolename VARCHAR(50)
+    title VARCHAR(50)
 );
 
 drop table if exists users;
 CREATE TABLE users (
     id INT UNSIGNED auto_increment PRIMARY KEY,
+    title varchar(50),
     username VARCHAR(50),
     password VARCHAR(50),
-    role int,
+    email varchar(100),
+    email_verified bool default false,
+    role_id int,
     created DATETIME default null,
     modified datetime default null
+);
+
+drop table if exists notifications;
+create table notifications (
+       id int unsigned auto_increment PRIMARY KEY,
+       user_id int,
+       body_text varchar(256),
+       active bool,
+       revision_id int
 );
 
 drop table if exists facilities;
@@ -30,6 +42,7 @@ create table doc_statuses (
 drop table if exists docs;
 CREATE TABLE docs (
     id INT UNSIGNED auto_increment PRIMARY KEY,
+    facility_id integer,
     docType integer,
     docNo VARCHAR(50),
     title VARCHAR(256)
@@ -42,14 +55,24 @@ CREATE TABLE revisions (
     major_revision int,
     minor_revision int,
     user_id int,
+    is_checked_out bool default false,
+    check_out_date datetime,
+    check_out_user_id int,
+    filename varchar(128),
+    mimetype varchar(128),
     doc_status_id int,
-    route_list_id int
+    doc_status_date datetime,
+    has_native bool default false,
+    native_file_date datetime,
+    has_pdf bool default false,
+    has_extras bool default false
 );
 
 drop table if exists route_lists;
 create table route_lists (
        id int unsigned auto_increment primary key,
-       revision_id integer
+       revision_id integer,
+       active bool
 );
 
 
@@ -70,9 +93,9 @@ create table responses (
 );
 
 
-insert into roles (id,rolename) values (0,'Disabled');
-insert into roles (id,rolename) values (1,'Administrator');
-insert into roles (id,rolename) values (2,'User');
+insert into roles (id,title) values (0,'Disabled');
+insert into roles (id,title) values (1,'Administrator');
+insert into roles (id,title) values (2,'User');
 
 insert into doc_statuses (id,title) values (0,'Draft');
 insert into doc_statuses (id,title) values (1,'Waiting Approval');
@@ -84,17 +107,18 @@ insert into facilities (id,title,codestr) values (1,'Catcote Academy','CA');
 insert into facilities (id,title,codestr) values (2,'Catcote Futures','CF');
 
 
-insert into users (username,role) values ("Graham",1);
-insert into users (username,role) values ("Louise",1);
-insert into users (username,role) values ("Mick",2);
+insert into users (username,title,role_id) values ("Graham","Graham Jones",1);
+insert into users (username,title,role_id) values ("Louise","Louise Robson",1);
+insert into users (username,title,role_id) values ("Mick","Mick Slimmings",2);
 
 insert into responses (title) values ("-");
 insert into responses (title) values ("Approve");
 insert into responses (title) values ("Reject");
 
-insert into docs (docType,docNo,title) values (1,"xxx/yyy/zzz","tile 1");
-insert into revisions (doc_id,major_revision,minor_revision,user_id,doc_status_id,route_list_id) values (1,1,1,1,1,1);
+insert into docs (docType,facility_id,docNo,title) values (1,0,"xxx/yyy/zzz","tile 1");
+insert into revisions (doc_id,major_revision,minor_revision,user_id,doc_status_id) values (1,1,1,1,1);
 
 insert into route_lists(revision_id) values (1);
 insert into route_list_entries (route_list_id,user_id) values (1,1);
 insert into route_list_entries (route_list_id,user_id) values (1,2);
+insert into route_list_entries (route_list_id,user_id) values (1,3);

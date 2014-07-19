@@ -13,7 +13,16 @@ class RoleTest extends CakeTestCase {
  * @var array
  */
 	public $fixtures = array(
-		'app.role'
+		'app.role',
+		'app.user',
+		'app.notification',
+		'app.revision',
+		'app.doc',
+		'app.facility',
+		'app.doc_status',
+		'app.route_list',
+		'app.route_list_entry',
+		'app.response'
 	);
 
 /**

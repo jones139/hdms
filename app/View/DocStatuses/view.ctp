@@ -35,7 +35,9 @@
 		<th><?php echo __('Minor Revision'); ?></th>
 		<th><?php echo __('User Id'); ?></th>
 		<th><?php echo __('Doc Status Id'); ?></th>
-		<th><?php echo __('Route List Id'); ?></th>
+		<th><?php echo __('Has Native'); ?></th>
+		<th><?php echo __('Has Pdf'); ?></th>
+		<th><?php echo __('Has Extras'); ?></th>
 		<th class="actions"><?php echo __('Actions'); ?></th>
 	</tr>
 	<?php foreach ($docStatus['Revision'] as $revision): ?>
@@ -46,7 +48,9 @@
 			<td><?php echo $revision['minor_revision']; ?></td>
 			<td><?php echo $revision['user_id']; ?></td>
 			<td><?php echo $revision['doc_status_id']; ?></td>
-			<td><?php echo $revision['route_list_id']; ?></td>
+			<td><?php echo $revision['has_native']; ?></td>
+			<td><?php echo $revision['has_pdf']; ?></td>
+			<td><?php echo $revision['has_extras']; ?></td>
 			<td class="actions">
 				<?php echo $this->Html->link(__('View'), array('controller' => 'revisions', 'action' => 'view', $revision['id'])); ?>
 				<?php echo $this->Html->link(__('Edit'), array('controller' => 'revisions', 'action' => 'edit', $revision['id'])); ?>

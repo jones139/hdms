@@ -15,7 +15,10 @@ class RevisionsControllerTest extends ControllerTestCase {
 	public $fixtures = array(
 		'app.revision',
 		'app.doc',
+		'app.facility',
 		'app.user',
+		'app.role',
+		'app.notification',
 		'app.route_list_entry',
 		'app.route_list',
 		'app.response',

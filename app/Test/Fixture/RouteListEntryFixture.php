@@ -34,7 +34,7 @@ class RouteListEntryFixture extends CakeTestFixture {
 			'route_list_id' => 1,
 			'user_id' => 1,
 			'response_id' => 1,
-			'response_date' => '2014-07-13 22:22:50',
+			'response_date' => '2014-07-16 18:04:31',
 			'response_comment' => 'Lorem ipsum dolor sit amet'
 		),
 	);

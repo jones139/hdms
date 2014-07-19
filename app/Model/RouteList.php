@@ -4,7 +4,6 @@ App::uses('AppModel', 'Model');
  * RouteList Model
  *
  * @property Revision $Revision
- * @property Revision $Revision
  * @property RouteListEntry $RouteListEntry
  */
 class RouteList extends AppModel {
@@ -33,19 +32,6 @@ class RouteList extends AppModel {
  * @var array
  */
 	public $hasMany = array(
-		'Revision' => array(
-			'className' => 'Revision',
-			'foreignKey' => 'route_list_id',
-			'dependent' => false,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
-		),
 		'RouteListEntry' => array(
 			'className' => 'RouteListEntry',
 			'foreignKey' => 'route_list_id',

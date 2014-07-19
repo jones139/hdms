@@ -13,7 +13,7 @@
 		</dd>
 		<dt><?php echo __('User'); ?></dt>
 		<dd>
-			<?php echo $this->Html->link($routeListEntry['User']['id'], array('controller' => 'users', 'action' => 'view', $routeListEntry['User']['id'])); ?>
+			<?php echo $this->Html->link($routeListEntry['User']['title'], array('controller' => 'users', 'action' => 'view', $routeListEntry['User']['id'])); ?>
 			&nbsp;
 		</dd>
 		<dt><?php echo __('Response'); ?></dt>

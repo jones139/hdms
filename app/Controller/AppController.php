@@ -31,6 +31,36 @@ App::uses('Controller', 'Controller');
  * @link		http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
  */
 class AppController extends Controller {
-	public $components = array('DebugKit.Toolbar','Session');
+	public $components = array('DebugKit.Toolbar','Session',
+	       		   'Auth'=>array(
+				'loginRedirect'=>array(
+					'controller'=>'docs',
+					'action'=>'index'
+				),
+				'logoutRedirect'=>array(
+					'controller'=>'pages',
+					'action'=>'display',
+					'home'
+				)
+			   )
+		);
+		
 	public $helpers = array('Session');
+
+
+	public function logDebug($data) {
+	       if (isset($data)) {
+	       	  CakeLog::write('debug',$data);
+	       }
+	}
+
+	public function beforeFilter() {
+ 	       $this->Auth->allow('index','view');
+	       }
+
+	public function beforeRender() {
+	       $this->set('testing','testing');
+	       $this->set('authUserData', $this->Auth->user());
+	}
+
 }

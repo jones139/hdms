@@ -17,7 +17,9 @@ class RevisionFixture extends CakeTestFixture {
 		'minor_revision' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false),
 		'user_id' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false),
 		'doc_status_id' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false),
-		'route_list_id' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false),
+		'has_native' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
+		'has_pdf' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
+		'has_extras' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
 		'indexes' => array(
 			'PRIMARY' => array('column' => 'id', 'unique' => 1)
 		),
@@ -37,7 +39,9 @@ class RevisionFixture extends CakeTestFixture {
 			'minor_revision' => 1,
 			'user_id' => 1,
 			'doc_status_id' => 1,
-			'route_list_id' => 1
+			'has_native' => 1,
+			'has_pdf' => 1,
+			'has_extras' => 1
 		),
 	);
 

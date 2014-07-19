@@ -14,7 +14,15 @@ class DocTest extends CakeTestCase {
  */
 	public $fixtures = array(
 		'app.doc',
-		'app.revision'
+		'app.facility',
+		'app.revision',
+		'app.user',
+		'app.role',
+		'app.notification',
+		'app.route_list_entry',
+		'app.route_list',
+		'app.response',
+		'app.doc_status'
 	);
 
 /**

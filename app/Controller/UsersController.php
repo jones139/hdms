@@ -55,6 +55,8 @@ class UsersController extends AppController {
 				$this->Session->setFlash(__('The user could not be saved. Please, try again.'));
 			}
 		}
+		$roles = $this->User->Role->find('list');
+		$this->set(compact('roles'));
 	}
 
 /**
@@ -79,6 +81,8 @@ class UsersController extends AppController {
 			$options = array('conditions' => array('User.' . $this->User->primaryKey => $id));
 			$this->request->data = $this->User->find('first', $options);
 		}
+		$roles = $this->User->Role->find('list');
+		$this->set(compact('roles'));
 	}
 
 /**
@@ -101,4 +105,28 @@ class UsersController extends AppController {
 		}
 		return $this->redirect(array('action' => 'index'));
 	}
+
+	public function beforeFilter() {
+	       parent::beforeFilter();
+	       $this->Auth->allow('add','login','logout');
+	}
+
+	public function login() {
+	       if ($this->request->is('post')) {
+	       	  if ($this->Auth->login()) {
+		     $this->Session->setFlash(__('Login Successful'));
+		     return($this->redirect(array(
+					'controller'=>'docs',
+					'action'=>'index'
+				)));
+		  }
+		  $this->Session->setFlash(__('Invalid username or password'));
+	       }
+	}
+
+	public function logout() {
+	       return($this->redirect($this->Auth->logout()));
+	}
 }
+
+

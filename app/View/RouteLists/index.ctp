@@ -5,6 +5,7 @@
 	<tr>
 			<th><?php echo $this->Paginator->sort('id'); ?></th>
 			<th><?php echo $this->Paginator->sort('revision_id'); ?></th>
+			<th><?php echo $this->Paginator->sort('active'); ?></th>
 			<th class="actions"><?php echo __('Actions'); ?></th>
 	</tr>
 	</thead>
@@ -15,6 +16,7 @@
 		<td>
 			<?php echo $this->Html->link($routeList['Revision']['id'], array('controller' => 'revisions', 'action' => 'view', $routeList['Revision']['id'])); ?>
 		</td>
+		<td><?php echo h($routeList['RouteList']['active']); ?>&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('View'), array('action' => 'view', $routeList['RouteList']['id'])); ?>
 			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $routeList['RouteList']['id'])); ?>

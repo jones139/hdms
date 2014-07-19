@@ -5,6 +5,7 @@
 	<?php
 		echo $this->Form->input('id');
 		echo $this->Form->input('revision_id');
+		echo $this->Form->input('active');
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit')); ?>

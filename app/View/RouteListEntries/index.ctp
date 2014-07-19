@@ -20,7 +20,7 @@
 			<?php echo $this->Html->link($routeListEntry['RouteList']['id'], array('controller' => 'route_lists', 'action' => 'view', $routeListEntry['RouteList']['id'])); ?>
 		</td>
 		<td>
-			<?php echo $this->Html->link($routeListEntry['User']['id'], array('controller' => 'users', 'action' => 'view', $routeListEntry['User']['id'])); ?>
+			<?php echo $this->Html->link($routeListEntry['User']['title'], array('controller' => 'users', 'action' => 'view', $routeListEntry['User']['id'])); ?>
 		</td>
 		<td>
 			<?php echo $this->Html->link($routeListEntry['Response']['title'], array('controller' => 'responses', 'action' => 'view', $routeListEntry['Response']['id'])); ?>
