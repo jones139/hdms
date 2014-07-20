@@ -17,13 +17,36 @@ class RevisionsController extends AppController {
 
 /**
  * index method
+ * @param doc_id - return only revisions for document doc_id.
+ * @param latest - return only the revisions for the documents (including drafts)
+ * @param issued - return only the issuedrevisions
  *
  * @return void
  */
 	public function index() {
 		$this->Revision->recursive = 0;
+		$this->Paginator->settings = array(
+		   			      'conditions'=>array(),
+					      'fields'=>array('*'));		
+		if (isset($this->params[ 'named' ][ 'doc_id' ])) {
+		   $this->Paginator->settings['conditions']['Revision.doc_id'] = 
+		   		$this->params[ 'named' ][ 'doc_id' ];
+		} 
+		if (isset($this->params[ 'named' ][ 'latest' ])) { #FIXME - this doesn't work!
+		   $this->Paginator->settings['group']='Revision.doc_id';
+		   #$this->Paginator->settings['fields'][]='Revision.id';
+		   $this->Paginator->settings['conditions']['Revision.id']='max(Revision.id)';
+		} 
+		if (isset($this->params[ 'named' ][ 'issued' ])) {
+		   #$this->Paginator->settings['group']='Revision.doc_id';
+		   #$this->Paginator->settings['fields'][]='Revision.id';
+		   $this->Paginator->settings['conditions']['doc_status_id']=2;
+		} 
+
 		$this->set('revisions', $this->Paginator->paginate());
 	}
+
+
 
 /**
  * view method
@@ -119,7 +142,7 @@ class RevisionsController extends AppController {
  */
 	public function check_in_file($id) {
 		if ($this->request->is(array('post','put'))) {
-			if ($this->Revision->check_in_file($this->request->data)) {
+			if ($this->Revision->check_in_file($this->request->data,$this->Auth->User())) {
 				$this->Session->setFlash(__('File Uploaded.'));
 				return $this->redirect(array('action' => 'edit',$id));
 			} else {
@@ -137,7 +160,7 @@ class RevisionsController extends AppController {
  * @return void
  */
 	public function checkout_file($id) {
-	       $filepath = $this->Revision->checkout_file($id);
+	       $filepath = $this->Revision->checkout_file($id,$this->Auth->user());
 	       echo "<pre>".$filepath."</pre>";
 	       $this->response->file(
 			$filepath,

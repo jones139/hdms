@@ -1,11 +1,9 @@
 <div class="revisions form">
-<?php
-	echo "Logged in as ".$authUserData['title']." (".$authUserData['Role']['title'].')';
-?>
 <?php echo $this->Form->create('Revision'); ?>
 	<fieldset>
 		<legend><?php echo __('Editing Revision '.$this->request->data['Revision']['major_revision'].'_'.$this->request->data['Revision']['minor_revision'].' of document "'.$this->request->data['Doc']['title'].'" ('.$this->request->data['Doc']['docNo'].')');  ?></legend>
 	<?php
+		echo $this->Form->text('doc_status_id');
 		echo $this->Form->hidden('id');
 		echo $this->Form->hidden('doc_id');
 		echo $this->Form->hidden('major_revision');
@@ -13,7 +11,7 @@
 		echo $this->Form->hidden('user_id');
 	?>
 	</fieldset>
-<?php echo $this->Form->end(); ?>
+<?php echo $this->Form->end('Submit'); ?>
 
 
 <?php 

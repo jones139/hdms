@@ -11,9 +11,14 @@
 			<?php echo $this->Html->link($doc['Facility']['title'], array('controller' => 'facilities', 'action' => 'view', $doc['Facility']['id'])); ?>
 			&nbsp;
 		</dd>
-		<dt><?php echo __('DocType'); ?></dt>
+		<dt><?php echo __('Type'); ?></dt>
 		<dd>
-			<?php echo h($doc['Doc']['docType']); ?>
+			<?php echo h($doc['Doc']['doc_type_id']); ?>
+			&nbsp;
+		</dd>
+		<dt><?php echo __('Sub Type'); ?></dt>
+		<dd>
+			<?php echo h($doc['Doc']['doc_subtype_id']); ?>
 			&nbsp;
 		</dd>
 		<dt><?php echo __('DocNo'); ?></dt>

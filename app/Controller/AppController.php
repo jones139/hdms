@@ -56,11 +56,17 @@ class AppController extends Controller {
 
 	public function beforeFilter() {
  	       $this->Auth->allow('index','view');
+	       $this->set('testing','testing');
+	       $this->set('authUserData', $this->Auth->user());
+
+	       # Get detailed information about the logged in user (e.g. notifications for that user etc.)
+	       Controller::loadModel('Notifications');
+		$options = array('conditions' => array('Notifications.user_id' => $this->Auth->user('id'),
+			   		      	       'Notifications.active' => 1));
+		$this->set('authUserExtraData', $this->Notifications->find('all', $options));	    
 	       }
 
 	public function beforeRender() {
-	       $this->set('testing','testing');
-	       $this->set('authUserData', $this->Auth->user());
 	}
 
 }

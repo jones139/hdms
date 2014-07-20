@@ -22,7 +22,30 @@ class DocsController extends AppController {
  */
 	public function index() {
 		$this->Doc->recursive = 0;
-		$this->set('docs', $this->Paginator->paginate());
+		   $this->Paginator->settings = array(
+		   			      'conditions'=>array());
+		if (isset($this->params[ 'named' ][ 'facility' ])) {
+		   $this->Paginator->settings['conditions']['Doc.facility_id']=
+			$this->params[ 'named' ][ 'facility' ];
+		} 
+		if (isset($this->params[ 'named' ][ 'doc_type' ])) {
+		   $this->Paginator->settings['conditions']['Doc.doc_type_id']=
+			$this->params[ 'named' ][ 'doc_type' ];
+		} 
+		if (isset($this->params[ 'named' ][ 'doc_subtype' ])) {
+		   $this->Paginator->settings['conditions']['Doc.doc_type_id']=
+			$this->params[ 'named' ][ 'doc_subtype' ];
+		} 
+
+		$docs = $this->Paginator->paginate();
+		$this->set('docs', $docs);
+
+		# Now find the issued revision of each document.
+		#echo "<pre>".var_dump($docs)."</pre>";
+	        #Controller::loadModel('Revisions');
+		#foreach ($docs as $doc) {
+		#	echo "<pre>".var_dump($doc)."</pre><br/>";
+		#}
 	}
 
 /**

@@ -16,17 +16,29 @@ class NotificationsController extends AppController {
 	public $components = array('Paginator');
 
 /**
- * index method
+ * index method - by default lists all notifications. 
+ *                if a user_id GET parameter is provided, it lists only the active notifications
+ *                  for the given user_id.
  *
  * @return void
  */
 	public function index() {
 		$this->Notification->recursive = 0;
-		$this->set('notifications', $this->Paginator->paginate());
+		#echo "<pre>".var_dump($this->params)."</pre>";
+		if (isset($this->params[ 'named' ][ 'user_id' ])) {
+		   $user_id = $this->params[ 'named' ][ 'user_id' ];
+		   $this->Paginator->settings = array(
+		   			      'conditions'=>array('Notification.user_id'=>$user_id,
+								  'Notification.active'=>1)
+							);
+		} 
+ 		   $this->set('notifications', $this->Paginator->paginate());
+  	
 	}
 
 /**
- * view method
+ * view method - by default views the notification specified by $id. 
+ *
  *
  * @throws NotFoundException
  * @param string $id

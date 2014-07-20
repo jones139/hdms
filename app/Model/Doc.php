@@ -23,6 +23,20 @@ class Doc extends AppModel {
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
+		),
+		'DocType' => array(
+			'className' => 'DocType',
+			'foreignKey' => 'doc_type_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		),
+		'DocSubtype' => array(
+			'className' => 'DocSubtype',
+			'foreignKey' => 'doc_subtype_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
 		)
 	);
 

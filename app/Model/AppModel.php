@@ -39,9 +39,9 @@ class AppModel extends Model {
 	}
 
 function getCurrentUser() {
-   App::uses('CakeSession', 'Model/Datasource');
+   App::uses('Session', 'Model/Datasource');
   $Session = new CakeSession();
-  $user = $Session->read('Auth.User');
+  $user = $Session->read('Auth');
   $this->logDebug("<pre>".var_dump($user)."</pre>");
   return $user;
 }

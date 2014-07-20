@@ -4,7 +4,8 @@
 		<legend><?php echo __('Add Doc'); ?></legend>
 	<?php
 		echo $this->Form->input('facility_id');
-		echo $this->Form->input('docType');
+		echo $this->Form->input('doc_type_id');
+		echo $this->Form->input('doc_subtype_id');
 		echo $this->Form->input('docNo');
 		echo $this->Form->input('title');
 	?>

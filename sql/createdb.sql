@@ -29,21 +29,37 @@ create table notifications (
 drop table if exists facilities;
 create table facilities (
        id int unsigned primary key,
+       title varchar(10),
+       description varchar(256)
+);
+
+drop table if exists doc_types;
+create table doc_types (
+       id int unsigned primary key,
        title varchar(20),
-       codestr varchar(5)
+       description varchar(256)
+);
+
+drop table if exists doc_subtypes;
+create table doc_subtypes (
+       id int unsigned primary key,
+       title varchar(20),
+       description varchar(256)
 );
 
 drop table if exists doc_statuses;
 create table doc_statuses (
        id int unsigned primary key,
-       title varchar(20)
+       title varchar(20),
+       description varchar(256)
 );
 
 drop table if exists docs;
 CREATE TABLE docs (
     id INT UNSIGNED auto_increment PRIMARY KEY,
     facility_id integer,
-    docType integer,
+    doc_type_id integer,
+    doc_subtype_id integer,
     docNo VARCHAR(50),
     title VARCHAR(256)
 );
@@ -102,12 +118,25 @@ insert into doc_statuses (id,title) values (1,'Waiting Approval');
 insert into doc_statuses (id,title) values (2,'Issued');
 insert into doc_statuses (id,title) values (3,'Withdrawn');
 
-insert into facilities (id,title,codestr) values (0,'Hartlepool Aspire Trust','HAT');
-insert into facilities (id,title,codestr) values (1,'Catcote Academy','CA');
-insert into facilities (id,title,codestr) values (2,'Catcote Futures','CF');
+insert into doc_types (id,title,description) values (0,'MSM','High level management system documents');
+insert into doc_types (id,title,description) values (1,'POL','Policy documents');
+insert into doc_types (id,title,description) values (2,'PROC','Procedures');
+insert into doc_types (id,title,description) values (3,'FORM','Forms');
+insert into doc_types (id,title,description) values (4,'REC','Records - usually completed forms');
+
+insert into doc_subtypes (id,title,description) values (0,'GOV','Governance Documents');
+insert into doc_subtypes (id,title,description) values (1,'FIN','Finance Documents');
+insert into doc_subtypes (id,title,description) values (2,'HR','Human Resources Documents');
+insert into doc_subtypes (id,title,description) values (3,'H&S','Health and Safety Documents');
+insert into doc_subtypes (id,title,description) values (4,'FAC','Facilities Management Documents');
 
 
-insert into users (username,title,role_id) values ("Graham","Graham Jones",1);
+insert into facilities (id,title,description) values (0,'HAT','Hartlepool Aspire Trust');
+insert into facilities (id,title,description) values (1,'CA','Catcote Academy');
+insert into facilities (id,title,description) values (2,'CF','Catcote Futures');
+
+
+insert into users (username,title,role_id,password) values ("Graham","Graham Jones",1,"afcf02f321a501cf9cff31f022455dade82cd3f4");
 insert into users (username,title,role_id) values ("Louise","Louise Robson",1);
 insert into users (username,title,role_id) values ("Mick","Mick Slimmings",2);
 
@@ -115,7 +144,8 @@ insert into responses (title) values ("-");
 insert into responses (title) values ("Approve");
 insert into responses (title) values ("Reject");
 
-insert into docs (docType,facility_id,docNo,title) values (1,0,"xxx/yyy/zzz","tile 1");
+insert into docs (facility_id,doc_type_id,doc_subtype_id,docNo,title) values (0,1,0,"xxx/yyy/zzz","title 1");
+insert into docs (facility_id,doc_type_id,doc_subtype_id,docNo,title) values (0,1,2,"HAT/POL/FIN/xxx","Finance Policy xxx");
 insert into revisions (doc_id,major_revision,minor_revision,user_id,doc_status_id) values (1,1,1,1,1);
 
 insert into route_lists(revision_id) values (1);

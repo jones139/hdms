@@ -1,24 +1,48 @@
 <div class="docs index">
-	<h2><?php echo __('Docs'); ?></h2>
+     <div class='Facility_filter'>
+     Select Facility
+     <ol> 
+     <li><?php echo $this->Html->link('All', array('controller' => 'docs', 'action' => 'index')); ?></li>
+     <li><?php echo $this->Html->link('HAT', array('controller' => 'docs', 'action' => 'index','facility'=>0)); ?></li>
+     <li><?php echo $this->Html->link('CA', array('controller' => 'docs', 'action' => 'index','facility'=>1)); ?></li>
+     <li><?php echo $this->Html->link('CF', array('controller' => 'docs', 'action' => 'index','facility'=>2)); ?></li>
+     </ol>
+     </div>
+
+     <div class='Doc_type_filter'>
+     Select Doc Type
+     <ol> 
+     <li><?php echo $this->Html->link('All', array('controller' => 'docs', 'action' => 'index')); ?></li>
+     <li><?php echo $this->Html->link('MSM', array('controller' => 'docs', 'action' => 'index','doc_type'=>0)); ?></li>
+     <li><?php echo $this->Html->link('POL', array('controller' => 'docs', 'action' => 'index','doc_type'=>1)); ?></li>
+     <li><?php echo $this->Html->link('PROC', array('controller' => 'docs', 'action' => 'index','doc_type'=>2)); ?></li>
+     </ol>
+     </div>
+
+	<h2><?php echo __('Documents'); ?></h2>
 	<table cellpadding="0" cellspacing="0">
 	<thead>
 	<tr>
-			<th><?php echo $this->Paginator->sort('id'); ?></th>
-			<th><?php echo $this->Paginator->sort('facility_id'); ?></th>
-			<th><?php echo $this->Paginator->sort('docType'); ?></th>
-			<th><?php echo $this->Paginator->sort('docNo'); ?></th>
-			<th><?php echo $this->Paginator->sort('title'); ?></th>
+			<th><?php echo $this->Paginator->sort('facilty_id','Facility'); ?></th>
+			<th><?php echo $this->Paginator->sort('doc_type_id','Type'); ?></th>
+			<th><?php echo $this->Paginator->sort('doc_subtype_id','Sub-Type'); ?></th>
+			<th><?php echo $this->Paginator->sort('docNo','Doc. No.'); ?></th>
+			<th><?php echo $this->Paginator->sort('title','Title'); ?></th>
 			<th class="actions"><?php echo __('Actions'); ?></th>
 	</tr>
 	</thead>
 	<tbody>
 	<?php foreach ($docs as $doc): ?>
 	<tr>
-		<td><?php echo h($doc['Doc']['id']); ?>&nbsp;</td>
 		<td>
 			<?php echo $this->Html->link($doc['Facility']['title'], array('controller' => 'facilities', 'action' => 'view', $doc['Facility']['id'])); ?>
 		</td>
-		<td><?php echo h($doc['Doc']['docType']); ?>&nbsp;</td>
+		<td>
+			<?php echo $this->Html->link($doc['DocType']['title'], array('controller' => 'doc_types', 'action' => 'view', $doc['DocType']['id'])); ?>
+		</td>
+		<td>
+			<?php echo $this->Html->link($doc['DocSubtype']['title'], array('controller' => 'doc_subtypes', 'action' => 'view', $doc['DocSubtype']['id'])); ?>
+		</td>
 		<td><?php echo h($doc['Doc']['docNo']); ?>&nbsp;</td>
 		<td><?php echo h($doc['Doc']['title']); ?>&nbsp;</td>
 		<td class="actions">

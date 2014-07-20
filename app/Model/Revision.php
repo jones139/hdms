@@ -77,6 +77,8 @@ class Revision extends AppModel {
 		)
 	);
 
+
+
 	public function isUploadedFile($params) {
 	       //$val = array_shift($params);
 	       $val = $params;
@@ -122,24 +124,29 @@ class Revision extends AppModel {
 
 	public function save($data = NULL, $validate = true, $fieldList = Array()) {
 	       if ($retval_parent = parent::save($data, $validate, $fieldList)) {
-
-	       	       if ($this->isUploadedFile($data['Document']['submittedfile'])) {
-		  	  $this->logDebug('Uploaded File');
-			  print var_dump($data);
-			  $filedata = $data['Document']['submittedfile'];
-			  $revdata = $data['Revision'];
-			  $tmpnam = $filedata['tmp_name'];
-			  $fname  = $filedata['name'];
-			  $majrev = $revdata['major_revision'];
-			  $minrev = $revdata['minor_revision'];
-			  $doc_id = $revdata['doc_id'];
-			  $this->save_file($tmpnam,$fname,
+	       	       if (isset($data['Document'])) {
+		          if ($this->isUploadedFile($data['Document']['submittedfile'])) {
+		  	     $this->logDebug('Uploaded File');
+			     print var_dump($data);
+			     $filedata = $data['Document']['submittedfile'];
+			     $revdata = $data['Revision'];
+			     $tmpnam = $filedata['tmp_name'];
+			     $fname  = $filedata['name'];
+			     $majrev = $revdata['major_revision'];
+			     $minrev = $revdata['minor_revision'];
+			     $doc_id = $revdata['doc_id'];
+			     $this->save_file($tmpnam,$fname,
 					   $doc_id,
 					   $majrev,$minrev);
-			  return true;
+	               	     $this->logDebug('Save with file upload ok.');
+			     return true;
+                          } else {
+	               	     $this->logDebug('Document set, but it is not a file?????.');
+			     return true;
+			  }
 	       	       } else {
-	               	  $this->logDebug('File Upload Failed');
-			  return false;
+	               	  $this->logDebug('Save without file upload.');
+			  return true;
 	       	       }
 	        
 	        } else {
@@ -148,7 +155,7 @@ class Revision extends AppModel {
         }
 
 
-	public function checkout_file($id = NULL) {
+	public function checkout_file($id = NULL,$authUserData) {
 	       	$this->id = $id;
 		if (!$this->exists()) {
 		   return false;
@@ -163,8 +170,7 @@ class Revision extends AppModel {
 		$fpath = $folder.'/'.$this->data['Revision']['filename'];
 
 		# Update the revision data record.
-		$authUserdata = $this->getCurrentUser();
-		#echo "authuserdata->id=".$authUserData['id'];
+		echo "authuserdata->id=".$authUserData['id'];
 		$this->set(array(
 			'is_checked_out' => true,
 			'check_out_user_id' => $authUserData['id'],      
@@ -189,18 +195,15 @@ class Revision extends AppModel {
 		# Update the revision data record.
 		$this->set(array(
 			'is_checked_out' => false,
-			'check_out_user' => 1,       #FIXME - get real user ID.
-			'check_out_date' => date('Y-m-d H:i:s')
 		));
 		# And save it
 		$this->save();
 
-		# return the path to the checked out file.
 		return true;		
 	}
 
 
-	public function check_in_file($data = NULL, $validate = true, $fieldList = Array()) {
+	public function check_in_file($data = NULL, $authUserData = NULL, $validate = true, $fieldList = Array()) {
 	       if ($this->isUploadedFile($data['Document']['submittedfile'])) {
 		  	  $this->logDebug('Uploaded File');
 			  print var_dump($data);
@@ -219,7 +222,8 @@ class Revision extends AppModel {
 				'filename' => $fname,
 				'has_native' => true,
 				'native_file_date' => date('Y-m-d H:i:s'),
-				'is_checked_out' => false
+				'is_checked_out' => false,
+				'user_id' => $authUserData['id']
 			  ));
 			  $this->save();
 			  return true;
