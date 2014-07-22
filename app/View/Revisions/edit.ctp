@@ -32,7 +32,7 @@
           echo "File checked out by ".$this->request->data['Revision']['check_out_user_id']." on ".$this->request->data['Revision']['check_out_date'];
 	  echo '<nbrsp/> ';
           echo $this->Html->link('Check In File',
-             array('controller'=>'revisions','action'=>'upload_file',
+             array('controller'=>'revisions','action'=>'check_in_file',
 	                   $this->request->data['Revision']['id']));
 	  echo '<nbrsp/> ';
           echo $this->Html->link('Cancel Check Out',
@@ -44,6 +44,16 @@
 			    $this->request->data['Revision']['id']));
       }
       echo '</p>';
+
+      ###########################
+      # Create revision section #
+      ###########################
+      echo $this->Html->link('Create New Minor Revision',
+             array('controller'=>'revisions','action'=>'create_new_revision',
+	                   $this->request->data['Revision']['doc_id']));
+      echo $this->Html->link('Create New Major Revision',
+             array('controller'=>'revisions','action'=>'create_new_revision',
+	                   $this->request->data['Revision']['doc_id'],'major:true'));
 
       ######################
       # Route List Section #

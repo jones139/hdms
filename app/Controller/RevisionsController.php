@@ -161,16 +161,41 @@ class RevisionsController extends AppController {
  */
 	public function checkout_file($id) {
 	       $filepath = $this->Revision->checkout_file($id,$this->Auth->user());
-	       echo "<pre>".$filepath."</pre>";
-	       $this->response->file(
+	       if ($filepath) {
+	       	  echo "<pre>".$filepath."</pre>";
+	       	  $this->response->file(
 			$filepath,
     	       		array('download' => true, 'name' => $this->Revision->filename)
-		);
-		return $this->response;
+		  );
+		  return $this->response;
+	       } else {
+		  return $this->redirect(array('action' => 'edit',$id));
+	       }
 	}
 
+
 /**
- * cancel_checkout_file method
+ * download_file method - download file without checking it out.
+ *
+ * @return void
+ */
+	public function download_file($id) {
+	       $filepath = $this->Revision->get_filepath($id);
+	       if ($filepath) {
+	       	  echo "<pre>".$filepath."</pre>";
+	       	  $this->response->file(
+			$filepath,
+    	       		array('download' => true, 'name' => $this->Revision->filename)
+		  );
+		  return $this->response;
+	       } else {
+		  return $this->redirect(array('action' => 'edit',$id));
+	       }
+	}
+
+
+/**
+ * cancel_download_file method
  *
  * @return void
  */
@@ -179,5 +204,19 @@ class RevisionsController extends AppController {
 	       return $this->redirect(array('action' => 'edit',$id));
 	}
 
+
+/**
+ * create_new_revision
+ *   create a new revision of document id $docid
+ *   if named parameter 'major' is set a major revision is created,
+ *     otherwise a minor revision is created.
+ */
+	public function create_new_revision($docid) {
+	   $major_rev = false;
+	   if (isset($this->params[ 'named' ][ 'major' ])) {
+	      $major_rev = true;
+	   } 
+	       $this->Revision->create_new_revision($docid,$major_rev);
+	}	
 
 }

@@ -21,7 +21,7 @@ class DocsController extends AppController {
  * @return void
  */
 	public function index() {
-		$this->Doc->recursive = 0;
+		$this->Doc->recursive = 1;
 		   $this->Paginator->settings = array(
 		   			      'conditions'=>array());
 		if (isset($this->params[ 'named' ][ 'facility' ])) {
@@ -35,6 +35,13 @@ class DocsController extends AppController {
 		if (isset($this->params[ 'named' ][ 'doc_subtype' ])) {
 		   $this->Paginator->settings['conditions']['Doc.doc_type_id']=
 			$this->params[ 'named' ][ 'doc_subtype' ];
+		} 
+		if (isset($this->params[ 'named' ][ 'issued' ])) {
+	   	      $this->Paginator->settings['contain']=array(
+			  'Revision'=>array(
+				'order'=> 'Revision.id ASC',
+				'limit'=>1
+				));
 		} 
 
 		$docs = $this->Paginator->paginate();

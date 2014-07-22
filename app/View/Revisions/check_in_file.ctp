@@ -1,6 +1,6 @@
 <div class="revisions form">
 <?php 
-      echo $this->Form->create('Revision', array('type'=>'file', 'action'=>'upload_file')); 
+      echo $this->Form->create('Revision', array('type'=>'file', 'action'=>'check_in_file')); 
 ?>
 	<fieldset>
 		<legend><?php echo __('Upload file for revision '.$this->request->data['Revision']['major_revision'].'_'.$this->request->data['Revision']['minor_revision'].' of document "'.$this->request->data['Doc']['title'].'" ('.$this->request->data['Doc']['docNo'].')'); ?></legend>

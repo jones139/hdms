@@ -155,6 +155,19 @@ class Revision extends AppModel {
         }
 
 
+
+	public function get_filepath($id = NULL) {
+		# Populate $this->data with data from revision.id=$id
+		$this->read(null, $id);
+		$folder = $this->get_folder(
+			$this->data['Revision']['doc_id'],
+			$this->data['Revision']['major_revision'],
+			$this->data['Revision']['minor_revision']);
+		$fpath = $folder.'/'.$this->data['Revision']['filename'];
+		echo "fpath=".$fpath."<br/>";
+		return $fpath;
+ 	}
+
 	public function checkout_file($id = NULL,$authUserData) {
 	       	$this->id = $id;
 		if (!$this->exists()) {
@@ -162,13 +175,7 @@ class Revision extends AppModel {
 		}
 		# Populate $this->data with data from revision.id=$id
 		$this->read(null, $id);
-		#echo "<pre>".var_dump($this->data)."</pre>";
-		$folder = $this->get_folder(
-			$this->data['Revision']['doc_id'],
-			$this->data['Revision']['major_revision'],
-			$this->data['Revision']['minor_revision']);
-		$fpath = $folder.'/'.$this->data['Revision']['filename'];
-
+		$fpath = $this->get_filepath($id);
 		# Update the revision data record.
 		echo "authuserdata->id=".$authUserData['id'];
 		$this->set(array(
@@ -232,4 +239,63 @@ class Revision extends AppModel {
 			  return false;
 	       }
 	   } 
+
+
+/**
+ * create_new_revision of document $docid.  If a named parameter 'major' is set, it creates
+ *   a major revision, otherwise it creates a minor revision.
+ *
+ * @var $docid - the id of the document for which a new revision is required.
+ */
+
+    public function create_new_revision($docid = null,$major=false) {
+         # Retrieve all revisions for the required document, 
+	 #   then select the latest one as lastrev.
+         $revs = $this->find('all',array('conditions'=>array('doc_id'=>$docid)));
+	 if (sizeof($revs)>0) {
+	    $lastrev = $revs[sizeof($revs)-1];
+	    $lastrev_id = $lastrev['Revision']['id'];
+         }
+	 else
+	    $lastrev = -1;
+
+	 var_dump($lastrev);
+	 # create the new revision
+	 $this->create(); 
+
+	 if ($lastrev>=0) {
+	    $lastrev['Revision']['id']=null;
+	    if ($major) {
+	       $lastrev['Revision']['major_revision']+=1;
+	       $lastrev['Revision']['minor_revision']=1;
+            } else
+	       $lastrev['Revision']['minor_revision']+=1;
+	    $lastrev['Revision']['doc_status_id']=0;
+	    $this->save($lastrev);
+	    $newrev_id = $this->getInsertID();
+	    if ($lastrev['Revision']['has_native']) {
+	       $folder = $this->get_folder($lastrev['Revision']['doc_id'],
+					   $lastrev['Revision']['major_revision'],
+					   $lastrev['Revision']['minor_revision']);
+	       if (!is_dir($folder)) {
+	          $this->logDebug("Attempting to create directory ".$folder);
+	       	  if (mkdir($folder,0777,true)) {
+	             $this->logDebug("created directory");
+		  } else {
+		     $this->logDebug("Failed to Create Directory");
+		     return false;
+		  }
+               }
+
+
+	       copy($this->get_filepath($lastrev_id),
+		    $this->get_filepath($newrev_id));	       
+	    }
+   	 }
+
+
+	 return $revs;
+    	   
+    }
+
 }

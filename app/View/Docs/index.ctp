@@ -28,6 +28,8 @@
 			<th><?php echo $this->Paginator->sort('doc_subtype_id','Sub-Type'); ?></th>
 			<th><?php echo $this->Paginator->sort('docNo','Doc. No.'); ?></th>
 			<th><?php echo $this->Paginator->sort('title','Title'); ?></th>
+			<th><?php echo "Issued"; ?></th>
+			<th><?php echo "Latest"; ?></th>
 			<th class="actions"><?php echo __('Actions'); ?></th>
 	</tr>
 	</thead>
@@ -45,6 +47,33 @@
 		</td>
 		<td><?php echo h($doc['Doc']['docNo']); ?>&nbsp;</td>
 		<td><?php echo h($doc['Doc']['title']); ?>&nbsp;</td>
+		<td>
+		<?php 
+		      $issued_rev = null;
+		      foreach ($doc['Revision'] as $rev) {
+		      	      if ($rev['doc_status_id']==2) $issued_rev = $rev;
+		      }
+		      if ($issued_rev != null) {
+		      	 echo $this->Html->link($issued_rev['major_revision'].'_'.
+				$issued_rev['minor_revision'],array('controller'=>'revisions','action'=>'edit',$issued_rev['id']));
+		      } else {
+		         echo "none";
+		      }
+		 ?>&nbsp;</td>
+		<td>
+		<?php
+		     $latest_rev = null;
+		     if (sizeof($doc['Revision'])>0)
+		     	$latest_rev = $doc['Revision'][sizeof($doc['Revision'])-1];
+		      if ($latest_rev != null) {
+		      	 echo $this->Html->link($latest_rev['major_revision'].'_'.
+				$latest_rev['minor_revision'],array('controller'=>'revisions','action'=>'edit',$latest_rev['id']));
+		      	 #echo $latest_rev['major_revision'].'_'.
+			 #	$latest_rev['minor_revision'].'<br>';
+		      } else {
+		         echo "none";
+		      }
+		?> </td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('View'), array('action' => 'view', $doc['Doc']['id'])); ?>
 			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $doc['Doc']['id'])); ?>
