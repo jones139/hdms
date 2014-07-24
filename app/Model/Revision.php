@@ -260,10 +260,10 @@ class Revision extends AppModel {
 	    $lastrev = -1;
 
 	 var_dump($lastrev);
-	 # create the new revision
-	 $this->create(); 
 
 	 if ($lastrev>=0) {
+       	    # create the new revision
+	    $this->create(); 
 	    $lastrev['Revision']['id']=null;
 	    if ($major) {
 	       $lastrev['Revision']['major_revision']+=1;
@@ -291,7 +291,19 @@ class Revision extends AppModel {
 	       copy($this->get_filepath($lastrev_id),
 		    $this->get_filepath($newrev_id));	       
 	    }
-   	 }
+   	 } else {
+	    # there was no previous revision, so create one from scratch.
+	    # create the new revision
+	    $this->create(); 
+	    $this->save();
+	    $newrev_id = $this->getInsertID();
+            $newrev = $this->find('all',array('conditions'=>array('Revision.id'=>$newrev_id)));
+	    $newrev['Revision']['doc_id']=$docid;
+	    $newrev['Revision']['major_revision']=1;
+	    $newrev['Revision']['minor_revision']=1;
+	    $newrev['Revision']['has_native']=false;
+	    $this->save($newrev);
+	 }
 
 
 	 return $revs;

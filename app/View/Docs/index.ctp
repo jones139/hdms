@@ -30,6 +30,7 @@
 			<th><?php echo $this->Paginator->sort('title','Title'); ?></th>
 			<th><?php echo "Issued"; ?></th>
 			<th><?php echo "Latest"; ?></th>
+			<th>Create Revision</th>
 			<th class="actions"><?php echo __('Actions'); ?></th>
 	</tr>
 	</thead>
@@ -74,6 +75,17 @@
 		         echo "none";
 		      }
 		?> </td>
+                <td> <?php
+                  echo $this->Html->link('Major',
+			array('controller'=>'revisions',
+			      'action'=>'create_new_revision',$doc['Doc']['id'],
+			      'major'=>'true'));
+                  echo ":";
+                  echo $this->Html->link('Minor',
+			array('controller'=>'revisions',
+                              'action'=>'create_new_revision',$doc['Doc']['id']));
+		?>
+		</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('View'), array('action' => 'view', $doc['Doc']['id'])); ?>
 			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $doc['Doc']['id'])); ?>
