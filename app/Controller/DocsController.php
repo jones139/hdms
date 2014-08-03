@@ -86,7 +86,9 @@ class DocsController extends AppController {
 			}
 		}
 		$facilities = $this->Doc->Facility->find('list');
-		$this->set(compact('facilities'));
+		$doc_types = $this->Doc->DocType->find('list');
+		$doc_subtypes = $this->Doc->DocSubtype->find('list');
+		$this->set(compact('facilities','doc_types','doc_subtypes'));
 	}
 
 /**
@@ -112,7 +114,9 @@ class DocsController extends AppController {
 			$this->request->data = $this->Doc->find('first', $options);
 		}
 		$facilities = $this->Doc->Facility->find('list');
-		$this->set(compact('facilities'));
+		$doc_types = $this->Doc->DocType->find('list');
+		$doc_subtypes = $this->Doc->DocSubtype->find('list');
+		$this->set(compact('facilities','doc_types','doc_subtypes'));
 	}
 
 /**

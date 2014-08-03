@@ -1,24 +1,4 @@
 <div class="docs index">
-     <div class='Facility_filter'>
-     Select Facility
-     <ol> 
-     <li><?php echo $this->Html->link('All', array('controller' => 'docs', 'action' => 'index')); ?></li>
-     <li><?php echo $this->Html->link('HAT', array('controller' => 'docs', 'action' => 'index','facility'=>0)); ?></li>
-     <li><?php echo $this->Html->link('CA', array('controller' => 'docs', 'action' => 'index','facility'=>1)); ?></li>
-     <li><?php echo $this->Html->link('CF', array('controller' => 'docs', 'action' => 'index','facility'=>2)); ?></li>
-     </ol>
-     </div>
-
-     <div class='Doc_type_filter'>
-     Select Doc Type
-     <ol> 
-     <li><?php echo $this->Html->link('All', array('controller' => 'docs', 'action' => 'index')); ?></li>
-     <li><?php echo $this->Html->link('MSM', array('controller' => 'docs', 'action' => 'index','doc_type'=>0)); ?></li>
-     <li><?php echo $this->Html->link('POL', array('controller' => 'docs', 'action' => 'index','doc_type'=>1)); ?></li>
-     <li><?php echo $this->Html->link('PROC', array('controller' => 'docs', 'action' => 'index','doc_type'=>2)); ?></li>
-     </ol>
-     </div>
-
 	<h2><?php echo __('Documents'); ?></h2>
 	<table cellpadding="0" cellspacing="0">
 	<thead>
@@ -38,13 +18,13 @@
 	<?php foreach ($docs as $doc): ?>
 	<tr>
 		<td>
-			<?php echo $this->Html->link($doc['Facility']['title'], array('controller' => 'facilities', 'action' => 'view', $doc['Facility']['id'])); ?>
+			<?php echo $doc['Facility']['title']; ?>
 		</td>
 		<td>
-			<?php echo $this->Html->link($doc['DocType']['title'], array('controller' => 'doc_types', 'action' => 'view', $doc['DocType']['id'])); ?>
+			<?php echo $doc['DocType']['title']; ?>
 		</td>
 		<td>
-			<?php echo $this->Html->link($doc['DocSubtype']['title'], array('controller' => 'doc_subtypes', 'action' => 'view', $doc['DocSubtype']['id'])); ?>
+			<?php echo $doc['DocSubtype']['title']; ?>
 		</td>
 		<td><?php echo h($doc['Doc']['docNo']); ?>&nbsp;</td>
 		<td><?php echo h($doc['Doc']['title']); ?>&nbsp;</td>
@@ -109,13 +89,34 @@
 	?>
 	</div>
 </div>
+
 <div class="actions">
 	<h3><?php echo __('Actions'); ?></h3>
+     <div class='Facility_filter'>
+     Select Facility
+     <select> 
+     <option> <?php echo $this->Html->link('All', array('controller' => 'docs', 'action' => 'index')); ?> </option>
+     <option><?php echo $this->Html->link('HAT', array('controller' => 'docs', 'action' => 'index','facility'=>0)); ?></option>
+     <option><?php echo $this->Html->link('CA', array('controller' => 'docs', 'action' => 'index','facility'=>1)); ?></option>
+     <option><?php echo $this->Html->link('CF', array('controller' => 'docs', 'action' => 'index','facility'=>2)); ?></option>
+     </select>
+     </div>
+
+     <div class='Doc_type_filter'>
+     Select Doc Type
+     <select> 
+     <option><?php echo $this->Html->link('All', array('controller' => 'docs', 'action' => 'index')); ?></option>
+     <option><?php echo $this->Html->link('MSM', array('controller' => 'docs', 'action' => 'index','doc_type'=>0)); ?></option>
+     <option><?php echo $this->Html->link('POL', array('controller' => 'docs', 'action' => 'index','doc_type'=>1)); ?></option>
+     <option><?php echo $this->Html->link('PROC', array('controller' => 'docs', 'action' => 'index','doc_type'=>2)); ?></option>
+     </select>
+     </div>
+
+
+
+
 	<ul>
 		<li><?php echo $this->Html->link(__('New Doc'), array('action' => 'add')); ?></li>
-		<li><?php echo $this->Html->link(__('List Facilities'), array('controller' => 'facilities', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Facility'), array('controller' => 'facilities', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Revisions'), array('controller' => 'revisions', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Revision'), array('controller' => 'revisions', 'action' => 'add')); ?> </li>
+
 	</ul>
 </div>

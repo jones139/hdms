@@ -310,4 +310,14 @@ class Revision extends AppModel {
     	   
     }
 
+
+    /**
+     * has_active_routelist()
+     * returns 0 if this revision has no active route list,
+     * otherwise returns the ID of the active route list.
+     */ 
+    public function has_active_routelist($id) {
+       echo "<pre> has_active_route_list - ".var_dump($this)."</pre>";
+    }
+
 }

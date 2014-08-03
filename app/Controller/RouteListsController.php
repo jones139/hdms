@@ -15,6 +15,8 @@ class RouteListsController extends AppController {
  */
 	public $components = array('Paginator');
 
+	#public $uses = array('Revisions');
+
 /**
  * index method
  *
@@ -41,11 +43,25 @@ class RouteListsController extends AppController {
 	}
 
 /**
- * add method
+ * add method - expects a named parameter 'revision' which is the revision id
+ *    to which this route list should be associated.
  *
  * @return void
  */
 	public function add() {
+	        if (isset($this->params[ 'named' ][ 'revision' ])) {
+	           Controller::loadModel('Revisions');
+		   $revision_id = $this->params['named']['revision'];
+		   if (!$this->Revisions->exists($revision_id)) {
+			$this->Session->setFlash(__('Invalid Revision id '.$revision_id.'.  Route list NOT created.'));
+			$this->redirect($this->referer());
+		   }
+		   echo "<pre>".$revision_id."</pre>";
+		   $rev = $this->Revisions->findById($revision_id);
+		   echo "<pre>".var_dump($rev)."</pre>";
+		   #$active = $this->Revisions->has_active_routelist($revision_id);
+		   
+                }
 		if ($this->request->is('post')) {
 			$this->RouteList->create();
 			if ($this->RouteList->save($this->request->data)) {

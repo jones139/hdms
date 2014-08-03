@@ -3,7 +3,7 @@
 	<fieldset>
 		<legend><?php echo __('Editing Revision '.$this->request->data['Revision']['major_revision'].'_'.$this->request->data['Revision']['minor_revision'].' of document "'.$this->request->data['Doc']['title'].'" ('.$this->request->data['Doc']['docNo'].')');  ?></legend>
 	<?php
-		echo $this->Form->text('doc_status_id');
+		echo $this->Form->hidden('doc_status_id');
 		echo $this->Form->hidden('id');
 		echo $this->Form->hidden('doc_id');
 		echo $this->Form->hidden('major_revision');
@@ -11,7 +11,7 @@
 		echo $this->Form->hidden('user_id');
 	?>
 	</fieldset>
-<?php echo $this->Form->end('Submit'); ?>
+<?php echo $this->Form->end(); ?>
 
 
 <?php 
@@ -60,12 +60,19 @@
       ######################
       echo '<h3>Route List </h3>';
       echo '<p>';
-      if ($this->request->data['RouteList'][0]['revision_id']) {
-      	  echo $this->Html->link('View Route List',
-          array('controller'=>'route_lists','action'=>'view',
+      if ($this->request->data['RouteList']) {
+          if ($this->request->data['RouteList'][0]['revision_id']) {
+      	     echo $this->Html->link('View Route List',
+             array('controller'=>'route_lists','action'=>'view',
 			    $this->request->data['RouteList'][0]['id']));
+          } else {
+      	    echo 'No Route List Attached';
+          }
       } else {
-      	 echo 'No Route List Attached';
+         echo 'No Route List data present - ';
+      	 echo $this->Html->link('Create Route List',
+             array('controller'=>'route_lists','action'=>'add',
+			    'revision'=>$this->request->data['Revision']['id']));
       }
       echo '</p>';
 

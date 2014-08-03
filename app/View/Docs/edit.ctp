@@ -5,8 +5,10 @@
 	<?php
 		echo $this->Form->input('id');
 		echo $this->Form->input('facility_id');
-		echo $this->Form->input('doc_type_id');
-		echo $this->Form->input('doc_subtype_id');
+		echo $this->Form->input('doc_type_id',
+		     array('options'=>$doc_types));
+		echo $this->Form->input('doc_subtype_id',
+		     array('options'=>$doc_subtypes));
 		echo $this->Form->input('docNo');
 		echo $this->Form->input('title');
 	?>
