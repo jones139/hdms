@@ -49,6 +49,7 @@ class RouteListsController extends AppController {
  * @return void
  */
 	public function add() {
+	        $this->RouteList->recursive = 2;
 	        if (isset($this->params[ 'named' ][ 'revision' ])) {
 	           Controller::loadModel('Revisions');
 		   $revision_id = $this->params['named']['revision'];
@@ -60,20 +61,34 @@ class RouteListsController extends AppController {
 		   $rev = $this->Revisions->findById($revision_id);
 		   echo "<pre>".var_dump($rev)."</pre>";
 		   #$active = $this->Revisions->has_active_routelist($revision_id);
-		   
+		   $routelist_data = array('revision_id'=>$revision_id);
+		   $this->RouteList->create();
+		   $this->RouteList->save($routelist_data);
+		   $this->Session->setFlash(__('Route List Created ok.'));
+		   $id = $this->RouteList->GetInsertID();
+		   $data = $this->RouteList->findById($id);
+		   $this->set(array('data'=>$data));
+                } else {
+		   $this->Session->setFlash(
+		       __('No Revision ID specified - routelist NOT created.'));
+		   $this->redirect($this->referer());
                 }
-		if ($this->request->is('post')) {
-			$this->RouteList->create();
-			if ($this->RouteList->save($this->request->data)) {
-				$this->Session->setFlash(__('The route list has been saved.'));
-				return $this->redirect(array('action' => 'index'));
-			} else {
-				$this->Session->setFlash(__('The route list could not be saved. Please, try again.'));
-			}
-		}
-		$revisions = $this->RouteList->Revision->find('list');
-		$this->set(compact('revisions'));
 	}
+
+/**
+ * add_approver method - adds an approver (route list entry) to 
+ *  a route list.
+ *
+ * @return void
+ */
+	public function add_approver($id=null) {
+	        $this->RouteList->recursive = 2;
+		if (!$this->RouteList->exists($id)) {
+			throw new NotFoundException(__('Invalid route list'));
+		}
+
+        }
+
 
 /**
  * edit method

@@ -62,8 +62,8 @@
       echo '<p>';
       if ($this->request->data['RouteList']) {
           if ($this->request->data['RouteList'][0]['revision_id']) {
-      	     echo $this->Html->link('View Route List',
-             array('controller'=>'route_lists','action'=>'view',
+      	     echo $this->Html->link('Add Approver',
+             array('controller'=>'route_lists','action'=>'add_approver',
 			    $this->request->data['RouteList'][0]['id']));
           } else {
       	    echo 'No Route List Attached';
@@ -77,6 +77,10 @@
       echo '</p>';
 
 ?>
+
+###############
+# Back Button #
+###############
 <?php echo $this->Html->link('Back',
       array('controller'=>'revisions','action'=>'index')); ?>
 

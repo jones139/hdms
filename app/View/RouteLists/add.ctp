@@ -1,13 +1,27 @@
 <div class="routeLists form">
-<?php echo $this->Form->create('RouteList'); ?>
-	<fieldset>
-		<legend><?php echo __('Add Route List'); ?></legend>
-	<?php
-		echo $this->Form->input('revision_id');
-		echo $this->Form->input('active');
-	?>
-	</fieldset>
-<?php echo $this->Form->end(__('Submit')); ?>
+<h3>Route List</h3>
+<p> Route List for Revision 
+   <?php echo $data['Revision']['major_revision'];
+         echo "-";
+	 echo $data['Revision']['minor_revision'];
+   ?>
+   of document 
+   <?php echo $data['Revision']['Doc']['docNo']; ?>
+   (
+   <?php echo $data['Revision']['Doc']['title']; ?>
+   )
+</p>
+<?php
+  if (!$data['RouteListEntry']) {
+    echo "Empty Route List";
+  } else {
+    foreach ($data['RouteListEntry'] as $rlEntry) {
+       echo "entry<br>";
+    }
+  }
+  echo $this->Html->link(__('Add Approver'), 
+  array('action' => 'add_approver',$data['RouteList']['id']));
+?>
 </div>
 <div class="actions">
 	<h3><?php echo __('Actions'); ?></h3>
