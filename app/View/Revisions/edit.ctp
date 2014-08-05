@@ -58,17 +58,37 @@
       ######################
       # Route List Section #
       ######################
-      echo '<h3>Route List </h3>';
-      echo '<p>';
-      if ($this->request->data['RouteList']) {
-          if ($this->request->data['RouteList'][0]['revision_id']) {
+      if ($lastRouteList_id) {
+      	 echo '<h3>Route List Number '.$lastRouteList_id.' - status = '.$lastRouteList_status.'</h3>';
+         echo '<p>';
+          if (isset($routeListEntries)) {
+	     echo "<ol>";
+	     foreach ($routeListEntries as $rle) {
+	        echo "<li>".$users[$rle['RouteListEntries']['user_id']];
+		echo " : ".$responses[$rle['RouteListEntries']['response_id']];
+		echo " : ".$rle['RouteListEntries']['response_date'];
+		echo " : ".$rle['RouteListEntries']['response_comment'];
+		echo "</li>";
+	     }
+	     echo "</ol>";
       	     echo $this->Html->link('Add Approver',
-             array('controller'=>'route_lists','action'=>'add_approver',
-			    $this->request->data['RouteList'][0]['id']));
+             	  array('controller'=>'route_lists','action'=>'add_approver',
+			    $lastRouteList_id));
+	     echo " - ";
+      	     echo $this->Html->link('Submit Route List',
+             	  array('controller'=>'route_lists','action'=>'submit',
+			    $lastRouteList_id));
+	     echo " - ";
+      	     echo $this->Html->link('Cancel Route List',
+             	  array('controller'=>'route_lists','action'=>'cancel',
+			    $lastRouteList_id));
+
           } else {
+            echo "<h3>Route List</h3>";
       	    echo 'No Route List Attached';
           }
       } else {
+         echo "<h3>Route List</h3>";
          echo 'No Route List data present - ';
       	 echo $this->Html->link('Create Route List',
              array('controller'=>'route_lists','action'=>'add',
@@ -78,10 +98,11 @@
 
 ?>
 
+<?php
 ###############
 # Back Button #
 ###############
-<?php echo $this->Html->link('Back',
+echo $this->Html->link('Back',
       array('controller'=>'revisions','action'=>'index')); ?>
 
 </div>

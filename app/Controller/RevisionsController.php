@@ -106,11 +106,50 @@ class RevisionsController extends AppController {
 			$options = array('conditions' => array('Revision.' . $this->Revision->primaryKey => $id));
 			$this->request->data = $this->Revision->find('first', $options);
 		}
-		#$revisions = $this->request->data;
-		#$docs = $this->Revision->Doc->find('list');
-		#$users = $this->Revision->User->find('list');
-		#$docStatuses = $this->Revision->DocStatus->find('list');
-		#$this->set(compact('revisions','docs', 'users', 'docStatuses'));
+
+	#################################	
+	# Send the view the list of users
+	$this->loadModel('Users');
+	$users = $this->Users->find('list');
+
+	#################################	
+	# Send the view the list of responses
+	$this->loadModel('Responses');
+	$responses = $this->Responses->find('list');
+
+	###########################################################
+	# Find the latest route list associated with this revision,
+	#  which has not been cancelled (status not equal to 3).
+	$this->loadModel('RouteLists');
+	$options = array(
+	                 'conditions' => array(
+			 	      'revision_id' => $id,
+				      'route_list_status_id !='=>3),
+			 'order'=>'revision_id asc'
+			);
+	$routeListArr = $this->RouteLists->find('all',$options);
+	$lastRouteList_id = end($routeListArr)['RouteLists']['id'];
+	$lastRouteList_status = end($routeListArr)['RouteLists']['route_list_status_id'];
+
+	#################################################################
+	# Send the view the list of existing route list entries for the 
+	#  latest route list
+	$this->loadModel('RouteListEntries');
+	$options = array('fields'=>array('user_id','response_id','response_date','response_comment'),
+		         'conditions' => array(
+			 	      'route_list_id' => $lastRouteList_id)
+			);
+	$routeListEntries = $this->RouteListEntries->find('all',$options);
+	
+	#####################################
+	# Actually send the data to the view
+	$this->set(compact('users', 
+			   'responses',
+			   'routeListEntries',
+			   'routeListArr',
+			   'lastRouteList_id',
+			   'lastRouteList_status'
+			   ));
 	}
 
 /**

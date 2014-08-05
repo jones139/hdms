@@ -88,7 +88,14 @@ drop table if exists route_lists;
 create table route_lists (
        id int unsigned auto_increment primary key,
        revision_id integer,
-       active bool
+       route_list_status_id integer default 0
+);
+
+drop table if exists route_list_statuses;
+create table route_list_statuses (
+       id int unsigned primary key,
+       title varchar(20),
+       description varchar(256)
 );
 
 
@@ -97,14 +104,14 @@ create table route_list_entries (
        id int unsigned auto_increment primary key,
        route_list_id integer,
        user_id integer,
-       response_id integer,
+       response_id integer default 0,
        response_date datetime,
        response_comment varchar(256)
 );
 
 drop table if exists responses;
 create table responses (
-       id int unsigned auto_increment primary key,
+       id int unsigned primary key,
        title varchar(50)
 );
 
@@ -117,6 +124,16 @@ insert into doc_statuses (id,title) values (0,'Draft');
 insert into doc_statuses (id,title) values (1,'Waiting Approval');
 insert into doc_statuses (id,title) values (2,'Issued');
 insert into doc_statuses (id,title) values (3,'Withdrawn');
+
+insert into route_list_statuses (id,title) values (0,'Not Submitted');
+insert into route_list_statuses (id,title) values (1,'Submitted');
+insert into route_list_statuses (id,title) values (2,'Completed');
+insert into route_list_statuses (id,title) values (3,'Cancelled');
+
+insert into responses (id,title) values (0,"None");
+insert into responses (id,title) values (1,"Approve");
+insert into responses (id,title) values (2,"Reject");
+
 
 insert into doc_types (id,title,description) values (0,'MSM','High level management system documents');
 insert into doc_types (id,title,description) values (1,'POL','Policy documents');
@@ -139,10 +156,6 @@ insert into facilities (id,title,description) values (2,'CF','Catcote Futures');
 insert into users (username,title,role_id,password) values ("Graham","Graham Jones",1,"afcf02f321a501cf9cff31f022455dade82cd3f4");
 insert into users (username,title,role_id) values ("Louise","Louise Robson",1);
 insert into users (username,title,role_id) values ("Mick","Mick Slimmings",2);
-
-insert into responses (title) values ("-");
-insert into responses (title) values ("Approve");
-insert into responses (title) values ("Reject");
 
 insert into docs (facility_id,doc_type_id,doc_subtype_id,docNo,title) values (0,1,0,"xxx/yyy/zzz","title 1");
 insert into docs (facility_id,doc_type_id,doc_subtype_id,docNo,title) values (0,1,2,"HAT/POL/FIN/xxx","Finance Policy xxx");

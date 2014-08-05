@@ -20,7 +20,7 @@
     }
   }
   echo $this->Html->link(__('Add Approver'), 
-  array('action' => 'add_approver',$data['RouteList']['id']));
+  array('controller'=>'route_lists','action' => 'add_approver',$data['RouteList']['id']));
 ?>
 </div>
 <div class="actions">
