@@ -224,7 +224,7 @@ class Revision extends AppModel {
 			  $this->save_file($tmpnam,$fname,
 					   $doc_id,
 					   $majrev,$minrev);
-			  $this->read(null, $data['Revision']['id']);
+ 			  $this->read(null, $data['Revision']['id']);
 			  $this->set(array(
 				'filename' => $fname,
 				'has_native' => true,
@@ -259,7 +259,7 @@ class Revision extends AppModel {
 	 else
 	    $lastrev = -1;
 
-	 var_dump($lastrev);
+	 #var_dump($lastrev);
 
 	 if ($lastrev>=0) {
        	    # create the new revision
@@ -286,7 +286,6 @@ class Revision extends AppModel {
 		     return false;
 		  }
                }
-
 
 	       copy($this->get_filepath($lastrev_id),
 		    $this->get_filepath($newrev_id));	       
@@ -318,6 +317,12 @@ class Revision extends AppModel {
      */ 
     public function has_active_routelist($id) {
        echo "<pre> has_active_route_list - ".var_dump($this)."</pre>";
+    }
+
+    public function setApproved($id) {
+	$this->read(null, $id);
+	$this->set(array('doc_status_id',2));
+	$this->save();
     }
 
 }

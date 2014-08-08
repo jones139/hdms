@@ -32,4 +32,16 @@ class Notification extends AppModel {
 			'order' => ''
 		)
 	);
+
+
+	public function send($user_id,$revision_id,$message) {
+	    $data = array('user_id'=>$user_id,
+			  'revision_id'=>$revision_id,
+			  'body_text'=>$message,
+			  'active'=>true
+			  );
+	    $this->create();
+	    $this->save($data);
+	    #mail("grahamjones139@gmail.com","subject test","message text");
+        }
 }

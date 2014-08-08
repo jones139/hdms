@@ -21,10 +21,8 @@
 		<td><?php echo h($notification['Notification']['body_text']); ?>&nbsp;</td>
 		<td><?php echo h($notification['Notification']['active']); ?>&nbsp;</td>
 		<td>
-			<?php echo $this->Html->link($notification['Revision']['id'], array('controller' => 'revisions', 'action' => 'edit', $notification['Revision']['id'])); ?>
+			<?php echo $this->Html->link($notification['Revision']['id'], array('controller' => 'revisions', 'action' => 'view', $notification['Revision']['id'])); ?>
 		</td>
-
-
 		<td class="actions">
 			<?php echo $this->Html->link(__('View'), array('action' => 'view', $notification['Notification']['id'])); ?>
 			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $notification['Notification']['id'])); ?>

@@ -212,9 +212,8 @@ class RevisionsController extends AppController {
 	       }
 	}
 
-
 /**
- * download_file method - download file without checking it out.
+ * download_file method - download file without checking it out (ie just read-only view).
  *
  * @return void
  */
@@ -231,6 +230,7 @@ class RevisionsController extends AppController {
 		  return $this->redirect(array('action' => 'edit',$id));
 	       }
 	}
+
 
 
 /**
