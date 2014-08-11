@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="generator" content="ApiGen 2.8.0">
+
+	<title>Class DATABASE_CONFIG | HDMS</title>
+
+	<script type="text/javascript" src="resources/combined.js?3770084987"></script>
+	<script type="text/javascript" src="elementlist.js?163924357"></script>
+	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360">
+
+</head>
+
+<body>
+<div id="left">
+	<div id="menu">
+		<a href="index.html" title="Overview"><span>Overview</span></a>
+
+
+		<div id="groups">
+			<h3>Packages</h3>
+			<ul>
+				<li class="active"><a href="package-app.html">app<span></span></a>
+						<ul>
+				<li class="active"><a href="package-app.Config.html">Config<span></span></a>
+						<ul>
+				<li><a href="package-app.Config.Schema.html">Schema</a>
+						</li>
+							</ul></li>
+				<li><a href="package-app.Console.html">Console<span></span></a>
+						<ul>
+				<li><a href="package-app.Console.Command.html">Command</a>
+						</li>
+							</ul></li>
+				<li><a href="package-app.Controller.html">Controller</a>
+						</li>
+				<li><a href="package-app.Model.html">Model</a>
+						</li>
+				<li><a href="package-app.View.html">View<span></span></a>
+						<ul>
+				<li><a href="package-app.View.Helper.html">Helper</a>
+						</li>
+							</ul></li></ul></li>
+				<li><a href="package-None.html">None</a>
+						</li>
+			</ul>
+		</div>
+
+		<hr>
+
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li class="active"><a href="class-DATABASE_CONFIG.html">DATABASE_CONFIG</a></li>
+			</ul>
+
+
+
+
+
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+<div id="rightInner">
+	<form id="search">
+		<input type="hidden" name="cx" value="">
+		<input type="hidden" name="ie" value="UTF-8">
+		<input type="text" name="q" class="text">
+		<input type="submit" value="Search">
+	</form>
+
+	<div id="navigation">
+		<ul>
+			<li>
+				<a href="index.html" title="Overview"><span>Overview</span></a>
+			</li>
+			<li>
+				<a href="package-app.Config.html" title="Summary of app\Config"><span>Package</span></a>
+			</li>
+			<li class="active">
+<span>Class</span>			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
+			</li>
+		</ul>
+		<ul>
+		</ul>
+	</div>
+
+<div id="content" class="class">
+	<h1>Class DATABASE_CONFIG</h1>
+
+
+	<div class="description">
+	
+<p>Database configuration class.</p>
+
+<p>You can specify multiple configurations for production, development and
+testing.</p>
+
+<p>datasource =&gt; The name of a supported datasource; valid options are as
+follows: Database/Mysql - MySQL 4 &amp; 5, Database/Sqlite - SQLite (PHP5 only),
+Database/Postgres - PostgreSQL 7 and higher, Database/Sqlserver - Microsoft SQL
+Server 2005 and higher</p>
+
+<p>You can add custom database datasources (or override existing datasources) by
+adding the appropriate file to app/Model/Datasource/Database. Datasources should
+be named 'MyDatasource.php',</p>
+
+<p>persistent =&gt; true / false Determines whether or not the database should
+use a persistent connection</p>
+
+<p>host =&gt; the host you connect to the database. To add a socket or port
+number, use 'port' =&gt; #</p>
+
+<p>prefix =&gt; Uses the given prefix for all the tables in this database. This
+setting can be overridden on a per-table basis with the Model::$tablePrefix
+property.</p>
+
+<p>schema =&gt; For Postgres/Sqlserver specifies which schema you would like to
+use the tables in. Postgres defaults to 'public'. For Sqlserver, it defaults to
+empty and use the connected user's default schema (typically 'dbo').</p>
+
+<p>encoding =&gt; For MySQL, Postgres specifies the character encoding to use
+when connecting to the database. Uses database default not specified.</p>
+
+<p>unix_socket =&gt; For MySQL to connect via socket specify the
+<code>unix_socket</code> parameter instead of <code>host</code> and
+<code>port</code></p>
+
+<p>settings =&gt; Array of key/value pairs, on connection it executes SET
+statements for each pair For MySQL : <a
+href="http://dev.mysql.com/doc/refman/5.6/en/set-statement.html">http://dev.mysql.com/doc/refman/5.6/en/set-statement.html</a>
+For Postgres : <a
+href="http://www.postgresql.org/docs/9.2/static/sql-set.html">http://www.postgresql.org/docs/9.2/static/sql-set.html</a>
+For Sql Server : <a
+href="http://msdn.microsoft.com/en-us/library/ms190356.aspx">http://msdn.microsoft.com/en-us/library/ms190356.aspx</a></p>
+
+<p>flags =&gt; A key/value array of driver specific connection options.</p>
+
+	</div>
+
+
+
+
+
+
+
+
+
+	<div class="info">
+		
+		
+		
+		<b>Package:</b> <a href="package-app.html">app</a>\<a href="package-app.Config.html">Config</a><br>
+
+				<b>Copyright:</b>
+				Copyright (c) Cake Software Foundation, Inc. (<a
+href="http://cakefoundation.org">http://cakefoundation.org</a>)<br>
+				<b>License:</b>
+				<a href="http://www.opensource.org/licenses/mit-license.php">MIT License</a><br>
+		<b>Located at</b> <a href="source-class-DATABASE_CONFIG.html#19-88" title="Go to source code">Config/database.php</a><br>
+	</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<table class="summary" id="properties">
+	<caption>Properties summary</caption>
+	<tr data-order="default" id="$default">
+		<td class="attributes"><code>
+			public  
+			array
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-DATABASE_CONFIG.html#67-76" title="Go to source code"><var>$default</var></a>
+		</td>
+		<td class="value"><code><span class="php-keyword1">array</span>(
+	<span class="php-quote">'datasource'</span> =&gt; <span class="php-quote">'Database/Mysql'</span>,
+	<span class="php-quote">'persistent'</span> =&gt; <span class="php-keyword1">false</span>,
+	<span class="php-quote">'host'</span> =&gt; <span class="php-quote">'localhost'</span>,
+	<span class="php-quote">'login'</span> =&gt; <span class="php-quote">'hdms'</span>,
+	<span class="php-quote">'password'</span> =&gt; <span class="php-quote">'hat'</span>,
+	<span class="php-quote">'database'</span> =&gt; <span class="php-quote">'hdms'</span>,
+	<span class="php-quote">'prefix'</span> =&gt; <span class="php-quote">''</span>,
+	<span class="php-comment">//'encoding' =&gt; 'utf8',</span>
+)</code></td>
+		<td class="description"><div>
+			<a href="#$default" class="anchor">#</a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="test" id="$test">
+		<td class="attributes"><code>
+			public  
+			array
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-DATABASE_CONFIG.html#78-87" title="Go to source code"><var>$test</var></a>
+		</td>
+		<td class="value"><code><span class="php-keyword1">array</span>(
+	<span class="php-quote">'datasource'</span> =&gt; <span class="php-quote">'Database/Mysql'</span>,
+	<span class="php-quote">'persistent'</span> =&gt; <span class="php-keyword1">false</span>,
+	<span class="php-quote">'host'</span> =&gt; <span class="php-quote">'localhost'</span>,
+	<span class="php-quote">'login'</span> =&gt; <span class="php-quote">'user'</span>,
+	<span class="php-quote">'password'</span> =&gt; <span class="php-quote">'password'</span>,
+	<span class="php-quote">'database'</span> =&gt; <span class="php-quote">'test_database_name'</span>,
+	<span class="php-quote">'prefix'</span> =&gt; <span class="php-quote">''</span>,
+	<span class="php-comment">//'encoding' =&gt; 'utf8',</span>
+)</code></td>
+		<td class="description"><div>
+			<a href="#$test" class="anchor">#</a>
+
+			<div class="description short">
+				
+			</div>
+
+			<div class="description detailed hidden">
+				
+
+			</div>
+		</div></td>
+	</tr>
+	</table>
+
+
+
+
+
+
+</div>
+
+	<div id="footer">
+		HDMS API documentation generated by <a href="http://apigen.org">ApiGen 2.8.0</a>
+	</div>
+</div>
+</div>
+</body>
+</html>

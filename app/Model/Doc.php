@@ -3,6 +3,7 @@ App::uses('AppModel', 'Model');
 /**
  * Doc Model
  *
+ * @package       app.Model
  * @property Facility $Facility
  * @property Revision $Revision
  */

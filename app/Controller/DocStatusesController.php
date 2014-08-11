@@ -3,6 +3,7 @@ App::uses('AppController', 'Controller');
 /**
  * DocStatuses Controller
  *
+ * @package       app.Controller
  * @property DocStatus $DocStatus
  * @property PaginatorComponent $Paginator
  */

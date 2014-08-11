@@ -3,6 +3,7 @@ App::uses('AppModel', 'Model');
 /**
  * Notification Model
  *
+ * @package       app.Model
  * @property User $User
  * @property Revision $Revision
  */

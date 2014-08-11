@@ -3,6 +3,7 @@ App::uses('AppModel', 'Model');
 /**
  * Revision Model
  *
+ * @package       app.Model
  * @property Doc $Doc
  * @property User $User
  * @property DocStatus $DocStatus

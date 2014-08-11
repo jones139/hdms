@@ -3,6 +3,7 @@ App::uses('AppController', 'Controller');
 /**
  * Facilities Controller
  *
+ * @package       app.Controller
  * @property Facility $Facility
  * @property PaginatorComponent $Paginator
  */

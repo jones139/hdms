@@ -3,6 +3,7 @@ App::uses('AppController', 'Controller');
 /**
  * Notifications Controller
  *
+ * @package       app.Controller
  * @property Notification $Notification
  * @property PaginatorComponent $Paginator
  */

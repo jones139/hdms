@@ -3,6 +3,7 @@ App::uses('AppController', 'Controller');
 /**
  * Tests Controller
  *
+ * @package       app.Controller
  * @property Test $Test
  * @property PaginatorComponent $Paginator
  */

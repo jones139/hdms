@@ -3,6 +3,7 @@ App::uses('AppModel', 'Model');
 /**
  * RouteListEntry Model
  *
+ * @package       app.Model
  * @property RouteList $RouteList
  * @property User $User
  * @property Response $Response

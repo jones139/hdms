@@ -3,6 +3,7 @@ App::uses('AppModel', 'Model');
 /**
  * DocType Model
  *
+ * @package       app.Model
  * @property Doc $Doc
  */
 class DocType extends AppModel {

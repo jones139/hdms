@@ -3,6 +3,7 @@ App::uses('AppModel', 'Model');
 /**
  * Facility Model
  *
+ * @package       app.Model
  * @property Doc $Doc
  */
 class Facility extends AppModel {

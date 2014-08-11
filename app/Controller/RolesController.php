@@ -3,6 +3,7 @@ App::uses('AppController', 'Controller');
 /**
  * Roles Controller
  *
+ * @package       app.Controller
  * @property Role $Role
  * @property PaginatorComponent $Paginator
  */

@@ -3,6 +3,7 @@ App::uses('AppModel', 'Model');
 /**
  * DocStatus Model
  *
+ * @package       app.Model
  * @property Revision $Revision
  */
 class DocStatus extends AppModel {

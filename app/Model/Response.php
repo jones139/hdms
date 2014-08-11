@@ -3,6 +3,7 @@ App::uses('AppModel', 'Model');
 /**
  * Response Model
  *
+ * @package       app.Model
  * @property RouteListEntry $RouteListEntry
  */
 class Response extends AppModel {

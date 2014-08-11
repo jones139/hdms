@@ -3,6 +3,7 @@ App::uses('AppController', 'Controller');
 /**
  * RouteListEntries Controller
  *
+ * @package       app.Controller
  * @property RouteListEntry $RouteListEntry
  * @property PaginatorComponent $Paginator
  */

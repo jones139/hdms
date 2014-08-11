@@ -3,6 +3,7 @@ App::uses('AppModel', 'Model');
 App::uses('SimplePasswordHasher', 'Controller/Component/Auth');/**
  * User Model
  *
+ * @package       app.Model
  * @property Role $Role
  * @property Notification $Notification
  * @property Revision $Revision
