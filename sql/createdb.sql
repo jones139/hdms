@@ -123,7 +123,8 @@ insert into roles (id,title) values (2,'User');
 insert into doc_statuses (id,title) values (0,'Draft');
 insert into doc_statuses (id,title) values (1,'Waiting Approval');
 insert into doc_statuses (id,title) values (2,'Issued');
-insert into doc_statuses (id,title) values (3,'Withdrawn');
+insert into doc_statuses (id,title) values (3,'Rejected');
+insert into doc_statuses (id,title) values (4,'Withdrawn');
 
 insert into route_list_statuses (id,title) values (0,'Not Submitted');
 insert into route_list_statuses (id,title) values (1,'Submitted');

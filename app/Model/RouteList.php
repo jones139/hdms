@@ -49,6 +49,19 @@ class RouteList extends AppModel {
 	);
 
 
+	/**
+	 * Find the revision number of the route $id
+         */
+	public function getRevisionId($id) {
+	       $options = array('conditions' => array('RouteList.id' => $id),
+	     	      		'fields'=>array('RouteList.revision_id')
+				);
+	       $rldata = $this->find('first',$options);
+	       $revision_id = $rldata['RouteList']['revision_id'];
+	       return $revision_id;
+	}
+
+
 	/* Check the status of the route list by ckecking the response from all of the approvers
 	 *  (routelistentries) - checks to see if all of the approvers have responded (returns true)
 	 * otherwise returns false.
@@ -56,7 +69,8 @@ class RouteList extends AppModel {
 	 */
 	public function isComplete($id = null) {
 	     # get a list of all the entries in this route list.
-	     $options = array('conditions' => array('RouteListEntry.route_list_id' => $id),
+	     $options = array('conditions' => 
+	                         array('RouteListEntry.route_list_id' => $id),
 	     	      		'fields'=>array('RouteListEntry.id',
 					        'RouteListEntry.user_id',
                                                 'RouteListEntry.response_id'),
@@ -67,7 +81,7 @@ class RouteList extends AppModel {
 	     # check each  entry to see if it has been approved.
 	     $complete = true;  
 	     foreach ($rle_list as $rle) {
-	        if ($rle['RouteListEntry']['response_id']!=0) {
+	        if ($rle['RouteListEntry']['response_id']==0) {
 		   $complete = false;
 		}
 	     }
@@ -76,7 +90,7 @@ class RouteList extends AppModel {
 	     # if the route list is complete, set the route list status to complete.
 	     if ($complete) {
 	     	$this->read(null,$id);
-	     	$this->set(array('route_list_status_id'=>2));  # status 2 = approved
+	     	$this->set(array('route_list_status_id'=>2));  # status 2 = complete
 	     	$this->save();
 	     } 
 	     return $complete;
@@ -107,21 +121,22 @@ class RouteList extends AppModel {
 		   $approved = false;
 		}
 	     }
+	     #
+	     # if the route list is approved, set the associated revision 
+	     #    status to approved.
+	     $revision_id = $this->getRevisionId($id);
+	     $this->Revision->read(null,$revision_id);
+	     if ($this->isComplete($id)) {
+	     	if ($approved) {
+	     	   $this->Revision->set(array('doc_status_id'=>2));  # status 2 = approved
+	     	} else {
+	     	   $this->Revision->set(array('doc_status_id'=>3));  # status 3 = rejected
+ 		}
+	     } else {
+	     	   $this->Revision->set(array('doc_status_id'=>1));  # status 1 = waiting for approval
 
-	     # if the route list is approved, set the associated revision status to approved.
-	     if ($approved) {
-	     	# find the revision number of the route list that has been approved.
-	     	$options = array('conditions' => array('RouteList.id' => $id),
-	     	      		'fields'=>array('RouteList.revision_id')
-				);
-	     	$rldata = $this->find('first',$options);
-	     	$revision_id = $rldata['RouteList']['revision_id'];
-
-	     	$this->Revision->read(null,$revision_id);
-	     	$this->Revision->set(array('doc_status_id'=>2));  # status 2 = approved
-		#var_dump($this->Revision->data);
-	     	$this->Revision->save();
 	     } 
+	     $this->Revision->save();
 
 	     return $approved;
 	}

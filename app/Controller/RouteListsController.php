@@ -270,21 +270,33 @@ class RouteListsController extends AppController {
 	        $this->loadModel('RouteListEntry');
 	        $this->loadModel('Responses');
 	        $this->RouteListEntry->recursive = 3;  #Needed to make sure we get revision data in query.
+		#
+		# Check that the route list we are approving actually exists...
 		if (!$this->RouteList->exists($id)) {
 			throw new NotFoundException(__('Invalid route list'));
 		}
+		#
+		# If we are submitting form data ('post'), process it.
 		if ($this->request->is(array('post', 'put'))) {
 		   # Find route list entry data.
-		   $options = array('conditions' => array('RouteListEntry.route_list_id' => $id));
+		   $options = array('conditions' => 
+		   	    array('RouteListEntry.route_list_id' => $id));
 		   $rle = $this->RouteListEntry->find('first', $options);
-		   $this->request->data['RouteListEntry']['response_date'] = date('Y-m-d H:i:s');
+		   $this->request->data['RouteListEntry']['response_date'] = 
+		   					date('Y-m-d H:i:s');
+		   #
+     		   # Save the data
 		   if ($this->RouteListEntry->save($this->request->data)) {
-		      if ($this->RouteList->isComplete($id) && $this->RouteList->isApproved($id)) {
-		         $this->Session->setFlash(
-				   __('Route List Complete - Document Issued'));		          
+		   
+		      if ($this->RouteList->isComplete($id)) {
+		      	 if ($this->RouteList->isApproved($id)) {
+		            $this->Session->setFlash(
+				   __('Route List Complete - Document Issued'));		         } else {
+		            $this->Session->setFlash(
+				   __('Route List Complete - Someone rejected it?'));		         }
 		      } else {
 		      $this->Session->setFlash(
-				   __('Revision Approved - waiting for other approvers'));
+				   __('You have approved revision -  waiting for other approvers'));
 		      }
 		   } else {
 		      $this->Session->setFlash(
@@ -295,9 +307,14 @@ class RouteListsController extends AppController {
                         #                 'action'=>'edit',
                         #                $rle['RouteList']['revision_id']));
 		} else {
-		  $options = array('conditions' => array('RouteListEntry.route_list_id' => $id,
-		  	     			   	 'RouteListEntry.user_id'=>$this->Auth->user('id')));
-		  $this->request->data = $this->RouteListEntry->find('first', $options);
+		  $options = array('conditions' => 
+		  	   array('RouteListEntry.route_list_id' => $id,
+		  	         'RouteListEntry.user_id'=>
+						$this->Auth->user('id')));
+		  $this->request->data = $this->RouteListEntry->
+						find('first', $options);
+		  # 
+		  # Check we are actually being asked to approve this revision.
 		  if (!$this->request->data) {
 		      $this->Session->setFlash(
 				   __('You are not being asked to approve this revision! How did you get here???'));
