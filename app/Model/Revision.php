@@ -91,13 +91,6 @@ class Revision extends AppModel {
 		}
 	}
 
-	public function get_folder($doc_id,$major_rev,$minor_rev) {
-	       $this->logDebug("get_folder - appdir=".ROOT);
-	       $folder=ROOT.'/'.'data'.'/'.$doc_id.'/'.$major_rev.'/'.$minor_rev;
-	       return $folder;
-	}
-
-
 	public function save_file($tmpnam,$fname,$doc_id,$major_rev,$minor_rev) {
 	       $this->logDebug("save_file - tmpnam=".$tmpnam);
 	       $this->logDebug("save_file - fname=".$fname);
@@ -156,6 +149,16 @@ class Revision extends AppModel {
         }
 
 
+	/**
+	* Return the folder used to store files for document $doc_id,
+	* major revision $major_rev and minor revision $minor_rev.
+	*/
+	public function get_folder($doc_id,$major_rev,$minor_rev) {
+	       $this->logDebug("get_folder - appdir=".ROOT);
+	       $folder=ROOT.'/'.'data'.'/'.$doc_id.'/'.$major_rev.'/'.$minor_rev;
+	       return $folder;
+	}
+
 
 	public function get_filepath($id = NULL) {
 		# Populate $this->data with data from revision.id=$id
@@ -211,7 +214,43 @@ class Revision extends AppModel {
 	}
 
 
-	public function check_in_file($data = NULL, $authUserData = NULL, $validate = true, $fieldList = Array()) {
+	/* Attach a file to a revision that does not currently have a native
+	* file attached
+	*/
+	public function attach_file($data = NULL, 
+	       			    $authUserData = NULL, 
+				    $validate = true) {
+	       if ($this->isUploadedFile($data['Document']['submittedfile'])) {
+		  	  $this->logDebug('Uploaded File');
+			  #print var_dump($data);
+			  $filedata = $data['Document']['submittedfile'];
+			  $revdata = $data['Revision'];
+			  $tmpnam = $filedata['tmp_name'];
+			  $fname  = $filedata['name'];
+			  $majrev = $revdata['major_revision'];
+			  $minrev = $revdata['minor_revision'];
+			  $doc_id = $revdata['doc_id'];
+			  $this->save_file($tmpnam,$fname,
+					   $doc_id,
+					   $majrev,$minrev);
+ 			  $this->read(null, $data['Revision']['id']);
+			  $this->set(array(
+				'filename' => $fname,
+				'has_native' => true,
+				'native_file_date' => date('Y-m-d H:i:s'),
+				'is_checked_out' => false,
+				'user_id' => $authUserData['id']
+			  ));
+			  $this->save();
+			  return true;
+	       } else {
+	               	  $this->logDebug('File Upload Failed');
+			  return false;
+	       }
+	   } 
+
+
+	public function checkin_file($data = NULL, $authUserData = NULL, $validate = true, $fieldList = Array()) {
 	       if ($this->isUploadedFile($data['Document']['submittedfile'])) {
 		  	  $this->logDebug('Uploaded File');
 			  print var_dump($data);
@@ -219,8 +258,8 @@ class Revision extends AppModel {
 			  $revdata = $data['Revision'];
 			  $tmpnam = $filedata['tmp_name'];
 			  $fname  = $filedata['name'];
-			  $minrev = $revdata['major_revision'];
-			  $majrev = $revdata['minor_revision'];
+			  $majrev = $revdata['major_revision'];
+			  $minrev = $revdata['minor_revision'];
 			  $doc_id = $revdata['doc_id'];
 			  $this->save_file($tmpnam,$fname,
 					   $doc_id,

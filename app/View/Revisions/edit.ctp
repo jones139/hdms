@@ -28,22 +28,28 @@
       }
       echo '</p>';
       # Only show check-in/out buttons if the revision is a draft.
-      if ($this->request->data['DocStatus']['id']==1) {   
+      if ($this->request->data['DocStatus']['id']==0) {   
       	 echo '<p>';
       	 if ($this->request->data['Revision']['is_checked_out']) {
             echo "File checked out by ".$this->request->data['Revision']['check_out_user_id']." on ".$this->request->data['Revision']['check_out_date'];
 	    echo '<nbrsp/> ';
             echo $this->Html->link('Check In File',
-             	 array('controller'=>'revisions','action'=>'check_in_file',
+             	 array('controller'=>'revisions','action'=>'checkin_file',
 	                   $this->request->data['Revision']['id']));
 	    echo '<nbrsp/> ';
             echo $this->Html->link('Cancel Check Out',
              	 array('controller'=>'revisions','action'=>'cancel_checkout_file',
 	                   $this->request->data['Revision']['id']));
       	 } else {
-      	    echo $this->Html->link('Check Out File',
-                 array('controller'=>'revisions','action'=>'check_out_file',
+	    if ($this->request->data['Revision']['has_native']) {
+      	       echo $this->Html->link('Check Out File',
+                 array('controller'=>'revisions','action'=>'checkout_file',
 			    $this->request->data['Revision']['id']));
+	    } else {
+      	       echo $this->Html->link('Attach File',
+                 array('controller'=>'revisions','action'=>'attach_file',
+			    $this->request->data['Revision']['id']));
+	    }
          echo '</p>';
          }
       } else {
@@ -58,7 +64,7 @@
       # Route List Section #
       ######################
       if ($lastRouteList_id) {
-      	 echo '<h3>Route List Number '.$lastRouteList_id.' - status = '.$lastRouteList_status.'</h3>';
+      	 echo '<h3>Route List Number '.$lastRouteList_id.' - status = '.$routeListStatuses[$lastRouteList_status].'</h3>';
          echo '<p>';
           if (isset($routeListEntries)) {
 	     echo "<ol>";
@@ -67,23 +73,28 @@
 		echo " : ".$responses[$rle['RouteListEntries']['response_id']];
 		echo " : ".$rle['RouteListEntries']['response_date'];
 		echo " : ".$rle['RouteListEntries']['response_comment'];
-		if ($authUserData['id'] == $rle['RouteListEntries']['user_id'] && (!$rle['RouteListEntries']['response_date'])) {
-      		   echo $this->Html->link('Approve Revision',
+		# Only show approve buttons if route list is in 'submitted'
+		# status.
+	        if ($lastRouteList_status==1) {
+		   if ($authUserData['id'] == $rle['RouteListEntries']['user_id'] && (!$rle['RouteListEntries']['response_id']>0)) {
+      		      echo $this->Html->link('Approve Revision',
       		          array('controller'=>'routeLists','action'=>'approve',
 		          $lastRouteList_id));
-		}
-		# Are we an administrator?
-		if (($authUserData['role_id']==1) &&
-		    ($authUserData['id'] != $rle['RouteListEntries']['user_id']) && 
-		    (!$rle['RouteListEntries']['response_date'])) {
-      		   echo $this->Html->link('Approve Revision as Administrator',
+		   }
+		   # Are we an administrator?
+		   if (($authUserData['role_id']==1) &&
+		      ($authUserData['id'] != $rle['RouteListEntries']['user_id']) && 
+		      (!$rle['RouteListEntries']['response_date'])) {
+      		      echo $this->Html->link('Approve Revision as Administrator',
       		          array('controller'=>'routeLists','action'=>'approve',
 		          $lastRouteList_id));
+		   }
 		}
 		echo "</li>";
 	     }
 	     echo "</ol>";
-	     if ($lastRouteList_status==0) {
+	     # Allow the user to edit or submit draft or cancelled route lists.
+	     if ($lastRouteList_status==0 || $lastRouteList_status==3) {
       	       echo $this->Html->link('Add Approver',
              	  array('controller'=>'route_lists','action'=>'add_approver',
 			    $lastRouteList_id));

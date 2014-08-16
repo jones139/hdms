@@ -35,6 +35,9 @@ class Notification extends AppModel {
 	);
 
 
+	/**
+	* Send notification to a user, refering to revision $revision_id
+	*/
 	public function send($user_id,$revision_id,$message) {
 	    $data = array('user_id'=>$user_id,
 			  'revision_id'=>$revision_id,
@@ -45,4 +48,23 @@ class Notification extends AppModel {
 	    $this->save($data);
 	    #mail("grahamjones139@gmail.com","subject test","message text");
         }
+
+	/**
+	* Cancel notification to a user, refering to revision $revision_id
+	*/
+	public function cancel($user_id,$revision_id) {
+	       $notifications = $this->find('all', array(
+    	       		      'conditions'=> array(
+        		      		     'Notification.user_id' => $user_id,
+			      		     'Notification.revision_id' => $revision_id
+    			      )));
+
+
+
+	       foreach($notifications as $not) {
+	           $this->id = $not['Notification']['id'];
+    	       	   $this->saveField('active', false);
+	       }
+        }
+
 }

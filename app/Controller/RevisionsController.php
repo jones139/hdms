@@ -118,6 +118,11 @@ class RevisionsController extends AppController {
 	$this->loadModel('Responses');
 	$responses = $this->Responses->find('list');
 
+	#################################	
+	# Send the view the list of route list statuses
+	$this->loadModel('RouteListStatuses');
+	$routeListStatuses = $this->RouteListStatuses->find('list');
+
 	###########################################################
 	# Find the latest route list associated with this revision,
 	#  which has not been cancelled (status not equal to 3).
@@ -125,7 +130,8 @@ class RevisionsController extends AppController {
 	$options = array(
 	                 'conditions' => array(
 			 	      'revision_id' => $id,
-				      'route_list_status_id !='=>3),
+				   #   'route_list_status_id !='=>3
+				   ),
 			 'order'=>'revision_id asc'
 			);
 	$routeListArr = $this->RouteLists->find('all',$options);
@@ -146,6 +152,7 @@ class RevisionsController extends AppController {
 	# Actually send the data to the view
 	$this->set(compact('users', 
 			   'responses',
+			   'routeListStatuses',
 			   'routeListEntries',
 			   'routeListArr',
 			   'lastRouteList_id',
@@ -176,13 +183,33 @@ class RevisionsController extends AppController {
 
 
 /**
+ * attach_file method
+ *
+ * @return void
+ */
+	public function attach_file($id) {
+		if ($this->request->is(array('post','put'))) {
+			if ($this->Revision->attach_file($this->request->data,$this->Auth->User())) {
+				$this->Session->setFlash(__('File Uploaded.'));
+				return $this->redirect(array('action' => 'edit',$id));
+			} else {
+				$this->Session->setFlash(__('File Upload Failed.'));
+			}
+		}
+		$options = array('conditions' => array('Revision.' . $this->Revision->primaryKey => $id));
+		$this->request->data = $this->Revision->find('first', $options);
+	}
+
+
+
+/**
  * check_in_file method
  *
  * @return void
  */
-	public function check_in_file($id) {
+	public function checkin_file($id) {
 		if ($this->request->is(array('post','put'))) {
-			if ($this->Revision->check_in_file($this->request->data,$this->Auth->User())) {
+			if ($this->Revision->checkin_file($this->request->data,$this->Auth->User())) {
 				$this->Session->setFlash(__('File Uploaded.'));
 				return $this->redirect(array('action' => 'edit',$id));
 			} else {
