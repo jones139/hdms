@@ -17,8 +17,13 @@ class DocsController extends AppController {
 	public $components = array('Paginator');
 
 /**
- * index method
+ * index method - the main page displaying document and revision data.
+ *  Accepts named parameters facility, doc_type and doc_subtype which 
+ *  will filter the results listed to only the relevant documents.
  *
+ * @param facility - the facility id to filter.
+ * @param doc_type - the doc type id to filter.
+ * @param doc_subtype - the doc subtype id to filter.
  * @return void
  */
 	public function index() {
