@@ -241,12 +241,19 @@ class RevisionsController extends AppController {
 	}
 
 /**
- * download_file method - download file without checking it out (ie just read-only view).
- *
+ * download_file method - download file without checking it out (ie just read-only view).   By default, returns the pdf version of the file, unless parameter
+ * native is set, in which case it returns the native file.
+ * 
+ * @param id - revision id of file to download.
+ * @param native - named parameter in url to request download of native file.
  * @return void
  */
 	public function download_file($id) {
-	       $filepath = $this->Revision->get_filepath($id);
+	       $native = false;
+	       if (isset($this->params[ 'named' ][ 'native' ])) {
+	          $native = true;
+	       }
+	       $filepath = $this->Revision->get_filepath($id,$native);
 	       if ($filepath) {
 	       	  echo "<pre>".$filepath."</pre>";
 	       	  $this->response->file(

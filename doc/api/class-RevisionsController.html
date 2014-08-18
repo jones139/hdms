@@ -4,7 +4,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta name="generator" content="ApiGen 2.8.0">
 
-	<title>Class RevisionsController | HDMS</title>
+	<title>Class RevisionsController</title>
 
 	<script type="text/javascript" src="resources/combined.js?3770084987"></script>
 	<script type="text/javascript" src="elementlist.js?163924357"></script>
@@ -152,7 +152,7 @@ Controller
 		
 		<b>Package:</b> <a href="package-app.html">app</a>\<a href="package-app.Controller.html">Controller</a><br>
 
-		<b>Located at</b> <a href="source-class-RevisionsController.html#3-264" title="Go to source code">Controller/RevisionsController.php</a><br>
+		<b>Located at</b> <a href="source-class-RevisionsController.html#3-298" title="Go to source code">Controller/RevisionsController.php</a><br>
 	</div>
 
 
@@ -278,7 +278,7 @@ Controller
 
 		<td class="name"><div>
 		<a class="anchor" href="#_edit">#</a>
-		<code><a href="source-class-RevisionsController.html#88-154" title="Go to source code">edit</a>( <span>string <var>$id</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-RevisionsController.html#88-161" title="Go to source code">edit</a>( <span>string <var>$id</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -320,7 +320,7 @@ Controller
 
 		<td class="name"><div>
 		<a class="anchor" href="#_delete">#</a>
-		<code><a href="source-class-RevisionsController.html#156-175" title="Go to source code">delete</a>( <span>string <var>$id</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-RevisionsController.html#163-182" title="Go to source code">delete</a>( <span>string <var>$id</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -351,7 +351,7 @@ Controller
 		</div>
 		</div></td>
 	</tr>
-	<tr data-order="check_in_file" id="_check_in_file">
+	<tr data-order="attach_file" id="_attach_file">
 
 		<td class="attributes"><code>
 			 public 
@@ -361,8 +361,41 @@ Controller
 		</td>
 
 		<td class="name"><div>
-		<a class="anchor" href="#_check_in_file">#</a>
-		<code><a href="source-class-RevisionsController.html#178-194" title="Go to source code">check_in_file</a>( <span>mixed <var>$id</var></span> )</code>
+		<a class="anchor" href="#_attach_file">#</a>
+		<code><a href="source-class-RevisionsController.html#185-201" title="Go to source code">attach_file</a>( <span>mixed <var>$id</var></span> )</code>
+
+		<div class="description short">
+			
+<p>attach_file method</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>attach_file method</p>
+
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="checkin_file" id="_checkin_file">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_checkin_file">#</a>
+		<code><a href="source-class-RevisionsController.html#205-221" title="Go to source code">checkin_file</a>( <span>mixed <var>$id</var></span> )</code>
 
 		<div class="description short">
 			
@@ -395,7 +428,7 @@ Controller
 
 		<td class="name"><div>
 		<a class="anchor" href="#_checkout_file">#</a>
-		<code><a href="source-class-RevisionsController.html#197-214" title="Go to source code">checkout_file</a>( <span>mixed <var>$id</var></span> )</code>
+		<code><a href="source-class-RevisionsController.html#224-241" title="Go to source code">checkout_file</a>( <span>mixed <var>$id</var></span> )</code>
 
 		<div class="description short">
 			
@@ -428,22 +461,29 @@ Controller
 
 		<td class="name"><div>
 		<a class="anchor" href="#_download_file">#</a>
-		<code><a href="source-class-RevisionsController.html#216-233" title="Go to source code">download_file</a>( <span>mixed <var>$id</var></span> )</code>
+		<code><a href="source-class-RevisionsController.html#243-267" title="Go to source code">download_file</a>( <span>id <var>$id</var></span> )</code>
 
 		<div class="description short">
 			
 <p>download_file method - download file without checking it out (ie just
-read-only view).</p>
+read-only view). By default, returns the pdf version of the file, unless
+parameter native is set, in which case it returns the native file.</p>
 
 		</div>
 
 		<div class="description detailed hidden">
 			
 <p>download_file method - download file without checking it out (ie just
-read-only view).</p>
+read-only view). By default, returns the pdf version of the file, unless
+parameter native is set, in which case it returns the native file.</p>
 
 
 
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$id</var></dt>
+					<dd><code>id</code><br>- revision id of file to download.</dd>
+				</dl></div>
 
 
 
@@ -463,7 +503,7 @@ read-only view).</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_cancel_checkout_file">#</a>
-		<code><a href="source-class-RevisionsController.html#237-245" title="Go to source code">cancel_checkout_file</a>( <span>mixed <var>$id</var></span> )</code>
+		<code><a href="source-class-RevisionsController.html#271-279" title="Go to source code">cancel_checkout_file</a>( <span>mixed <var>$id</var></span> )</code>
 
 		<div class="description short">
 			
@@ -496,7 +536,7 @@ read-only view).</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_create_new_revision">#</a>
-		<code><a href="source-class-RevisionsController.html#248-262" title="Go to source code">create_new_revision</a>( <span>mixed <var>$docid</var></span> )</code>
+		<code><a href="source-class-RevisionsController.html#282-296" title="Go to source code">create_new_revision</a>( <span>mixed <var>$docid</var></span> )</code>
 
 		<div class="description short">
 			
@@ -640,7 +680,7 @@ is created.</p>
 </div>
 
 	<div id="footer">
-		HDMS API documentation generated by <a href="http://apigen.org">ApiGen 2.8.0</a>
+		 API documentation generated by <a href="http://apigen.org">ApiGen 2.8.0</a>
 	</div>
 </div>
 </div>

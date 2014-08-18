@@ -160,15 +160,21 @@ class Revision extends AppModel {
 	}
 
 
-	public function get_filepath($id = NULL) {
+	public function get_filepath($id = NULL,$native=false) {
 		# Populate $this->data with data from revision.id=$id
 		$this->read(null, $id);
 		$folder = $this->get_folder(
 			$this->data['Revision']['doc_id'],
 			$this->data['Revision']['major_revision'],
 			$this->data['Revision']['minor_revision']);
-		$fpath = $folder.'/'.$this->data['Revision']['filename'];
-		echo "fpath=".$fpath."<br/>";
+		# If we do not have a pdf file, return the native one.
+		if ($native or !$this->data['Revision']['has_pdf']) {
+		   $fpath = $folder.'/'.$this->data['Revision']['filename'];
+		} else {
+		   $fpath = $folder.'/'.$this->data['Revision']['filename'].'.pdf';
+		}   
+		   echo "fpath=".$fpath."<br/>";
+
 		return $fpath;
  	}
 
@@ -179,7 +185,7 @@ class Revision extends AppModel {
 		}
 		# Populate $this->data with data from revision.id=$id
 		$this->read(null, $id);
-		$fpath = $this->get_filepath($id);
+		$fpath = $this->get_filepath($id,true);  # native fle
 		# Update the revision data record.
 		echo "authuserdata->id=".$authUserData['id'];
 		$this->set(array(
@@ -311,6 +317,7 @@ class Revision extends AppModel {
             } else
 	       $lastrev['Revision']['minor_revision']+=1;
 	    $lastrev['Revision']['doc_status_id']=0;
+	    $lastrev['Revision']['doc_status_date']=date('Y-m-d H:i:s');
 	    $this->save($lastrev);
 	    $newrev_id = $this->getInsertID();
 	    if ($lastrev['Revision']['has_native']) {
@@ -326,9 +333,9 @@ class Revision extends AppModel {
 		     return false;
 		  }
                }
-
-	       copy($this->get_filepath($lastrev_id),
-		    $this->get_filepath($newrev_id));	       
+	       # Copy native files
+	       copy($this->get_filepath($lastrev_id,true),
+		    $this->get_filepath($newrev_id,true));	       
 	    }
    	 } else {
 	    # there was no previous revision, so create one from scratch.
@@ -361,7 +368,9 @@ class Revision extends AppModel {
 
     public function setApproved($id) {
 	$this->read(null, $id);
-	$this->set(array('doc_status_id',2));
+	$this->set(array('doc_status_id'=>2,
+			'doc_status_date'=>date('Y-m-d H:i:s')
+			));
 	$this->save();
     }
 

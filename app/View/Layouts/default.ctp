@@ -45,7 +45,19 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 <?php echo $this->Html->image('ca_logo.png', array('alt' => 'Catcote Academy Logo')); ?>
 <?php echo $this->Html->link('HDMS - Hartlepool Aspire Trust Document Management System', '/'); ?></h1>
       <?php
-        if ($authUserData['id']) {
+        if ($authUserData['id']) { # Logged in users
+           if ($authUserData['role_id']==1) {  # Administrators only
+	      echo "Admin Menu: ";
+	      echo $this->Html->link('Add/Edit Users',
+	      	   	             array('controller'=>'users',
+				           'action'=>'index'));
+	      echo "; ";
+	      echo $this->Html->link('Add/Edit Documents',
+	      	   	             array('controller'=>'docs',
+				           'action'=>'index'));
+	      echo " - ";
+           }
+
 	   echo "Logged in as ";
 	   echo $this->Html->link($authUserData['title'],array('controller'=>'users',
 							'action'=>'view',$authUserData['id']));
@@ -58,7 +70,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 	   echo $this->Html->link('logout',
              	array('controller'=>'users','action'=>'logout',
 	           )); 
-	} else {
+	} else {  
+	  # If not logged in, include link to login page.
 	  echo $this->Html->link('login',
              	array('controller'=>'users','action'=>'login',
 	           ));
@@ -83,6 +96,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 			</p>
 		</div>
 	</div>
-	<?php echo $this->element('sql_dump'); ?>
+<!--	<?php echo $this->element('sql_dump'); ?> -->
 </body>
 </html>

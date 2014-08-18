@@ -5,7 +5,7 @@
 	<meta name="generator" content="ApiGen 2.8.0">
 	<meta name="robots" content="noindex">
 
-	<title>File Model/Notification.php | HDMS</title>
+	<title>File Model/Notification.php</title>
 
 	<script type="text/javascript" src="resources/combined.js?3770084987"></script>
 	<script type="text/javascript" src="elementlist.js?163924357"></script>
@@ -145,21 +145,43 @@
 </span><span id="35" class="l"><a class="l" href="#35">35: </a>    );
 </span><span id="36" class="l"><a class="l" href="#36">36: </a>
 </span><span id="37" class="l"><a class="l" href="#37">37: </a>
-</span><span id="38" class="l"><a class="l" href="#38">38: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_send" href="#_send">send</a>(<span class="php-var">$user_id</span>,<span class="php-var">$revision_id</span>,<span class="php-var">$message</span>) {
-</span><span id="39" class="l"><a class="l" href="#39">39: </a>        <span class="php-var">$data</span> = <span class="php-keyword1">array</span>(<span class="php-quote">'user_id'</span>=&gt;<span class="php-var">$user_id</span>,
-</span><span id="40" class="l"><a class="l" href="#40">40: </a>              <span class="php-quote">'revision_id'</span>=&gt;<span class="php-var">$revision_id</span>,
-</span><span id="41" class="l"><a class="l" href="#41">41: </a>              <span class="php-quote">'body_text'</span>=&gt;<span class="php-var">$message</span>,
-</span><span id="42" class="l"><a class="l" href="#42">42: </a>              <span class="php-quote">'active'</span>=&gt;<span class="php-keyword1">true</span>
-</span><span id="43" class="l"><a class="l" href="#43">43: </a>              );
-</span><span id="44" class="l"><a class="l" href="#44">44: </a>        <span class="php-var">$this</span>-&gt;create();
-</span><span id="45" class="l"><a class="l" href="#45">45: </a>        <span class="php-var">$this</span>-&gt;save(<span class="php-var">$data</span>);
-</span><span id="46" class="l"><a class="l" href="#46">46: </a>        <span class="php-comment">#mail(&quot;grahamjones139@gmail.com&quot;,&quot;subject test&quot;,&quot;message text&quot;);</span>
-</span><span id="47" class="l"><a class="l" href="#47">47: </a>        }
-</span><span id="48" class="l"><a class="l" href="#48">48: </a>}
-</span><span id="49" class="l"><a class="l" href="#49">49: </a></span></code></pre>
+</span><span id="38" class="l"><a class="l" href="#38">38: </a>    <span class="php-comment">/**
+</span></span><span id="39" class="l"><a class="l" href="#39">39: </a><span class="php-comment">    * Send notification to a user, refering to revision $revision_id
+</span></span><span id="40" class="l"><a class="l" href="#40">40: </a><span class="php-comment">    */</span>
+</span><span id="41" class="l"><a class="l" href="#41">41: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_send" href="#_send">send</a>(<span class="php-var">$user_id</span>,<span class="php-var">$revision_id</span>,<span class="php-var">$message</span>) {
+</span><span id="42" class="l"><a class="l" href="#42">42: </a>        <span class="php-var">$data</span> = <span class="php-keyword1">array</span>(<span class="php-quote">'user_id'</span>=&gt;<span class="php-var">$user_id</span>,
+</span><span id="43" class="l"><a class="l" href="#43">43: </a>              <span class="php-quote">'revision_id'</span>=&gt;<span class="php-var">$revision_id</span>,
+</span><span id="44" class="l"><a class="l" href="#44">44: </a>              <span class="php-quote">'body_text'</span>=&gt;<span class="php-var">$message</span>,
+</span><span id="45" class="l"><a class="l" href="#45">45: </a>              <span class="php-quote">'active'</span>=&gt;<span class="php-keyword1">true</span>
+</span><span id="46" class="l"><a class="l" href="#46">46: </a>              );
+</span><span id="47" class="l"><a class="l" href="#47">47: </a>        <span class="php-var">$this</span>-&gt;create();
+</span><span id="48" class="l"><a class="l" href="#48">48: </a>        <span class="php-var">$this</span>-&gt;save(<span class="php-var">$data</span>);
+</span><span id="49" class="l"><a class="l" href="#49">49: </a>        <span class="php-comment">#mail(&quot;grahamjones139@gmail.com&quot;,&quot;subject test&quot;,&quot;message text&quot;);</span>
+</span><span id="50" class="l"><a class="l" href="#50">50: </a>        }
+</span><span id="51" class="l"><a class="l" href="#51">51: </a>
+</span><span id="52" class="l"><a class="l" href="#52">52: </a>    <span class="php-comment">/**
+</span></span><span id="53" class="l"><a class="l" href="#53">53: </a><span class="php-comment">    * Cancel notification to a user, refering to revision $revision_id
+</span></span><span id="54" class="l"><a class="l" href="#54">54: </a><span class="php-comment">    */</span>
+</span><span id="55" class="l"><a class="l" href="#55">55: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_cancel" href="#_cancel">cancel</a>(<span class="php-var">$user_id</span>,<span class="php-var">$revision_id</span>) {
+</span><span id="56" class="l"><a class="l" href="#56">56: </a>           <span class="php-var">$notifications</span> = <span class="php-var">$this</span>-&gt;find(<span class="php-quote">'all'</span>, <span class="php-keyword1">array</span>(
+</span><span id="57" class="l"><a class="l" href="#57">57: </a>                          <span class="php-quote">'conditions'</span>=&gt; <span class="php-keyword1">array</span>(
+</span><span id="58" class="l"><a class="l" href="#58">58: </a>                                 <span class="php-quote">'Notification.user_id'</span> =&gt; <span class="php-var">$user_id</span>,
+</span><span id="59" class="l"><a class="l" href="#59">59: </a>                             <span class="php-quote">'Notification.revision_id'</span> =&gt; <span class="php-var">$revision_id</span>
+</span><span id="60" class="l"><a class="l" href="#60">60: </a>                      )));
+</span><span id="61" class="l"><a class="l" href="#61">61: </a>
+</span><span id="62" class="l"><a class="l" href="#62">62: </a>
+</span><span id="63" class="l"><a class="l" href="#63">63: </a>
+</span><span id="64" class="l"><a class="l" href="#64">64: </a>           <span class="php-keyword1">foreach</span>(<span class="php-var">$notifications</span> <span class="php-keyword1">as</span> <span class="php-var">$not</span>) {
+</span><span id="65" class="l"><a class="l" href="#65">65: </a>               <span class="php-var">$this</span>-&gt;id = <span class="php-var">$not</span>[<span class="php-quote">'Notification'</span>][<span class="php-quote">'id'</span>];
+</span><span id="66" class="l"><a class="l" href="#66">66: </a>                   <span class="php-var">$this</span>-&gt;saveField(<span class="php-quote">'active'</span>, <span class="php-keyword1">false</span>);
+</span><span id="67" class="l"><a class="l" href="#67">67: </a>           }
+</span><span id="68" class="l"><a class="l" href="#68">68: </a>        }
+</span><span id="69" class="l"><a class="l" href="#69">69: </a>
+</span><span id="70" class="l"><a class="l" href="#70">70: </a>}
+</span><span id="71" class="l"><a class="l" href="#71">71: </a></span></code></pre>
 
 	<div id="footer">
-		HDMS API documentation generated by <a href="http://apigen.org">ApiGen 2.8.0</a>
+		 API documentation generated by <a href="http://apigen.org">ApiGen 2.8.0</a>
 	</div>
 </div>
 </div>

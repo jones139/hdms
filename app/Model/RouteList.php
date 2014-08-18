@@ -128,12 +128,15 @@ class RouteList extends AppModel {
 	     $this->Revision->read(null,$revision_id);
 	     if ($this->isComplete($id)) {
 	     	if ($approved) {
-	     	   $this->Revision->set(array('doc_status_id'=>2));  # status 2 = approved
+	     	   $this->Revision->set(array('doc_status_id'=>2,
+					      'doc_status_date'=>date('Y-m-d H:i:s')
+					));  # status 2 = approved
 	     	} else {
-	     	   $this->Revision->set(array('doc_status_id'=>3));  # status 3 = rejected
+	     	   $this->Revision->set(array('doc_status_id'=>3,
+				'doc_status_date'=>date('Y-m-d H:i:s')));  # status 3 = rejected
  		}
 	     } else {
-	     	   $this->Revision->set(array('doc_status_id'=>1));  # status 1 = waiting for approval
+	     	   $this->Revision->set(array('doc_status_id'=>1,'doc_status_date'=>date('Y-m-d H:i:s')));  # status 1 = waiting for approval
 
 	     } 
 	     $this->Revision->save();

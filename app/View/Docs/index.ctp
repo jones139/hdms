@@ -1,5 +1,11 @@
 <div class="docs index">
 	<h2><?php echo __('Documents'); ?></h2>
+
+	<?php if ($authUserData['role_id']>0) {  # Active Users
+	#################################################################
+	# Display forauthenticated users
+ 	?>
+
 	<table cellpadding="0" cellspacing="0">
 	<thead>
 	<tr>
@@ -37,6 +43,19 @@
 		      if ($issued_rev != null) {
 		      	 echo $this->Html->link($issued_rev['major_revision'].'_'.
 				$issued_rev['minor_revision'],array('controller'=>'revisions','action'=>'edit',$issued_rev['id']));
+			 echo ' (',$issued_rev['doc_status_date'],')';
+			 echo $this->Html->image('download_icon.png',
+                              array('alt'=>'Download Icon',
+			            'width'=>16,
+				    'url'=>array('controller'=>'revisions',
+                                    'action'=>'download_file',$issued_rev['id'])));
+			 echo $this->Html->image('document_icon.png',
+                              array('alt'=>'Document Icon',
+			            'width'=>16,
+				    'url'=>array('controller'=>'revisions',
+                                    'action'=>'download_file',$issued_rev['id'],
+				    'native'=>true)));
+
 		      } else {
 		         echo "none";
 		      }
@@ -49,27 +68,40 @@
 		      if ($latest_rev != null) {
 		      	 echo $this->Html->link($latest_rev['major_revision'].'_'.
 				$latest_rev['minor_revision'],array('controller'=>'revisions','action'=>'edit',$latest_rev['id']));
-		      	 #echo $latest_rev['major_revision'].'_'.
-			 #	$latest_rev['minor_revision'].'<br>';
+			 echo ' (',$latest_rev['doc_status_date'],')';
+			 echo $this->Html->image('download_icon.png',
+                              array('alt'=>'Download Icon',
+			            'width'=>16,
+				    'url'=>array('controller'=>'revisions',
+                                    'action'=>'download_file',$latest_rev['id'])));
+			 echo $this->Html->image('document_icon.png',
+                              array('alt'=>'Document Icon',
+			            'width'=>16,
+				    'url'=>array('controller'=>'revisions',
+                                    'action'=>'download_file',$latest_rev['id'],
+				    'native'=>true)));
+
 		      } else {
 		         echo "none";
 		      }
 		?> </td>
-                <td> <?php
-                  echo $this->Html->link('Major',
+                <td class="actions"> <?php
+                  echo $this->Form->postLink('Major',
 			array('controller'=>'revisions',
 			      'action'=>'create_new_revision',$doc['Doc']['id'],
-			      'major'=>'true'));
+			      'major'=>'true'),
+			      array(),__('Create Major Revision?'));
                   echo ":";
-                  echo $this->Html->link('Minor',
+                  echo $this->Form->postLink('Minor',
 			array('controller'=>'revisions',
-                              'action'=>'create_new_revision',$doc['Doc']['id']));
+                              'action'=>'create_new_revision',$doc['Doc']['id']),
+			array(),__('Create Minor Revision?'));
 		?>
 		</td>
 		<td class="actions">
-			<?php echo $this->Html->link(__('View'), array('action' => 'view', $doc['Doc']['id'])); ?>
+		<!--	<?php echo $this->Html->link(__('View'), array('action' => 'view', $doc['Doc']['id'])); ?> -->
 			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $doc['Doc']['id'])); ?>
-			<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $doc['Doc']['id']), array(), __('Are you sure you want to delete # %s?', $doc['Doc']['id'])); ?>
+			<!--<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $doc['Doc']['id']), array(), __('Are you sure you want to delete # %s?', $doc['Doc']['id'])); ?> -->
 		</td>
 	</tr>
 <?php endforeach; ?>
@@ -88,6 +120,82 @@
 		echo $this->Paginator->next(__('next') . ' >', array(), null, array('class' => 'next disabled'));
 	?>
 	</div>
+
+<?php } else { 
+#################################################################
+# Display for non-authenticated users
+?>
+	<table cellpadding="0" cellspacing="0">
+	<thead>
+	<tr>
+			<th><?php echo $this->Paginator->sort('facilty_id','Facility'); ?></th>
+			<th><?php echo $this->Paginator->sort('doc_type_id','Type'); ?></th>
+			<th><?php echo $this->Paginator->sort('doc_subtype_id','Sub-Type'); ?></th>
+			<th><?php echo $this->Paginator->sort('docNo','Doc. No.'); ?></th>
+			<th><?php echo $this->Paginator->sort('title','Title'); ?></th>
+			<th><?php echo "Issued"; ?></th>
+	</tr>
+	</thead>
+	<tbody>
+	<?php foreach ($docs as $doc): ?>
+	<tr>
+		<td>
+			<?php echo $doc['Facility']['title']; ?>
+		</td>
+		<td>
+			<?php echo $doc['DocType']['title']; ?>
+		</td>
+		<td>
+			<?php echo $doc['DocSubtype']['title']; ?>
+		</td>
+		<td><?php echo h($doc['Doc']['docNo']); ?>&nbsp;</td>
+		<td><?php echo h($doc['Doc']['title']); ?>&nbsp;</td>
+		<td>
+		<?php 
+		      $issued_rev = null;
+		      foreach ($doc['Revision'] as $rev) {
+		      	      if ($rev['doc_status_id']==2) $issued_rev = $rev;
+		      }
+		      if ($issued_rev != null) {
+		      	 echo $issued_rev['major_revision'].'_'.
+				$issued_rev['minor_revision'];
+			 echo ' (',$issued_rev['doc_status_date'],')';
+			 echo $this->Html->image('download_icon.png',
+                              array('alt'=>'Download Icon',
+			            'width'=>16,
+				    'url'=>array('controller'=>'revisions',
+                                    'action'=>'download_file',$issued_rev['id'])));
+			 echo $this->Html->image('document_icon.png',
+                              array('alt'=>'Document Icon',
+			            'width'=>16,
+				    'url'=>array('controller'=>'revisions',
+                                    'action'=>'download_file',$issued_rev['id'],
+				    'native'=>true)));
+		      } else {
+		         echo "none";
+		      }
+		 ?>&nbsp;</td>
+
+	</tr>
+<?php endforeach; ?>
+	</tbody>
+	</table>
+	<p>
+	<?php
+	echo $this->Paginator->counter(array(
+	'format' => __('Page {:page} of {:pages}, showing {:current} records out of {:count} total, starting on record {:start}, ending on {:end}')
+	));
+	?>	</p>
+	<div class="paging">
+	<?php
+		echo $this->Paginator->prev('< ' . __('previous'), array(), null, array('class' => 'prev disabled'));
+		echo $this->Paginator->numbers(array('separator' => ''));
+		echo $this->Paginator->next(__('next') . ' >', array(), null, array('class' => 'next disabled'));
+	?>
+	</div>
+
+
+<?php } ?>
 </div>
 
 <div class="actions">
