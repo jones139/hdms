@@ -1,4 +1,5 @@
 <div class="docs index">
+     <script src="js/jquery.js"></script>
 	<h2><?php echo __('Documents'); ?></h2>
 
 	<?php if ($authUserData['role_id']>0) {  # Active Users
@@ -198,29 +199,55 @@
 <?php } ?>
 </div>
 
+
+<!-- ****************************************************************** -->
+
 <div class="actions">
 	<h3><?php echo __('Actions'); ?></h3>
      <div class='Facility_filter'>
      Select Facility
-     <select> 
-     <option> <?php echo $this->Html->link('All', array('controller' => 'docs', 'action' => 'index')); ?> </option>
-     <option><?php echo $this->Html->link('HAT', array('controller' => 'docs', 'action' => 'index','facility'=>0)); ?></option>
-     <option><?php echo $this->Html->link('CA', array('controller' => 'docs', 'action' => 'index','facility'=>1)); ?></option>
-     <option><?php echo $this->Html->link('CF', array('controller' => 'docs', 'action' => 'index','facility'=>2)); ?></option>
-     </select>
+     <ul id='facility'> 
+     <li> <?php echo $this->Html->link('All', array('controller' => 'docs', 'action' => 'index')); ?> </li>
+     <li><?php echo $this->Html->link('HAT', array('controller' => 'docs', 'action' => 'index','facility'=>0)); ?></li>
+     <li><?php echo $this->Html->link('CA', array('controller' => 'docs', 'action' => 'index','facility'=>1)); ?></li>
+     <li><?php echo $this->Html->link('CF', array('controller' => 'docs', 'action' => 'index','facility'=>2)); ?></li>
+     </ul>
      </div>
 
      <div class='Doc_type_filter'>
      Select Doc Type
-     <select> 
-     <option><?php echo $this->Html->link('All', array('controller' => 'docs', 'action' => 'index')); ?></option>
-     <option><?php echo $this->Html->link('MSM', array('controller' => 'docs', 'action' => 'index','doc_type'=>0)); ?></option>
-     <option><?php echo $this->Html->link('POL', array('controller' => 'docs', 'action' => 'index','doc_type'=>1)); ?></option>
-     <option><?php echo $this->Html->link('PROC', array('controller' => 'docs', 'action' => 'index','doc_type'=>2)); ?></option>
-     </select>
+     <ul>
+     <li><?php echo $this->Html->link('All', array('controller' => 'docs', 'action' => 'index')); ?></li>
+     <li><?php echo $this->Html->link('MSM', array('controller' => 'docs', 'action' => 'index','doc_type'=>0)); ?></li>
+     <li><?php echo $this->Html->link('POL', array('controller' => 'docs', 'action' => 'index','doc_type'=>1)); ?></li>
+     <li><?php echo $this->Html->link('PROC', array('controller' => 'docs', 'action' => 'index','doc_type'=>2)); ?></li>
+     </ul>
      </div>
 
+     <div class='Doc_subType_filter'>
+     Select Doc Sub-Type
+     <ul>
+     <li><?php echo $this->Html->link('All', array('controller' => 'docs', 'action' => 'index')); ?></li>
+     <li><?php echo $this->Html->link('GOV', array('controller' => 'docs', 'action' => 'index','doc_subtype'=>0)); ?></li>
+     <li><?php echo $this->Html->link('FIN', array('controller' => 'docs', 'action' => 'index','doc_subtype'=>1)); ?></li>
+     <li><?php echo $this->Html->link('HR', array('controller' => 'docs', 'action' => 'index','doc_subtype'=>2)); ?></li>
+     <li><?php echo $this->Html->link('H&S', array('controller' => 'docs', 'action' => 'index','doc_subtype'=>3)); ?></li>
+     <li><?php echo $this->Html->link('FAC', array('controller' => 'docs', 'action' => 'index','doc_subtype'=>4)); ?></li>
+     </ul>
+     </div>
 
+     <button onclick='applyFilter()'>Apply Filter</button>
+
+     <script>
+     applyFilter = function() {
+        facility = $('#facility').val();
+        docType = $('#docType').val();
+        
+	newURL = $(location).attr('href')+'docType:'+docType;
+	alert(newURL);
+	$(document).load(newURL);
+     }
+     </script>
 
 
 	<ul>

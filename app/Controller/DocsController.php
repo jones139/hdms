@@ -26,16 +26,25 @@ class DocsController extends AppController {
 		   $this->Paginator->settings = array(
 		   			      'conditions'=>array());
 		if (isset($this->params[ 'named' ][ 'facility' ])) {
-		   $this->Paginator->settings['conditions']['Doc.facility_id']=
-			$this->params[ 'named' ][ 'facility' ];
+		   $facility = $this->params[ 'named' ][ 'facility' ];
+		   if ($facility != "All") {
+		      $this->Paginator->settings['conditions']['Doc.facility_id']=
+			$facility;
+		   }
 		} 
 		if (isset($this->params[ 'named' ][ 'doc_type' ])) {
-		   $this->Paginator->settings['conditions']['Doc.doc_type_id']=
-			$this->params[ 'named' ][ 'doc_type' ];
+		   $docType = $this->params[ 'named' ][ 'doc_type' ];
+		   if ($docType != "All") {
+		      $this->Paginator->settings['conditions']['Doc.doc_type_id']=
+			$docType;
+		   }
 		} 
 		if (isset($this->params[ 'named' ][ 'doc_subtype' ])) {
-		   $this->Paginator->settings['conditions']['Doc.doc_type_id']=
-			$this->params[ 'named' ][ 'doc_subtype' ];
+		   $docSubType = $this->params[ 'named' ][ 'doc_subtype' ];
+		   if ($docSubType != "All") {
+		       $this->Paginator->settings['conditions']['Doc.doc_subtype_id']=
+			$docSubType;
+                   }
 		} 
 		if (isset($this->params[ 'named' ][ 'issued' ])) {
 	   	      $this->Paginator->settings['contain']=array(
