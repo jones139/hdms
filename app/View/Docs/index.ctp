@@ -1,6 +1,7 @@
 <div class="docs index">
      <script src="js/jquery.js"></script>
 	<h2><?php echo __('Documents'); ?></h2>
+	<?php echo $this->Form->hidden("a url"); ?>
 
 	<?php if ($authUserData['role_id']>0) {  # Active Users
 	#################################################################
