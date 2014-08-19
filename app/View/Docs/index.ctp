@@ -4,7 +4,7 @@
 
 	<?php if ($authUserData['role_id']>0) {  # Active Users
 	#################################################################
-	# Display forauthenticated users
+	# Display for authenticated users
  	?>
 
 	<table cellpadding="0" cellspacing="0">

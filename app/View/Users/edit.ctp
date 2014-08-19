@@ -8,8 +8,12 @@
 		echo $this->Form->input('username');
 		echo $this->Form->input('password');
 		echo $this->Form->input('email');
-		echo $this->Form->input('email_verified');
-		echo $this->Form->input('role_id');
+
+		# Some fields can only be edited by an administrator
+		if ($authUserData['role_id']==1) {
+		   echo $this->Form->input('email_verified');
+		   echo $this->Form->input('role_id');
+		}
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit')); ?>

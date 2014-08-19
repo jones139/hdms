@@ -22,8 +22,13 @@ class UsersController extends AppController {
  * @return void
  */
 	public function index() {
-		$this->User->recursive = 0;
-		$this->set('users', $this->Paginator->paginate());
+	       if ($this->Auth->user('role_id')==1) {
+		  $this->User->recursive = 0;
+		  $this->set('users', $this->Paginator->paginate());
+	       } else {
+		  $this->Session->setFlash(__('Only an Administrator can do that! - your role is '.$this->Auth->User('role_id').'.'));
+		  return $this->redirect($this->referer());          
+ 	       }
 	}
 
 /**
@@ -34,11 +39,17 @@ class UsersController extends AppController {
  * @return void
  */
 	public function view($id = null) {
-		if (!$this->User->exists($id)) {
+	       if ($this->Auth->user('role_id')==1 or
+	         $id == $this->Auth->user('id')) {
+		   if (!$this->User->exists($id)) {
 			throw new NotFoundException(__('Invalid user'));
-		}
-		$options = array('conditions' => array('User.' . $this->User->primaryKey => $id));
-		$this->set('user', $this->User->find('first', $options));
+		   }
+		   $options = array('conditions' => array('User.' . $this->User->primaryKey => $id));
+		   $this->set('user', $this->User->find('first', $options));
+	       } else {
+		  $this->Session->setFlash(__('Only an Administrator can do that! - your role is '.$this->Auth->User('role_id').'.'));
+		  return $this->redirect($this->referer());          
+	       }
 	}
 
 /**
@@ -47,6 +58,7 @@ class UsersController extends AppController {
  * @return void
  */
 	public function add() {
+	    if ($this->Auth->user('role_id')==1) {
 		if ($this->request->is('post')) {
 			$this->User->create();
 			if ($this->User->save($this->request->data)) {
@@ -58,6 +70,10 @@ class UsersController extends AppController {
 		}
 		$roles = $this->User->Role->find('list');
 		$this->set(compact('roles'));
+            } else {
+		  $this->Session->setFlash(__('Only an Administrator can do that! - your role is '.$this->Auth->User('role_id').'.'));
+		  return $this->redirect($this->referer());          
+	    }
 	}
 
 /**
@@ -68,6 +84,8 @@ class UsersController extends AppController {
  * @return void
  */
 	public function edit($id = null) {
+	   if ($this->Auth->user('role_id')==1 or
+	       $id == $this->Auth->user('id')) {
 		if (!$this->User->exists($id)) {
 			throw new NotFoundException(__('Invalid user'));
 		}
@@ -84,6 +102,10 @@ class UsersController extends AppController {
 		}
 		$roles = $this->User->Role->find('list');
 		$this->set(compact('roles'));
+            } else {
+		  $this->Session->setFlash(__('Only an Administrator can do that! - your role is '.$this->Auth->User('role_id').'.'));
+		  return $this->redirect($this->referer());          
+	    }
 	}
 
 /**
@@ -94,6 +116,7 @@ class UsersController extends AppController {
  * @return void
  */
 	public function delete($id = null) {
+	    if ($this->Auth->user('role_id')==1) {
 		$this->User->id = $id;
 		if (!$this->User->exists()) {
 			throw new NotFoundException(__('Invalid user'));
@@ -105,6 +128,11 @@ class UsersController extends AppController {
 			$this->Session->setFlash(__('The user could not be deleted. Please, try again.'));
 		}
 		return $this->redirect(array('action' => 'index'));
+            } else {
+		  $this->Session->setFlash(__('Only an Administrator can do that! - your role is '.$this->Auth->User('role_id').'.'));
+		  return $this->redirect($this->referer());          
+	    }
+
 	}
 
 	public function beforeFilter() {
