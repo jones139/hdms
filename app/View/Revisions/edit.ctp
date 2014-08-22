@@ -45,6 +45,13 @@
       	       echo $this->Html->link('Check Out File',
                  array('controller'=>'revisions','action'=>'checkout_file',
 			    $this->request->data['Revision']['id']));
+               echo "<br/>";
+      	       echo $this->Html->link('Upload PDF Version of File',
+                 array('controller'=>'revisions','action'=>'attach_file',
+			    $this->request->data['Revision']['id'],
+			    'pdf'=>'true'),
+                     array('class'=>'button'));
+
 	    } else {
       	       echo $this->Html->link('Attach File',
                  array('controller'=>'revisions','action'=>'attach_file',
@@ -56,8 +63,7 @@
          # If it is not a draft, we just show a view/download button
       	    echo $this->Html->link('View File',
                  array('controller'=>'revisions','action'=>'download_file',
-			    $this->request->data['Revision']['id']));
-       
+			    $this->request->data['Revision']['id']));       
       }
 
       ######################
@@ -122,12 +128,14 @@
 
 ?>
 
+<div class="actions">
 <?php
 ###############
 # Back Button #
 ###############
 echo $this->Html->link('Back',
-      array('controller'=>'revisions','action'=>'index')); ?>
+      array('controller'=>'docs','action'=>'index')); ?>
+</div>
 
 </div>
 <div class="actions">

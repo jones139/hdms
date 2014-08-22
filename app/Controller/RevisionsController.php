@@ -184,20 +184,31 @@ class RevisionsController extends AppController {
 
 /**
  * attach_file method
+ * Upload a file and attach it to revision number $id.
+ * if named parameter 'pdf' is set, the file is uploaded as a PDF version
+ * not the native version of the file.
  *
  * @return void
  */
 	public function attach_file($id) {
-		if ($this->request->is(array('post','put'))) {
-			if ($this->Revision->attach_file($this->request->data,$this->Auth->User())) {
-				$this->Session->setFlash(__('File Uploaded.'));
-				return $this->redirect(array('action' => 'edit',$id));
-			} else {
-				$this->Session->setFlash(__('File Upload Failed.'));
-			}
+	    $pdf = false;
+	    if (isset($this->params[ 'named' ][ 'pdf' ])) 
+	       $pdf=true;
+
+	    if ($this->request->is(array('post','put'))) {
+	        if ($this->Revision->attach_file($this->request->data,
+                                                 $this->Auth->User(),
+						 $pdf)) {
+		    $this->Session->setFlash(__('File Uploaded.'));
+		    #return $this->redirect(array('action' => 'edit',$id));
+		} else {
+		    $this->Session->setFlash(__('File Upload Failed.'));
 		}
-		$options = array('conditions' => array('Revision.' . $this->Revision->primaryKey => $id));
-		$this->request->data = $this->Revision->find('first', $options);
+	    }
+	    $options = array('conditions' => array(
+	    	     'Revision.' . $this->Revision->primaryKey => $id));
+	    $this->request->data = $this->Revision->find('first', $options);
+	    $this->set(compact('pdf'));
 	}
 
 

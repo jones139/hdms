@@ -221,18 +221,24 @@ class Revision extends AppModel {
 
 
 	/* Attach a file to a revision that does not currently have a native
-	* file attached
+	* file attached.
+	* It is attached as a pdf file if $pdf is true, otherwise it is assumed
+	* to be the native version of the file.
+	* FIXME:  pdf part doesn't work yet!
 	*/
 	public function attach_file($data = NULL, 
 	       			    $authUserData = NULL, 
+				    $pdf = false,
 				    $validate = true) {
 	       if ($this->isUploadedFile($data['Document']['submittedfile'])) {
 		  	  $this->logDebug('Uploaded File');
-			  #print var_dump($data);
 			  $filedata = $data['Document']['submittedfile'];
 			  $revdata = $data['Revision'];
 			  $tmpnam = $filedata['tmp_name'];
 			  $fname  = $filedata['name'];
+			  if ($pdf)
+			      $fname = $fname.'.pdf';
+
 			  $majrev = $revdata['major_revision'];
 			  $minrev = $revdata['minor_revision'];
 			  $doc_id = $revdata['doc_id'];
@@ -240,7 +246,15 @@ class Revision extends AppModel {
 					   $doc_id,
 					   $majrev,$minrev);
  			  $this->read(null, $data['Revision']['id']);
-			  $this->set(array(
+			  if ($pdf)
+			     $this->set(array(
+				'filename' => $fname,
+				'has_pdf' => true,
+				#'pdf_file_date' => date('Y-m-d H:i:s'),
+				'user_id' => $authUserData['id']
+			  ));
+			  else 
+			     $this->set(array(
 				'filename' => $fname,
 				'has_native' => true,
 				'native_file_date' => date('Y-m-d H:i:s'),
@@ -256,14 +270,16 @@ class Revision extends AppModel {
 	   } 
 
 
-	public function checkin_file($data = NULL, $authUserData = NULL, $validate = true, $fieldList = Array()) {
+	public function checkin_file($data = NULL, 
+	       			     $authUserData = NULL, 
+				     $validate = true, 
+				     $fieldList = Array()) {
 	       if ($this->isUploadedFile($data['Document']['submittedfile'])) {
 		  	  $this->logDebug('Uploaded File');
-			  print var_dump($data);
 			  $filedata = $data['Document']['submittedfile'];
 			  $revdata = $data['Revision'];
 			  $tmpnam = $filedata['tmp_name'];
-			  $fname  = $filedata['name'];
+			  $fname  = $filedata['name'];			  
 			  $majrev = $revdata['major_revision'];
 			  $minrev = $revdata['minor_revision'];
 			  $doc_id = $revdata['doc_id'];
@@ -314,8 +330,9 @@ class Revision extends AppModel {
 	    if ($major) {
 	       $lastrev['Revision']['major_revision']+=1;
 	       $lastrev['Revision']['minor_revision']=1;
-            } else
+            } else {
 	       $lastrev['Revision']['minor_revision']+=1;
+            }
 	    $lastrev['Revision']['doc_status_id']=0;
 	    $lastrev['Revision']['doc_status_date']=date('Y-m-d H:i:s');
 	    $this->save($lastrev);
@@ -348,6 +365,8 @@ class Revision extends AppModel {
 	    $newrev['Revision']['major_revision']=1;
 	    $newrev['Revision']['minor_revision']=1;
 	    $newrev['Revision']['has_native']=false;
+	    $newrev['Revision']['doc_status_id']=0;
+	    $newrev['Revision']['doc_status_date']=date('Y-m-d H:i:s');
 	    $this->save($newrev);
 	 }
 

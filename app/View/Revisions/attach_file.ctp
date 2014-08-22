@@ -1,9 +1,15 @@
 <div class="revisions form">
 <?php 
-      echo $this->Form->create('Revision', array('type'=>'file', 'action'=>'attach_file')); 
+      ## FIXME - this does not add a PDF parameter to the URL, so uploads as a native file!!!!
+        echo $this->Form->create('Revision', array('type'=>'file', 'action'=>'attach_file','pdf'=>$pdf)); 
 ?>
 	<fieldset>
-		<legend><?php echo __('Attach file for revision '.$this->request->data['Revision']['major_revision'].'_'.$this->request->data['Revision']['minor_revision'].' of document "'.$this->request->data['Doc']['title'].'" ('.$this->request->data['Doc']['docNo'].')'); ?></legend>
+		<legend><?php 
+		if ($pdf)
+		   echo __('Attach PDF file '); 
+		else
+		   echo __('Attach Native file '); 
+		echo __('for revision '.$this->request->data['Revision']['major_revision'].'_'.$this->request->data['Revision']['minor_revision'].' of document "'.$this->request->data['Doc']['title'].'" ('.$this->request->data['Doc']['docNo'].')'); ?></legend>
 	<?php
 		echo $this->Form->hidden('id');
 		echo $this->Form->hidden('doc_id',array('type'=>'text','hidden'=>'true'));
@@ -18,8 +24,5 @@
       	   				   	'action' => 'edit',
 						$this->request->data['Revision']['id']))));
       echo $this->Form->end(); ?>
-<pre>
-<?php var_dump($this->request->data); ?>
-</pre>
 
 </div>

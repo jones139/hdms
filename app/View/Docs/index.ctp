@@ -44,19 +44,26 @@
 		      }
 		      if ($issued_rev != null) {
 		      	 echo $this->Html->link($issued_rev['major_revision'].'_'.
-				$issued_rev['minor_revision'],array('controller'=>'revisions','action'=>'edit',$issued_rev['id']));
-			 echo ' (',$issued_rev['doc_status_date'],')';
-			 echo $this->Html->image('download_icon.png',
-                              array('alt'=>'Download Icon',
+				$issued_rev['minor_revision'],array('controller'=>'revisions','action'=>'edit',$issued_rev['id'])).' ';
+
+
+			 if ($issued_rev['has_pdf']) {
+			     echo $this->Html->image('download_icon.png',
+                                 array('alt'=>'Download Icon',
 			            'width'=>16,
 				    'url'=>array('controller'=>'revisions',
                                     'action'=>'download_file',$issued_rev['id'])));
-			 echo $this->Html->image('document_icon.png',
-                              array('alt'=>'Document Icon',
+			 }
+
+			 if ($issued_rev['has_native']) {
+			     echo $this->Html->image('document_icon.png',
+                                 array('alt'=>'Document Icon',
 			            'width'=>16,
 				    'url'=>array('controller'=>'revisions',
                                     'action'=>'download_file',$issued_rev['id'],
 				    'native'=>true)));
+                         }
+			 echo '<br/>(',$issued_rev['doc_status_date'],')';
 
 		      } else {
 		         echo "none";
@@ -69,19 +76,26 @@
 		     	$latest_rev = $doc['Revision'][sizeof($doc['Revision'])-1];
 		      if ($latest_rev != null) {
 		      	 echo $this->Html->link($latest_rev['major_revision'].'_'.
-				$latest_rev['minor_revision'],array('controller'=>'revisions','action'=>'edit',$latest_rev['id']));
-			 echo ' (',$latest_rev['doc_status_date'],')';
-			 echo $this->Html->image('download_icon.png',
-                              array('alt'=>'Download Icon',
+				$latest_rev['minor_revision'],array('controller'=>'revisions','action'=>'edit',$latest_rev['id'])).' ';
+
+			 if ($latest_rev['has_pdf']) {
+			     echo $this->Html->image('download_icon.png',
+                                 array('alt'=>'Download Icon',
 			            'width'=>16,
 				    'url'=>array('controller'=>'revisions',
                                     'action'=>'download_file',$latest_rev['id'])));
-			 echo $this->Html->image('document_icon.png',
-                              array('alt'=>'Document Icon',
+			 }
+
+			 if ($latest_rev['has_native']) {
+			     echo $this->Html->image('document_icon.png',
+                                 array('alt'=>'Document Icon',
 			            'width'=>16,
 				    'url'=>array('controller'=>'revisions',
                                     'action'=>'download_file',$latest_rev['id'],
 				    'native'=>true)));
+                         }
+
+			 echo '<br/>(',$latest_rev['doc_status_date'],')';
 
 		      } else {
 		         echo "none";
@@ -160,19 +174,28 @@
 		      }
 		      if ($issued_rev != null) {
 		      	 echo $issued_rev['major_revision'].'_'.
-				$issued_rev['minor_revision'];
-			 echo ' (',$issued_rev['doc_status_date'],')';
-			 echo $this->Html->image('download_icon.png',
-                              array('alt'=>'Download Icon',
+				$issued_rev['minor_revision'].' ';
+
+			 if ($issued_rev['has_pdf']) {
+			     echo $this->Html->image('download_icon.png',
+                                 array('alt'=>'Download Icon',
 			            'width'=>16,
 				    'url'=>array('controller'=>'revisions',
                                     'action'=>'download_file',$issued_rev['id'])));
-			 echo $this->Html->image('document_icon.png',
-                              array('alt'=>'Document Icon',
+			 }
+
+			 if ($issued_rev['has_native']) {
+			     echo $this->Html->image('document_icon.png',
+                                 array('alt'=>'Document Icon',
 			            'width'=>16,
 				    'url'=>array('controller'=>'revisions',
                                     'action'=>'download_file',$issued_rev['id'],
 				    'native'=>true)));
+                         }
+
+			 echo '<br/>(',$issued_rev['doc_status_date'],')';
+
+
 		      } else {
 		         echo "none";
 		      }
