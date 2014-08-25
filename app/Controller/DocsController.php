@@ -16,6 +16,18 @@ class DocsController extends AppController {
  */
 	public $components = array('Paginator');
 
+
+	/**
+	 * beforeFilter method
+         * Set limits on what unauthenticated users can do.
+	 */
+	public function beforeFilter() {
+	     parent::beforeFilter();
+ 	     #$this->Auth->allow('index','view','download_file');
+	     $this->Auth->allow(array('index'));
+
+	}
+
 /**
  * index method - the main page displaying document and revision data.
  *  Accepts named parameters facility, doc_type and doc_subtype which 

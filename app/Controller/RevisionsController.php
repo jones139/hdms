@@ -16,6 +16,18 @@ class RevisionsController extends AppController {
  */
 	public $components = array('Paginator');
 
+	/**
+	 * beforeFilter method
+         * Set limits on what unauthenticated users can do.
+	 */
+	public function beforeFilter() {
+	     parent::beforeFilter();
+ 	     #$this->Auth->allow('index','view','download_file');
+	     $this->Auth->allow('index','download_file');
+
+	}
+
+
 /**
  * index method
  * @param doc_id - return only revisions for document doc_id.

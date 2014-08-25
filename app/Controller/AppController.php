@@ -42,20 +42,29 @@ class AppController extends Controller {
 					'action'=>'display',
 					'home'
 				)
+# FIXME - controller authorisation gives 'hdmsController not found' errors!!!
+				#,'authorize' => array('Controller')
 			   )
 		);
 		
 	public $helpers = array('Session','Time');
 
 
-	public function logDebug($data) {
-	       if (isset($data)) {
-	       	  CakeLog::write('debug',$data);
-	       }
-	}
+	public function isAuthorized($user) {
+	   # Admin can access every action.
+	   if (isset($user['role_id']) && $user['rule_id'] == 1) {
+	       return true;
+           }
+	   return false;
+        }
 
 	public function beforeFilter() {
- 	       $this->Auth->allow('index','view','download_file');
+	       # By default we allow unauthenticated users to do nothing...
+	       # The individual controllers allow unauthenticated access
+	       # where they need to.
+ 	       #$this->Auth->allow('index','view','download_file');
+	       $this->Auth->allow(array());
+
 	       $this->set('testing','testing');
 	       $this->set('authUserData', $this->Auth->user());
 	       #$this['authUserData']['isAdmin'] = $this->Users->isAdmin($this->Auth->user()['id']);
@@ -68,6 +77,12 @@ class AppController extends Controller {
 	       }
 
 	public function beforeRender() {
+	}
+
+	public function logDebug($data) {
+	       if (isset($data)) {
+	       	  CakeLog::write('debug',$data);
+	       }
 	}
 
 }
