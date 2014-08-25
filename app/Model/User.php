@@ -76,6 +76,35 @@ class User extends AppModel {
 		)
 	);
 
+	public $validate = array(
+	       'password' => array(
+    	       	     'length' => array(
+        	     	      'rule'      => array('between', 4, 40),
+			      'allowEmpty'  => true,
+        		      'message'   => 'Your password must be between 4 and 40 characters.',
+    			      ),
+		),
+		'confirm_password' => array(
+    		     'length' => array(
+        	     	      'rule'      => array('between', 4, 40),
+			      'allowEmpty'  => true,
+        	     	      'message'   => 'Your password must be between 4 and 40 characters.',
+    		     ),
+    		'compare'    => array(
+        		     'rule'      => array('validate_passwords'),
+        		     'message' => 'The passwords you entered do not match.',
+    			     )
+		)
+	);
+
+	/**
+	* Confirm that both provided passwords are the same
+	*/
+	public function validate_passwords() {
+    	       return $this->data[$this->alias]['password'] === 
+	              $this->data[$this->alias]['confirm_password'];
+	}
+
 	public function beforeSave($options = array()) {
     	       if (isset($this->data[$this->alias]['password'])) {
                	  $passwordHasher = new SimplePasswordHasher();
@@ -86,6 +115,18 @@ class User extends AppModel {
     		return true;
 	}
 
+
+	/** Do not change the user's password if they have not provided
+	 * a password.
+	 * (taken from http://bakery.cakephp.org/articles/rajender120/2011/08/19/password_validation_in_cakephp)
+	 * FIXME - how do we tell the user the password has not been changed??
+	 */
+	public function beforeValidate($options=Array()) {
+	   if(empty($this->data['User']['confirm_password'])) {
+	   	unset($this->data['User']['password']);
+	   }
+	   return true;
+	}
 
 	/**
 	* Returns true if user.id is an administrator, otherwise

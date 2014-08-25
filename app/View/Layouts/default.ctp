@@ -64,7 +64,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 
 	   echo "Logged in as ";
 	   echo $this->Html->link($authUserData['title'],array('controller'=>'users',
-							'action'=>'view',$authUserData['id']));
+							'action'=>'edit',$authUserData['id']));
 	   echo " (".$authUserData['Role']['title'].') ';
 	   $nNotifications = count($authUserExtraData);
 	   echo $this->Html->link('('.$nNotifications.' notifications)',

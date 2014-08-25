@@ -26,7 +26,7 @@ class UsersController extends AppController {
 		  $this->User->recursive = 0;
 		  $this->set('users', $this->Paginator->paginate());
 	       } else {
-		  $this->Session->setFlash(__('Only an Administrator can do that! - your role is '.$this->Auth->User('role_id').'.'));
+		  $this->Session->setFlash(__('Only an Administrator can list users! - your role is '.$this->Auth->User('role_id').'.'));
 		  return $this->redirect($this->referer());          
  	       }
 	}
@@ -84,6 +84,7 @@ class UsersController extends AppController {
  * @return void
  */
 	public function edit($id = null) {
+	   # Only an administrator or the user him/herself can edit user data.
 	   if ($this->Auth->user('role_id')==1 or
 	       $id == $this->Auth->user('id')) {
 		if (!$this->User->exists($id)) {
@@ -92,13 +93,22 @@ class UsersController extends AppController {
 		if ($this->request->is(array('post', 'put'))) {
 			if ($this->User->save($this->request->data)) {
 				$this->Session->setFlash(__('The user has been saved.'));
-				return $this->redirect(array('action' => 'index'));
-			} else {
+                               if ($this->Auth->user('role_id')==1) {
+				  return $this->redirect(array('action' => 'index'));
+                               }
+			       else {
+                                   return $this->redirect(array('controller'=>'docs',
+					'action' => 'index'));
+                               }
+                         }
+			 else {
 				$this->Session->setFlash(__('The user could not be saved. Please, try again.'));
 			}
 		} else {
 			$options = array('conditions' => array('User.' . $this->User->primaryKey => $id));
 			$this->request->data = $this->User->find('first', $options);
+			# Do not pre-populate the password field.
+			unset($this->request->data['User']['password']);
 		}
 		$roles = $this->User->Role->find('list');
 		$this->set(compact('roles'));
