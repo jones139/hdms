@@ -147,7 +147,8 @@ class UsersController extends AppController {
 
 	public function beforeFilter() {
 	       parent::beforeFilter();
-	       $this->Auth->allow('add','login','logout');
+	       # The only thing an un-authenticated user can do is login.
+	       $this->Auth->allow('login');
 	}
 
 	public function login() {
