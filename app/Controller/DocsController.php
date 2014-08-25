@@ -61,13 +61,6 @@ class DocsController extends AppController {
 
 		$docs = $this->Paginator->paginate();
 		$this->set('docs', $docs);
-
-		# Now find the issued revision of each document.
-		#echo "<pre>".var_dump($docs)."</pre>";
-	        #Controller::loadModel('Revisions');
-		#foreach ($docs as $doc) {
-		#	echo "<pre>".var_dump($doc)."</pre><br/>";
-		#}
 	}
 
 /**

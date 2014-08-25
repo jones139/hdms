@@ -76,14 +76,29 @@ class User extends AppModel {
 		)
 	);
 
-public function beforeSave($options = array()) {
-    if (isset($this->data[$this->alias]['password'])) {
-        $passwordHasher = new SimplePasswordHasher();
-        $this->data[$this->alias]['password'] = $passwordHasher->hash(
-            $this->data[$this->alias]['password']
-        );
-    }
-    return true;
-}
+	public function beforeSave($options = array()) {
+    	       if (isset($this->data[$this->alias]['password'])) {
+               	  $passwordHasher = new SimplePasswordHasher();
+        	  $this->data[$this->alias]['password'] = $passwordHasher->hash(
+        			$this->data[$this->alias]['password']
+        						);
+    		}
+    		return true;
+	}
+
+
+	/**
+	* Returns true if user.id is an administrator, otherwise
+	*  returns fase.
+	* @param id - user id.
+	*/
+	public function isAdmin($id = null) {
+		# Populate $this->data with data from user.id=$id
+		$this->read(null, $id);
+		if ($this.role_id == 1)
+		   return true;
+		else
+		   return false;
+	}
 
 }

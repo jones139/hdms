@@ -45,7 +45,7 @@ class AppController extends Controller {
 			   )
 		);
 		
-	public $helpers = array('Session');
+	public $helpers = array('Session','Time');
 
 
 	public function logDebug($data) {
@@ -58,6 +58,7 @@ class AppController extends Controller {
  	       $this->Auth->allow('index','view','download_file');
 	       $this->set('testing','testing');
 	       $this->set('authUserData', $this->Auth->user());
+	       #$this['authUserData']['isAdmin'] = $this->Users->isAdmin($this->Auth->user()['id']);
 
 	       # Get detailed information about the logged in user (e.g. notifications for that user etc.)
 	       Controller::loadModel('Notifications');

@@ -16,8 +16,8 @@
 			<th><?php echo $this->Paginator->sort('doc_subtype_id','Sub-Type'); ?></th>
 			<th><?php echo $this->Paginator->sort('docNo','Doc. No.'); ?></th>
 			<th><?php echo $this->Paginator->sort('title','Title'); ?></th>
-			<th><?php echo "Issued"; ?></th>
-			<th><?php echo "Latest"; ?></th>
+			<th><?php echo "Issued Revision"; ?></th>
+			<th><?php echo "Latest Draft Revision"; ?></th>
 			<th>Create Revision</th>
 			<th class="actions"><?php echo __('Actions'); ?></th>
 	</tr>
@@ -63,7 +63,12 @@
                                     'action'=>'download_file',$issued_rev['id'],
 				    'native'=>true)));
                          }
-			 echo '<br/>(',$issued_rev['doc_status_date'],')';
+		      	 echo "<br/>".$this->Html->link("Edit Rev",
+			    array('controller'=>'revisions',
+                            'action'=>'edit',$issued_rev['id']),
+                            array('class'=>'button')
+			   ).' ';
+			 echo '<br/>(',$this->Time->niceShort($issued_rev['doc_status_date']),')';
 
 		      } else {
 		         echo "none";
@@ -94,6 +99,11 @@
                                     'action'=>'download_file',$latest_rev['id'],
 				    'native'=>true)));
                          }
+		      	 echo "<br/>".$this->Html->link("Edit Rev",
+			    array('controller'=>'revisions',
+                            'action'=>'edit',$latest_rev['id']),
+                            array('class'=>'button')
+			   ).' ';
 
 			 echo '<br/>(',$latest_rev['doc_status_date'],')';
 
@@ -107,16 +117,21 @@
 			      'action'=>'create_new_revision',$doc['Doc']['id'],
 			      'major'=>'true'),
 			      array(),__('Create Major Revision?'));
-                  echo ":";
-                  echo $this->Form->postLink('Minor',
+
+                  # if the latest revision is the issued revision, we can
+                  # only create a new major revision, so do not show minor
+		  # rev button.
+		  if ($latest_rev['id']!=$issued_rev['id']) {	      
+                    echo ":";
+                    echo $this->Form->postLink('Minor',
 			array('controller'=>'revisions',
                               'action'=>'create_new_revision',$doc['Doc']['id']),
 			array(),__('Create Minor Revision?'));
+                    }
 		?>
 		</td>
 		<td class="actions">
-		<!--	<?php echo $this->Html->link(__('View'), array('action' => 'view', $doc['Doc']['id'])); ?> -->
-			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $doc['Doc']['id'])); ?>
+		   <?php echo $this->Html->link(__('Edit Doc'), array('action' => 'edit', $doc['Doc']['id'])); ?>
 			<!--<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $doc['Doc']['id']), array(), __('Are you sure you want to delete # %s?', $doc['Doc']['id'])); ?> -->
 		</td>
 	</tr>
@@ -228,6 +243,14 @@
 
 <div class="actions">
 	<h3><?php echo __('Actions'); ?></h3>
+
+	<?php 
+	      if ($authUserData['role_id']==1) {  # Administrators
+		  echo "<li>".$this->Html->link(__('Create New Doc'), 
+		                   array('action' => 'add'))."</li>";
+	      }
+	?>
+
      <div class='Facility_filter'>
      Select Facility
      <ul id='facility'> 
@@ -274,8 +297,5 @@
      </script>
 
 
-	<ul>
-		<li><?php echo $this->Html->link(__('New Doc'), array('action' => 'add')); ?></li>
 
-	</ul>
 </div>

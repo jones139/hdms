@@ -44,7 +44,11 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 			<h1>
 <?php echo $this->Html->image('ca_logo.png', array('alt' => 'Catcote Academy Logo')); ?>
 <?php echo $this->Html->link('HDMS - Hartlepool Aspire Trust Document Management System', '/'); ?></h1>
+
       <?php
+      ######################################################################
+      # Show Users menu bar at the top
+      ######################################################################
         if ($authUserData['id']) { # Logged in users
            if ($authUserData['role_id']==1) {  # Administrators only
 	      echo "Admin Menu: ";
