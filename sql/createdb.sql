@@ -155,8 +155,9 @@ insert into facilities (id,title,description) values (2,'CF','Catcote Futures');
 
 
 insert into users (username,title,role_id,password) values ("Graham","Graham Jones",1,"afcf02f321a501cf9cff31f022455dade82cd3f4");
-insert into users (username,title,role_id) values ("Louise","Louise Robson",1);
-insert into users (username,title,role_id) values ("Mick","Mick Slimmings",2);
+insert into users (username,title,role_id,password) values ("Louise","Louise Robson",1,"afcf02f321a501cf9cff31f022455dade82cd3f4");
+insert into users (username,title,role_id,password) values ("Mick","Mick Slimmings",2,"afcf02f321a501cf9cff31f022455dade82cd3f4");
+insert into users (username,title,role_id,password) values ("banned","Banned User",0,"afcf02f321a501cf9cff31f022455dade82cd3f4");
 
 insert into docs (facility_id,doc_type_id,doc_subtype_id,docNo,title) values (0,1,0,"xxx/yyy/zzz","title 1");
 insert into docs (facility_id,doc_type_id,doc_subtype_id,docNo,title) values (0,1,2,"HAT/POL/FIN/xxx","Finance Policy xxx");
