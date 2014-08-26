@@ -11,7 +11,9 @@ This document describes the installation process for HDMS.
 
 ## Downloading
 Download source code using
-	 git clone https://github.com/jones139/hdms.git
+
+>	 git clone https://github.com/jones139/hdms.git
+
 and put the copy of the hdms directory somewhere in your web server's document 
 root (e.g. /var/www/html).
 
@@ -34,16 +36,21 @@ Create a mysql database and user for the hdms application.
 
 ### Set up tables
 > cd hdms/sql
+
 > mysql -u hat -p hat   (enter password when prompted)
+
   > source createdb.sql;
+
   > Ctrl-C
 
 ## Get Apache Web Server working
 Install using
 
 > sudo apt-get install apache2 libapache2-mod-php5 php5-mysql
-A
-dd the following Directory block to /etc/apache2/sites-enabled/000-default.  It is required to get url re-writing working, otherwise you get odd cakephp errors....
+
+Add the following Directory block to /etc/apache2/sites-enabled/000-default.  
+
+It is required to get url re-writing working, otherwise you get odd cakephp errors....
 
 >      <Directory />
 >		Options FollowSymLinks
