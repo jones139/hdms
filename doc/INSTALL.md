@@ -64,6 +64,10 @@ Enable mod-rewrite by linking /etc/apache2/mods-enabled/rewrite.load to/etc/apac
 ## Configuration
 Edit hdms/app/Config/database.php (copy database.php.default if necessary) to match your mysql username and password etc.
 
+Create data directory and give the web server permission to write to it:
+`mkdir hdms/data`
+`sudo chgrp www-data hdms/data`
+
 ## Testing
 Pointing a web browser at http://localhost/hdms (or wherever you put the hdms directory), should show a list of 2 documents that are installed by default.
 
