@@ -22,28 +22,36 @@ Install using
 Create a mysql database and user for the hdms application.
 
 ### Create Database and User
-mysql -u root -p
-> create database hat;
-> create user 'hat'@'localhost identified by 'password';   (put your own password here!)
-> grant all on hat.* to 'hat'@'localhost;
-Ctrl-C
+> mysql -u root -p
+
+  > create database hat;
+
+  > create user 'hat'@'localhost' identified by 'password';   (put your own password here!)
+
+  > grant all on hat.* to 'hat'@'localhost;
+
+  > Ctrl-C
 
 ### Set up tables
-cd hdms/sql
-mysql -u hat -p hat   (enter password when prompted)
-> source createdb.sql;
-Ctrl-C
+> cd hdms/sql
+> mysql -u hat -p hat   (enter password when prompted)
+  > source createdb.sql;
+  > Ctrl-C
 
 ## Get Apache Web Server working
 Install using
-    sudo apt-get install apache2 libapache2-mod-php5 php5-mysql
-Add the following Directory block to /etc/apache2/sites-enabled/000-default.  It is required to get url re-writing working, otherwise you get odd cakephp errors....
-      <Directory />
-		Options FollowSymLinks
-		AllowOVerride All
-	</Directory>
+
+> sudo apt-get install apache2 libapache2-mod-php5 php5-mysql
+A
+dd the following Directory block to /etc/apache2/sites-enabled/000-default.  It is required to get url re-writing working, otherwise you get odd cakephp errors....
+
+>      <Directory />
+>		Options FollowSymLinks
+>		AllowOverride All
+>	</Directory>
 
 Enable mod-rewrite by linking /etc/apache2/mods-enabled/rewrite.load to/etc/apache2/mods-available/rewrite.load.
+
 (mod-php should already be enabled on Ubuntu).
 
 
