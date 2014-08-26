@@ -18,7 +18,6 @@
  *   along with HDMS.  If not, see <http://www.gnu.org/licenses/>.
  *
  ****************************************************************************/
-
 App::uses('AppController', 'Controller');
 /**
  * Revisions Controller
@@ -232,9 +231,10 @@ class RevisionsController extends AppController {
                                                  $this->Auth->User(),
 						 $pdf)) {
 		    $this->Session->setFlash(__('File Uploaded.'));
-		    #return $this->redirect(array('action' => 'edit',$id));
+		    return $this->redirect(array('action' => 'edit',$id));
 		} else {
 		    $this->Session->setFlash(__('File Upload Failed.'));
+		    return $this->redirect(array('action' => 'edit',$id));
 		}
 	    }
 	    $options = array('conditions' => array(
