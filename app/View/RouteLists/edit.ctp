@@ -1,24 +1,38 @@
-<div class="routeLists form">
-<?php echo $this->Form->create('RouteList'); ?>
-	<fieldset>
-		<legend><?php echo __('Edit Route List'); ?></legend>
+<div class="routeListEntries form">
+<h2>Edit Route List</h2>
+<div>
+<h3>Current Entries:</h3>
+<?php
+   foreach (array_keys($entries) as $entry_id) {
+      echo "<li>".$users[$entries[$entry_id]].' ';
+#array(’confirm’ => ’Are you sure?’)
+      echo $this->Form->postLink('Delete',
+           array('controller'=>'route_lists','action'=>'delete_approver',$entry_id));
+      echo "</li>";
+}
+?>
+</div>
+<div>
+<h3></h3> <!-- FIXME - fiddle to get a space - should use CSS!!! -->
+<h3>Add Approver to Route List</h3>
+<?php echo $this->Form->create('RouteListEntry'); ?>
 	<?php
-		echo $this->Form->input('id');
-		echo $this->Form->input('revision_id');
-		echo $this->Form->input('active');
+		echo $this->Form->hidden('id');
+		echo $this->Form->hidden('route_list_id');
+		echo $this->Form->input('user_id');
 	?>
-	</fieldset>
-<?php echo $this->Form->end(__('Submit')); ?>
-</div>
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
+<?php echo $this->Form->end(__('Add Approver')); ?>
 
-		<li><?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $this->Form->value('RouteList.id')), array(), __('Are you sure you want to delete # %s?', $this->Form->value('RouteList.id'))); ?></li>
-		<li><?php echo $this->Html->link(__('List Route Lists'), array('action' => 'index')); ?></li>
-		<li><?php echo $this->Html->link(__('List Revisions'), array('controller' => 'revisions', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Revision'), array('controller' => 'revisions', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Route List Entries'), array('controller' => 'route_list_entries', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Route List Entry'), array('controller' => 'route_list_entries', 'action' => 'add')); ?> </li>
-	</ul>
+<div class="actions button">
+<?php
+###############
+# Back Button #
+###############
+echo $this->Html->link('Back',
+      array('controller'=>'revisions','action'=>'edit',$revision_id)); 
+?>
 </div>
+</div>
+
+</div>
+

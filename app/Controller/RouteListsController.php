@@ -77,9 +77,9 @@ class RouteListsController extends AppController {
 			$this->Session->setFlash(__('Invalid Revision id '.$revision_id.'.  Route list NOT created.'));
 			$this->redirect($this->referer());
 		   }
-		   echo "<pre>".$revision_id."</pre>";
+		   #echo "<pre>".$revision_id."</pre>";
 		   $rev = $this->Revisions->findById($revision_id);
-		   echo "<pre>".var_dump($rev)."</pre>";
+		   #echo "<pre>".var_dump($rev)."</pre>";
 		   #$active = $this->Revisions->has_active_routelist($revision_id);
 		   $routelist_data = array('revision_id'=>$revision_id);
 		   $this->RouteList->create();
@@ -89,7 +89,7 @@ class RouteListsController extends AppController {
 		   $data = $this->RouteList->findById($id);
 		   $this->set(array('data'=>$data));
 		   $this->redirect(array('controller'=>'route_lists',
-					'action'=>'add_approver',
+					'action'=>'edit',
 					$id));
                 } else {
 		   $this->Session->setFlash(
@@ -100,13 +100,13 @@ class RouteListsController extends AppController {
 
 
 /**
- * edit method
+ * edit_old method (not used)
  *
  * @throws NotFoundException
  * @param string $id
  * @return void
  */
-	public function edit($id = null) {
+	public function edit_old($id = null) {
 	        #$this->RouteListEntries->recursive = 2;
 		if (!$this->RouteList->exists($id)) {
 			throw new NotFoundException(__('Invalid route list'));
@@ -149,12 +149,12 @@ class RouteListsController extends AppController {
 
 
 /**
- * add_approver method - adds an approver (route list entry) to 
+ * edit method - adds an approver (route list entry) to 
  *  a route list.
  *
  * @return void
  */
-	public function add_approver($id=null) {
+	public function edit($id=null) {
 	        #$this->RouteListEntries->recursive = 1;
 		if (!$this->RouteList->exists($id)) {
 			throw new NotFoundException(__('Invalid route list'));
@@ -165,7 +165,7 @@ class RouteListsController extends AppController {
 		   $this->RouteListEntry->create();
 		   if ($this->RouteListEntry->save($this->request->data)) {
 			$this->Session->setFlash(__('Approver Added.'));
-			return $this->redirect(array('controller'=>'route_lists','action'=>'add_approver',$this->request->data['RouteListEntry']['route_list_id']));
+			return $this->redirect(array('controller'=>'route_lists','action'=>'edit',$this->request->data['RouteListEntry']['route_list_id']));
 			} else {
 				$this->Session->setFlash(__('The approver could not be saved. Please, try again.'));
 			}
@@ -212,7 +212,7 @@ class RouteListsController extends AppController {
 		} else {
 			$this->Session->setFlash(__('The route list entry could not be deleted. Please, try again.'));
 		}
-		return $this->redirect(array('action' => 'add_approver',$routeList_id));
+		return $this->redirect(array('action' => 'edit',$routeList_id));
 	}
 
 

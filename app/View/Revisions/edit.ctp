@@ -101,8 +101,8 @@
 	     echo "</ol>";
 	     # Allow the user to edit or submit draft or cancelled route lists.
 	     if ($lastRouteList_status==0 || $lastRouteList_status==3) {
-      	       echo $this->Html->link('Add Approver',
-             	  array('controller'=>'route_lists','action'=>'add_approver',
+      	       echo $this->Html->link('Edit Route List',
+             	  array('controller'=>'route_lists','action'=>'edit',
 			    $lastRouteList_id));
 	       echo " - ";
       	       echo $this->Html->link('Submit Route List',
