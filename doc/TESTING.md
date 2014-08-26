@@ -49,7 +49,7 @@ result in an error:
 * Log in using user 'user1'.
   * Create a major revision for the Finance Policy (2nd document on the list) by pressing the 'Major' button.   Should return to the Documents list, but a new revision 1_1 should be shown in the document data.
   * Edit the revision by pressing the '1_1' or 'Edit Rev' links.
-  * Should show that no document is attached.   Click the 'Attach file' link and select any file to upload using the 'Choose File' button, then upload the file by pressing 'Upload File' - should return to the edit revision form without error.
+  * Should show that no document is attached.   Click the 'Attach file' link and select any file to upload using the 'Choose File' or 'Browse' button, then upload the file by pressing 'Upload File' - should return to the edit revision form without error.
   * Go back to the main documents list page - there should be a download native document icon which will download the newly attached file.
 
 ### Test 2.5 - Check-Out and Check-In file
