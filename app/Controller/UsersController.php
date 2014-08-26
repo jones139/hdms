@@ -46,7 +46,9 @@ class UsersController extends AppController {
 		  $this->User->recursive = 0;
 		  $this->set('users', $this->Paginator->paginate());
 	       } else {
-		  $this->Session->setFlash(__('Only an Administrator can list users! - your role is '.$this->Auth->User('role_id').'.'));
+		  $this->Session->setFlash(__('Only an Administrator can list'.
+		  ' users!'));
+                  # $this->Auth->User('role_id')
 		  return $this->redirect($this->referer());          
  	       }
 	}
@@ -67,7 +69,7 @@ class UsersController extends AppController {
 		   $options = array('conditions' => array('User.' . $this->User->primaryKey => $id));
 		   $this->set('user', $this->User->find('first', $options));
 	       } else {
-		  $this->Session->setFlash(__('Only an Administrator can do that! - your role is '.$this->Auth->User('role_id').'.'));
+		  $this->Session->setFlash(__('Only an Administrator can do that!'));
 		  return $this->redirect($this->referer());          
 	       }
 	}
@@ -91,7 +93,7 @@ class UsersController extends AppController {
 		$roles = $this->User->Role->find('list');
 		$this->set(compact('roles'));
             } else {
-		  $this->Session->setFlash(__('Only an Administrator can do that! - your role is '.$this->Auth->User('role_id').'.'));
+		  $this->Session->setFlash(__('Only an Administrator can do that!'));
 		  return $this->redirect($this->referer());          
 	    }
 	}
@@ -133,7 +135,7 @@ class UsersController extends AppController {
 		$roles = $this->User->Role->find('list');
 		$this->set(compact('roles'));
             } else {
-		  $this->Session->setFlash(__('Only an Administrator can do that! - your role is '.$this->Auth->User('role_id').'.'));
+		  $this->Session->setFlash(__('Only an Administrator can do that!'));
 		  return $this->redirect($this->referer());          
 	    }
 	}
@@ -159,7 +161,7 @@ class UsersController extends AppController {
 		}
 		return $this->redirect(array('action' => 'index'));
             } else {
-		  $this->Session->setFlash(__('Only an Administrator can do that! - your role is '.$this->Auth->User('role_id').'.'));
+		  $this->Session->setFlash(__('Only an Administrator can do that!'));
 		  return $this->redirect($this->referer());          
 	    }
 
