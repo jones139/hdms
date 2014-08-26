@@ -31,7 +31,7 @@
       if ($this->request->data['DocStatus']['id']==0) {   
       	 echo '<p>';
       	 if ($this->request->data['Revision']['is_checked_out']) {
-            echo "File checked out by ".$this->request->data['Revision']['check_out_user_id']." on ".$this->request->data['Revision']['check_out_date'];
+            echo "File checked out by ".$users[$this->request->data['Revision']['check_out_user_id']]." on ".$this->request->data['Revision']['check_out_date'];
 	    echo '<nbrsp/> ';
             echo $this->Html->link('Check In File',
              	 array('controller'=>'revisions','action'=>'checkin_file',
