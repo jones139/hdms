@@ -116,6 +116,10 @@ class DocsController extends AppController {
  * @return void
  */
 	public function add() {
+	        if ($this->Auth->user('role_id')!=1) {
+ 		   $this->Session->setFlash(__('Only an Administrator can add documents! - your role is '.$this->Auth->User('role_id').'.'));
+		  return $this->redirect($this->referer()); 
+                }
 		if ($this->request->is('post')) {
 			$this->Doc->create();
 			if ($this->Doc->save($this->request->data)) {
@@ -167,6 +171,10 @@ class DocsController extends AppController {
  * @return void
  */
 	public function delete($id = null) {
+	        if ($this->Auth->user('role_id')!=1) {
+ 		   $this->Session->setFlash(__('Only an Administrator can delete documents! - your role is '.$this->Auth->User('role_id').'.'));
+		  return $this->redirect($this->referer()); 
+                }
 		$this->Doc->id = $id;
 		if (!$this->Doc->exists()) {
 			throw new NotFoundException(__('Invalid doc'));
