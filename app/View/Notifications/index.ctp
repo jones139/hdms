@@ -6,8 +6,8 @@
 			<th><?php echo $this->Paginator->sort('id'); ?></th>
 			<th><?php echo $this->Paginator->sort('user_id'); ?></th>
 			<th><?php echo $this->Paginator->sort('body_text'); ?></th>
-			<th><?php echo $this->Paginator->sort('active'); ?></th>
-			<th><?php echo $this->Paginator->sort('revision_id'); ?></th>
+			<th>Document</th>
+			<th><?php echo $this->Paginator->sort('revision_id','Revision'); ?></th>
 			<th class="actions"><?php echo __('Actions'); ?></th>
 	</tr>
 	</thead>
@@ -19,9 +19,19 @@
 			<?php echo $this->Html->link($notification['User']['title'], array('controller' => 'users', 'action' => 'view', $notification['User']['id'])); ?>
 		</td>
 		<td><?php echo h($notification['Notification']['body_text']); ?>&nbsp;</td>
-		<td><?php echo h($notification['Notification']['active']); ?>&nbsp;</td>
+		<td><?php echo h($notification['Revision']['Doc']['docNo']); ?>
+                    <?php echo "<br/>".h($notification['Revision']['Doc']['title']); ?>
+                </td>
 		<td class="actions">
-			<?php echo $this->Html->link("Review Approve Rev ".$notification['Revision']['id'], array('controller' => 'revisions', 'action' => 'edit', $notification['Revision']['id'])); ?>
+			<?php 
+                            echo $notification['Revision']['major_revision'].
+			          "_".
+                                 $notification['Revision']['minor_revision'].
+				 " ";
+			    echo $this->Html->link("Review/Approve",
+                            array('controller' => 'revisions', 
+                                  'action' => 'edit', 
+                                  $notification['Revision']['id'])); ?>
 		</td>
 
 

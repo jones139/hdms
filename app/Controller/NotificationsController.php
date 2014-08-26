@@ -44,7 +44,7 @@ class NotificationsController extends AppController {
  * @return void
  */
 	public function index() {
-		$this->Notification->recursive = 0;
+		$this->Notification->recursive = 2;
 		#echo "<pre>".var_dump($this->params)."</pre>";
 		if (isset($this->params[ 'named' ][ 'user_id' ])) {
 		   $user_id = $this->params[ 'named' ][ 'user_id' ];
