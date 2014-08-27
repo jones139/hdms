@@ -4,10 +4,14 @@
 		<legend><?php echo __('Edit User'); ?></legend>
 	<?php
 		echo $this->Form->input('id');
-		echo $this->Form->input('title');
-		echo $this->Form->input('username');
+		if ($authUserData['role_id']==1) {   # Administrator
+		   echo $this->Form->input('username');
+		} else {
+		   echo $this->Form->input('username',array('disabled'=>'disabled'));
+		}
 		echo $this->Form->input('password');
 		echo $this->Form->input('confirm_password');
+		echo $this->Form->input('title',array('label'=>'Full Name'));
 		echo $this->Form->input('email');
 
 		# Some fields can only be edited by an administrator
