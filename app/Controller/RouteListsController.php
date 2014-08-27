@@ -306,9 +306,11 @@ class RouteListsController extends AppController {
             if ($this->RouteListEntry->save($this->request->data)) {
                 if ($this->RouteList->isComplete($id)) {
                     if ($this->RouteList->isApproved($id)) {
+                        $this->_remove_route_list_notifications($id);
                         $this->Session->setFlash(
                             __('Response Accepted - Revision Issued'));
                     } else {
+                        $this->_remove_route_list_notifications($id);
                         $this->Session->setFlash(
                             __('Response Accepted - Revision Rejected'));
                     }
