@@ -125,7 +125,7 @@ class UsersController extends AppController {
                     "The passwords don't match." );
                 } else {  # Passwords match, so save data
                     if ($this->User->save($this->request->data)) {
-                        $this->Session->setFlash(__('The user has been saved.'));
+                        $this->Session->setFlash(__('The user has been saved.  Log out and in again for changes to take effect.'));
                         if ($this->Auth->user('role_id')==1) {
                             return $this->redirect(array('action' => 'index'));
                         }
