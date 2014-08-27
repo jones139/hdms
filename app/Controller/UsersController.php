@@ -108,16 +108,22 @@ class UsersController extends AppController {
     public function edit($id = null) {
         # Only an administrator or the user him/herself can edit user data.
         if ($this->Auth->user('role_id')==1 or
-            $id == $this->Auth->user('id')) {
+        $id == $this->Auth->user('id')) {
             if (!$this->User->exists($id)) {
                 throw new NotFoundException(__('Invalid user'));
             }
+            # Have we been sent some data?
             if ($this->request->is(array('post', 'put'))) {
-                if ($this->request->data[ 'User' ][ 'password' ] != 
-                $this->request->data[ 'User' ][ 'confirm_password' ] ) {
+                # Check passwords both match - manual fiddle rather than
+                # a proper cakephp validation rule...
+                if ($this->request->data[ 'User' ][ 'password' ] 
+                != $this->request->data[ 'User' ][ 'confirm_password' ] ) {
+                    # passwords do not match, so invalidate them on the form.
+                    $this->User->invalidate( 'password', 
+                    "The passwords don't match." );
                     $this->User->invalidate( 'confirm_password', 
                     "The passwords don't match." );
-                } else {
+                } else {  # Passwords match, so save data
                     if ($this->User->save($this->request->data)) {
                         $this->Session->setFlash(__('The user has been saved.'));
                         if ($this->Auth->user('role_id')==1) {
@@ -132,68 +138,70 @@ class UsersController extends AppController {
                     }
                     
 		} 
-                $options = array('conditions' => array('User.' . $this->User->primaryKey => $id));
-                $this->request->data = $this->User->find('first', $options);
-                # Do not pre-populate the password field.
-                unset($this->request->data['User']['password']);
-		
             }
+            $options = array('conditions' => array(
+                'User.' . $this->User->primaryKey => $id));
+            $this->request->data = $this->User->find('first', $options);
+            # Do not pre-populate the password field.
+            unset($this->request->data['User']['password']);
+            
             $roles = $this->User->Role->find('list');
             $this->set(compact('roles'));
         } else {
             $this->Session->setFlash(__('Only an Administrator can do that!'));
             return $this->redirect($this->referer());          
         }
+    }
 
         
-        /**
-         * delete method
-         *
-         * @throws NotFoundException
-         * @param string $id
-         * @return void
-         */
-	public function delete($id = null) {
-	    if ($this->Auth->user('role_id')==1) {
-		$this->User->id = $id;
-		if (!$this->User->exists()) {
-                    throw new NotFoundException(__('Invalid user'));
-		}
-		$this->request->allowMethod('post', 'delete');
-		if ($this->User->delete()) {
-                    $this->Session->setFlash(__('The user has been deleted.'));
-		} else {
-                    $this->Session->setFlash(__('The user could not be deleted. Please, try again.'));
-		}
-		return $this->redirect(array('action' => 'index'));
-            } else {
-                $this->Session->setFlash(__('Only an Administrator can do that!'));
-                return $this->redirect($this->referer());          
-	    }
-            
-	}
-        
-	public function beforeFilter() {
-            parent::beforeFilter();
-            # The only thing an un-authenticated user can do is login.
-            $this->Auth->allow('login');
-	}
-        
-	public function login() {
-            if ($this->request->is('post')) {
-                if ($this->Auth->login()) {
-                    $this->Session->setFlash(__('Login Successful'));
-                    return($this->redirect(array(
-                        'controller'=>'docs',
-                        'action'=>'index'
-                    )));
-                }
-                $this->Session->setFlash(__('Invalid username or password'));
+    /**
+     * delete method
+     *
+     * @throws NotFoundException
+     * @param string $id
+     * @return void
+     */
+    public function delete($id = null) {
+        if ($this->Auth->user('role_id')==1) {
+            $this->User->id = $id;
+            if (!$this->User->exists()) {
+                throw new NotFoundException(__('Invalid user'));
             }
-	}
+            $this->request->allowMethod('post', 'delete');
+            if ($this->User->delete()) {
+                $this->Session->setFlash(__('The user has been deleted.'));
+            } else {
+                $this->Session->setFlash(__('The user could not be deleted. Please, try again.'));
+            }
+            return $this->redirect(array('action' => 'index'));
+        } else {
+            $this->Session->setFlash(__('Only an Administrator can do that!'));
+            return $this->redirect($this->referer());          
+        }
         
-	public function logout() {
-            return($this->redirect($this->Auth->logout()));
-	}
+    }
+
+    public function beforeFilter() {
+        parent::beforeFilter();
+        # The only thing an un-authenticated user can do is login.
+        $this->Auth->allow('login');
+    }
+
+    public function login() {
+        if ($this->request->is('post')) {
+            if ($this->Auth->login()) {
+                $this->Session->setFlash(__('Login Successful'));
+                return($this->redirect(array(
+                    'controller'=>'docs',
+                    'action'=>'index'
+                )));
+            }
+            $this->Session->setFlash(__('Invalid username or password'));
+        }
+    }
+
+    public function logout() {
+        return($this->redirect($this->Auth->logout()));
+    }
 }
 
