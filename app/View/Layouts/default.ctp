@@ -1,6 +1,24 @@
 <?php
-/**
+/***************************************************************************
+ *   This file is part of HDMS.
  *
+ *   Copyright 2014, Graham Jones (grahamjones@physics.org)
+ *
+ *   HDMS is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, either version 3 of the License, or
+ *   (at your option) any later version.
+ *
+ *   Foobar is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with HDMS.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ ****************************************************************************/
+/**
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
@@ -30,7 +48,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 	<?php
 		echo $this->Html->meta('icon');
 
-		echo $this->Html->css('cake.generic');
+		#echo $this->Html->css('cake.generic');
 		echo $this->Html->css('hat.generic');
 
 		echo $this->fetch('meta');
@@ -41,10 +59,15 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 <body>
 	<div id="container">
 		<div id="header">
-			<h1>
-<?php echo $this->Html->image('ca_logo.png', array('alt' => 'Catcote Academy Logo')); ?>
-<?php echo $this->Html->link('HDMS - Hartlepool Aspire Trust Document Management System', '/'); ?></h1>
+<?php echo $this->Html->image('ca_logo.png', array(
+      'alt' => 'Catcote Academy Logo',
+      'url' => 'http://catcoteacademy.co.uk')); ?>
+	<h1>
+<?php echo $this->Html->link('Hartlepool Aspire Trust: Document Management System', '/'); 
+?>
+        </h1>
 
+	<br/>
       <?php
       ######################################################################
       # Show Users menu bar at the top

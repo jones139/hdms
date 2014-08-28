@@ -1,4 +1,23 @@
 @charset "utf-8";
+/***************************************************************************
+ *   This file is part of HDMS.
+ *
+ *   Copyright 2014, Graham Jones (grahamjones@physics.org)
+ *
+ *   HDMS is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, either version 3 of the License, or
+ *   (at your option) any later version.
+ *
+ *   Foobar is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with HDMS.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ ****************************************************************************/
 /**
  *
  * Generic CSS for Hartlepool Aspire Trust
@@ -49,7 +68,7 @@ h1, h2, h3, h4 {
 h1 {
 	background:#fff;
 	color: #003d4c;
-	font-size: 100%;
+	font-size: 220%;
 }
 h2 {
 	background:#fff;
@@ -80,12 +99,17 @@ p {
 
 #header{
 	padding: 10px 20px;
+	position:relative;
 }
 #header h1 {
-	line-height:20px;
-	background: #ddddff url('../img/cake.icon.png') no-repeat left;
+    display:inline;
+	#line-height:20px;
+	background: #ddddff;
 	color: #fff;
-	padding: 0px 30px;
+	white-space: nowrap; #Prevent word wrapping
+	padding: 0px 0px;
+	position: absolute;
+	top: 10%;
 }
 #header h1 a {
 	color: #0000ff;
@@ -97,6 +121,10 @@ p {
 	color: #0000ff;
 	background: #eeeeff;
 	text-decoration: underline;
+}
+
+#header img {
+    height: 50px;
 }
 #content{
 	background: #fff;
