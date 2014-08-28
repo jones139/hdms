@@ -36,15 +36,15 @@
 		</td>
 		<td><?php echo h($doc['Doc']['docNo']); ?>&nbsp;</td>
 		<td><?php echo h($doc['Doc']['title']); ?>&nbsp;</td>
-		<td>
+		<td class='actions'>
 		<?php 
 		      $issued_rev = null;
 		      foreach ($doc['Revision'] as $rev) {
 		      	      if ($rev['doc_status_id']==2) $issued_rev = $rev;
 		      }
 		      if ($issued_rev != null) {
-		      	 echo $this->Html->link($issued_rev['major_revision'].'_'.
-				$issued_rev['minor_revision'],array('controller'=>'revisions','action'=>'edit',$issued_rev['id'])).' ';
+		      	 echo "<b>".$issued_rev['major_revision'].'_'.
+				$issued_rev['minor_revision']."</b>";
 
 
 			 if ($issued_rev['has_pdf']) {
@@ -66,7 +66,7 @@
 		      	 echo "<br/>".$this->Html->link("Edit Rev",
 			    array('controller'=>'revisions',
                             'action'=>'edit',$issued_rev['id']),
-                            array('class'=>'button')
+                            array('class'=>'actions')
 			   ).' ';
 			 echo '<br/>(',$this->Time->niceShort($issued_rev['doc_status_date']),')';
 
@@ -74,14 +74,14 @@
 		         echo "none";
 		      }
 		 ?>&nbsp;</td>
-		<td>
+		<td class="actions">
 		<?php
 		     $latest_rev = null;
 		     if (sizeof($doc['Revision'])>0)
 		     	$latest_rev = $doc['Revision'][sizeof($doc['Revision'])-1];
 		      if ($latest_rev != null) {
-		      	 echo $this->Html->link($latest_rev['major_revision'].'_'.
-				$latest_rev['minor_revision'],array('controller'=>'revisions','action'=>'edit',$latest_rev['id'])).' ';
+		      	 echo "<b>".$latest_rev['major_revision'].'_'.
+				$latest_rev['minor_revision']."</b>";
 
 			 if ($latest_rev['has_pdf']) {
 			     echo $this->Html->image('download_icon.png',
@@ -105,7 +105,7 @@
                             array('class'=>'button')
 			   ).' ';
 
-			 echo '<br/>(',$latest_rev['doc_status_date'],')';
+			 echo '<br/>(',$this->Time->niceShort($latest_rev['doc_status_date']),')';
 
 		      } else {
 		         echo "none";
@@ -208,7 +208,7 @@
 				    'native'=>true)));
                          }
 
-			 echo '<br/>(',$issued_rev['doc_status_date'],')';
+			 echo '<br/>(',$this->Time->niceShort($issued_rev['doc_status_date']),')';
 
 
 		      } else {
@@ -244,6 +244,7 @@
 <div class="actions">
 	<h3><?php echo __('Actions'); ?></h3>
 
+	<ul>
 	<?php 
 	      if ($authUserData['role_id']==1) {  # Administrators
 		  echo "<li>".$this->Html->link(__('Create New Doc'), 
@@ -251,10 +252,11 @@
 	      }
 	?>
 
+     <li> <?php echo $this->Html->link('Show All', array('controller' => 'docs', 'action' => 'index')); ?> </li>
+     </ul>
      <div class='Facility_filter'>
      Select Facility
      <ul id='facility'> 
-     <li> <?php echo $this->Html->link('All', array('controller' => 'docs', 'action' => 'index')); ?> </li>
      <li><?php echo $this->Html->link('HAT', array('controller' => 'docs', 'action' => 'index','facility'=>0)); ?></li>
      <li><?php echo $this->Html->link('CA', array('controller' => 'docs', 'action' => 'index','facility'=>1)); ?></li>
      <li><?php echo $this->Html->link('CF', array('controller' => 'docs', 'action' => 'index','facility'=>2)); ?></li>
@@ -264,13 +266,13 @@
      <div class='Doc_type_filter'>
      Select Doc Type
      <ul>
-     <li><?php echo $this->Html->link('All', array('controller' => 'docs', 'action' => 'index')); ?></li>
      <li><?php echo $this->Html->link('MSM', array('controller' => 'docs', 'action' => 'index','doc_type'=>0)); ?></li>
      <li><?php echo $this->Html->link('POL', array('controller' => 'docs', 'action' => 'index','doc_type'=>1)); ?></li>
      <li><?php echo $this->Html->link('PROC', array('controller' => 'docs', 'action' => 'index','doc_type'=>2)); ?></li>
      </ul>
      </div>
 
+<!--
      <div class='Doc_subType_filter'>
      Select Doc Sub-Type
      <ul>
@@ -295,7 +297,7 @@
 	$(document).load(newURL);
      }
      </script>
-
+-->
 
 
 </div>

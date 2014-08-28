@@ -142,9 +142,5 @@ echo $this->Html->link('Back',
 	<h3><?php echo __('Actions'); ?></h3>
 	<ul>
 		<li><?php echo $this->Html->link(__('List Docs'), array('controller' => 'docs', 'action' => 'index')); ?> </li>
-<li><?php echo $this->Html->link(__('List Revisions'), array('action' => 'index')); ?></li>
-		
-		<li><?php echo $this->Html->link(__('List Route Lists'), array('controller' => 'route_lists', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Route List'), array('controller' => 'route_lists', 'action' => 'add')); ?> </li>
 	</ul>
 </div>

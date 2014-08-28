@@ -521,6 +521,10 @@ p.error em {
 }
 
 /**  Actions  **/
+.actions {
+    line-height: 170%;
+}
+
 .actions ul {
 	margin: 0;
 	padding: 0;
