@@ -117,7 +117,8 @@ class DocsController extends AppController {
  */
 	public function add() {
 	        if ($this->Auth->user('role_id')!=1) {
- 		   $this->Session->setFlash(__('Only an Administrator can add documents! - your role is '.$this->Auth->User('role_id').'.'));
+ 		   $this->Session->setFlash(
+                       __('Only an Administrator can add documents!'));
 		  return $this->redirect($this->referer()); 
                 }
 		if ($this->request->is('post')) {
@@ -172,7 +173,8 @@ class DocsController extends AppController {
  */
 	public function delete($id = null) {
 	        if ($this->Auth->user('role_id')!=1) {
- 		   $this->Session->setFlash(__('Only an Administrator can delete documents! - your role is '.$this->Auth->User('role_id').'.'));
+ 		   $this->Session->setFlash(
+                       __('Only an Administrator can delete documents!'));
 		  return $this->redirect($this->referer()); 
                 }
 		$this->Doc->id = $id;
