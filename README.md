@@ -1,7 +1,7 @@
 # hdms - Hartlepool Aspire Trust Document Management System
 
 This repository contains the source code for the new Document Mananagement
-System for Hartlepool Aspire Trust ([Catcote Academy](https://catcoteacademy.co.uk)).
+System for Hartlepool Aspire Trust ([Catcote Academy](http://catcoteacademy.co.uk)).
 
 It is a replacement for the [OpenDocMan](https://github.com/jones139/opendocman) based system that we used as part of the conversion to an Academy.
 
@@ -51,6 +51,8 @@ presentation](https://github.com/jones139/hdms/blob/master/doc/HAT_DMS.pdf?raw=t
 
 ## Installation
 Basic installation instructions are provided [here](https://github.com/jones139/hdms/blob/master/doc/INSTALL.md).
+
+You can see a demonstration version of the code [here](http://catcotegb.co.uk/hdms_demo).
 
 ## Testing
 The testing plan (which is also a sort of tutorial on using the workflows can be
