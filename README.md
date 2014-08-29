@@ -1,18 +1,71 @@
-hdms
-====
+# hdms - Hartlepool Aspire Trust Document Management System
 
-HAT Document Management System
+This repository contains the source code for the new Document Mananagement
+System for Hartlepool Aspire Trust ([Catcote Academy](https://catcoteacademy.co.uk)).
 
-This repository is for an experimental simple document management system for Hartlepool Aspire Trust.   We are currently using a modified version of OpenDocMan, but there are some features that I would like us to have that OpenDocMan does not have, and the OpenDocMan structure does not lend itself to simple modification.   So, I'm going to write it myself.  The features will be:
-* Use an established php framework to keep the basic code simple (cakePHP).
+It is a replacement for the [OpenDocMan](https://github.com/jones139/opendocman) based system that we used as part of the conversion to an Academy.
+
+While the [OpenDocMan](https://github.com/jones139/opendocman) based system has
+proved useful there are some shortfalls with it which we need to address to 
+give a long term solution, and I decided that rather than fix those it would 
+be better to produce a new system based on an established software framework 
+whcih will be easier to maintain in the future.
+
+## HDMS Features
+* Uses the [CakePHP](http://www.cakephp.org/) framework so it should be easy 
+for other people to maintain in the future if necessary.
+* The current issued version of a document is always available to the public.
+* Users can work on draft versions without affecting the publicly visible version.
+  - User checks out document.
+  - Other users can see who is working on it.
+  - User checks in document making changes visible to ther users (but not the public).
+* It uses a defined approval workflow
+  - User creates a 'Route List' that identifies who must approve the document 
+    for it to be issued.
+  - User submits the route list for approval - reviewers are notified of request
+    to approve document.
+  - Reviewers view document and can either Approve or Reject the document,
+    and record comments on the reasons for their decision.
+  - Once all reviewers have approved the document, the document is issued and 
+    becomes the publicly visible version.
+  - If one of the reviewers rejects the document, the current draft is frozen
+    and the user must create a new minor revision of the document, modify it to 
+    address the reviewer's concerns, then re-issue the approval route list.
+
+The workflow and structure of the application are shown in a [simple
+presentation](https://github.com/jones139/hdms/blob/master/doc/HAT_DMS.pdf?raw=true).
+
+## Future additions
+* Store both a native and an issued document (ie .docx and .pdf files)
+* Each document should have a security classification that determines whether non-authenticated users can view it or not.
+* Enforce some admin controls in code such as:
+  * number of reviewers for a document
+  * prevent submitting a route list if no document attached
+  * prevent submitting a route list if document is checked out
+* Add search functionality to make it easier to find the required documents.
+* Extend the system to store 'Records' - ie filled in versions of forms etc. - 
+  this is not trivial because we will have to be much more careful with data
+  security as may records will contain personal data.
 * Create a simple API so we can use an ajax based front end.
-* It needs to have a few concepts:
-  *    Currently issued version
-  *    Draft version in progress - user checks out document modifies it and checks it in as another minor revision.
-  *    Selectable approval routes (different document types need different approvals).
-  *    Store both a native and an issued document (ie .docx and .pdf files)
-  *    Non-authenticated users can only view the latest issued version of a file.
-  *    Each document has a security classification that determines whether non-authenticated users can view it or not.
+* A good, clear user guide so users can use it effectively.
+
+## Installation
+Basic installation instructions are provided [here](https://github.com/jones139/hdms/blob/master/doc/INSTALL.md).
+
+## Testing
+The testing plan (which is also a sort of tutorial on using the workflows can be
+found [here](https://github.com/jones139/hdms/blob/master/doc/TESTING.md).
+
+## Bugs / Issues / Feature Requests
+If you find any issues with the code, or have suggestions for featuer requests,
+plese raise an [Issue on GitHub](https://github.com/jones139/hdms/issues).
+
+## Licence
+This software is open source is released under the [Gnu Public Licence](https://github.com/jones139/hdms/raw/master/LICENSE).
+
+This sofware includes a number of open source tools and libraries, including:
+* [CakePHP](http://cakephp.org)
+* [JQuery](http://jquery.org)
+Please refer to the licences associated with those tools.
   
-I may well abandon this and modify opendocman if this proves too difficult, but a quick experiment with cakePHP makes me think it is not too difficult to do.
 
