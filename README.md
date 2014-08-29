@@ -33,7 +33,9 @@ for other people to maintain in the future if necessary.
     address the reviewer's concerns, then re-issue the approval route list.
 
 The workflow and structure of the application are shown in a [simple
-presentation](https://github.com/jones139/hdms/blob/master/doc/HAT_DMS.pdf?raw=true).
+presentation](https://github.com/jones139/hdms/blob/master/doc/HAT_DMS.pdf?raw=true).   
+
+There is a demonstration installation of the system available for testing on the [catcotegb web site](http://catcotegb.co.uk/hdms_demo).
 
 ## Future additions
 * Store both a native and an issued document (ie .docx and .pdf files)
