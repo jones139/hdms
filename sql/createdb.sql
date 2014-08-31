@@ -147,6 +147,7 @@ insert into doc_subtypes (id,title,description) values (1,'FIN','Finance Documen
 insert into doc_subtypes (id,title,description) values (2,'HR','Human Resources Documents');
 insert into doc_subtypes (id,title,description) values (3,'H&S','Health and Safety Documents');
 insert into doc_subtypes (id,title,description) values (4,'FAC','Facilities Management Documents');
+insert into doc_subtypes (id,title,description) values (5,'EDU','Education / Curriculum Documents');
 
 
 insert into facilities (id,title,description) values (0,'HAT','Hartlepool Aspire Trust');

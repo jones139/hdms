@@ -111,7 +111,7 @@ class Revision extends AppModel {
 		}
 	}
 
-	public function save_file($tmpnam,$fname,$doc_id,$major_rev,$minor_rev) {
+	public function save_file($tmpnam,$fname,$doc_id,$major_rev,$minor_rev,$pdf=false) {
 	       $this->logDebug("save_file - tmpnam=".$tmpnam);
 	       $this->logDebug("save_file - fname=".$fname);
 	       $folder = $this->get_folder($doc_id,$major_rev,$minor_rev);
@@ -125,7 +125,12 @@ class Revision extends AppModel {
 		     return false;
 		  }
                }
-	       if (copy($tmpnam,$folder.'/'.$fname)) {
+               if (!$pdf) {
+                   $fpath = $folder.'/'.$fname;
+               } else {
+                   $fpath = $folder.'/'.$fname.'.pdf';
+               }
+	       if (copy($tmpnam,$fpath)) {
 		     $this->logDebug("copied file");
 		     return true;
 	       } else {
