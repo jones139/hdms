@@ -57,9 +57,8 @@ class AppController extends Controller {
 					'action'=>'index'
 				),
 				'logoutRedirect'=>array(
-					'controller'=>'pages',
-					'action'=>'display',
-					'home'
+					'controller'=>'docs',
+					'action'=>'index'
 				)
 # FIXME - controller authorisation gives 'hdmsController not found' errors!!!
 				#,'authorize' => array('Controller')
