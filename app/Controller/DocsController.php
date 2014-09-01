@@ -60,8 +60,19 @@ class DocsController extends AppController {
  */
 	public function index() {
 		$this->Doc->recursive = 1;
-		   $this->Paginator->settings = array(
+                $this->Paginator->settings = array(
 		   			      'conditions'=>array());
+
+                # Deal with a post parameter 'Search.title' for title search.
+                if ($this->request->is('post')) {
+                    if (isSet($this->request->data['Search'])) {
+                        $searchStr = $this->request->data['Search']['title'];
+                        $this->Paginator->settings['conditions']['OR']=
+                            array('Doc.title LIKE'=> "%$searchStr%");
+                    }
+                }
+
+
 		if (isset($this->params[ 'named' ][ 'facility' ])) {
 		   $facility = $this->params[ 'named' ][ 'facility' ];
 		   if ($facility != "All") {

@@ -236,6 +236,9 @@
 
 
 <?php } ?>
+
+
+
 </div>
 
 
@@ -243,17 +246,25 @@
 
 <div class="actions">
 	<h3><?php echo __('Actions'); ?></h3>
-
-	<ul>
+	<div>
 	<?php 
 	      if ($authUserData['role_id']==1) {  # Administrators
 		  echo "<li>".$this->Html->link(__('Create New Doc'), 
 		                   array('action' => 'add'))."</li>";
 	      }
 	?>
+	</div>
 
-     <li> <?php echo $this->Html->link('Show All', array('controller' => 'docs', 'action' => 'index')); ?> </li>
-     </ul>
+	<?php
+		echo $this->Form->create(null,array(
+		     'action'=>'index'
+		));
+		echo $this->Form->input('Search.title',array('div'=>false,'label'=>'Title Search:'));
+		echo $this->Form->submit('Search',array('div'=>false));
+echo $this->Html->link('Show All', array('controller' => 'docs', 'action' => 'index'));		echo $this->Form->end();
+	?>
+
+
      <div class='Facility_filter'>
      Select Facility
      <ul id='facility'> 
