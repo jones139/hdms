@@ -257,9 +257,17 @@
 
 	<?php
 		echo $this->Form->create(null,array(
-		     'action'=>'index'
+		     'action'=>'index',
+		     'type'=>'get'
 		));
-		echo $this->Form->input('Search.title',array('div'=>false,'label'=>'Title Search:'));
+		if (isSet($query['title'])) 
+		   $searchStr = $query['title'];
+		else
+		   $searchStr = '';
+		echo $this->Form->input('Search.title',array(
+		    'div'=>false,
+		    'label'=>'Title/Doc. No. Search:',
+		    'default'=>$searchStr));
 		echo $this->Form->submit('Search',array('div'=>false));
 echo $this->Html->link('Show All', array('controller' => 'docs', 'action' => 'index'));		echo $this->Form->end();
 	?>

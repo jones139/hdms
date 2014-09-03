@@ -64,12 +64,18 @@ class DocsController extends AppController {
 		   			      'conditions'=>array());
 
                 # Deal with a post parameter 'Search.title' for title search.
-                if ($this->request->is('post')) {
-                    if (isSet($this->request->data['Search'])) {
-                        $searchStr = $this->request->data['Search']['title'];
+                #echo var_dump($this->request);
+                if ($this->request->is('get')) {
+                    if (isSet($this->request->query['title'])) {
+                        $searchStr = $this->request->query['title'];
+                        #echo $searchStr;
                         $this->Paginator->settings['conditions']['OR']=
                             array('Doc.title LIKE'=> "%$searchStr%");
+                        $this->Paginator->settings['conditions']['OR']=
+                            array('Doc.docNo LIKE'=> "%$searchStr%");
                     }
+
+                    $this->set('query',$this->request->query);
                 }
 
 
