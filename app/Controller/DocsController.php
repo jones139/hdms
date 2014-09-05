@@ -63,8 +63,8 @@ class DocsController extends AppController {
                 $this->Paginator->settings = array(
 		   			      'conditions'=>array());
 
-                # Deal with a post parameter 'Search.title' for title search.
-                #echo var_dump($this->request);
+                ################################################
+                # Deal with a get query string to filter results.
                 if ($this->request->is('get')) {
                     if (isSet($this->request->query['title'])) {
                         $searchStr = $this->request->query['title'];
@@ -90,7 +90,7 @@ class DocsController extends AppController {
                     else
                         $docSubTypeArr = array(0,1,2,3);
 
-                    echo var_dump($facArr);
+                    # Build the query from the various components.
                     $conditions = array(
                         'AND'=>array(
                             'Doc.Facility_id'=>$facArr,
@@ -100,9 +100,16 @@ class DocsController extends AppController {
                         'OR'=>$searchClause
                         );
                     $this->Paginator->settings['conditions']=$conditions;
+
+                    # Send the query to the view so we can populate the
+                    # form elements correctly.
                     $this->set('query',$this->request->query);
                 }
 
+		$facilities = $this->Doc->Facility->find('list');
+		$doc_types = $this->Doc->DocType->find('list');
+		$doc_subtypes = $this->Doc->DocSubtype->find('list');
+		$this->set(compact('facilities','doc_types','doc_subtypes'));
                 
 		$docs = $this->Paginator->paginate();
 		$this->set('docs', $docs);

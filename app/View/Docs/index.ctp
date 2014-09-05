@@ -251,48 +251,46 @@
 		     'action'=>'index',
 		     'type'=>'get'
 		));
+		echo $this->Form->submit('Search',array('div'=>false));
 		echo $this->Html->link('Show All', array(
 		     'controller' => 'docs', 
 		     'action' => 'index'));
 
-		# FIXME - Really we should set this from the database.
-		$facilities = array(0=>'HAT',1=>'CA',2=>'CF');
 		if (isSet($query['Facility']))
 		    $facArr = $query['Facility'];
 		else
+		    # FIXME - should depend on size of $facilities
 		    $facArr = array(0,1,2);
 		echo $this->Form->input("Facility",
 		     array(
 		     'multiple'=>'true',
-		     'options'=>$facilities,
+		     'options'=>$facilities, # provide by controller
 		     'selected'=>$facArr,
 		     'div'=>false)
 		    );
 
-		# FIXME - Really we should set this from the database.
-		$docTypes = array(0=>'MSM',1=>'POL',2=>'PROC',3=>'FORM',4=>'REC');
 		if (isSet($query['DocType']))
 		    $docTypeArr = $query['DocType'];
 		else
+		    # FIXME - should depend on size of $doc_types
 		    $docTypeArr = array(0,1,2,3,4);
 		echo $this->Form->input("DocType",
 		     array(
 		     'multiple'=>'true',
-		     'options'=>$docTypes,
+		     'options'=>$doc_types,
 		     'selected'=>$docTypeArr,
 		     'div'=>false)
 		    );
 
-		# FIXME - Really we should set this from the database.
-		$docSubTypes = array(0=>'GOV',1=>'FIN',2=>'HR',3=>'H&S',4=>'FAC',5=>'EDU');
 		if (isSet($query['DocSubType']))
 		    $docSubTypeArr = $query['DocSubType'];
 		else
+		    # FIXME - should depend on size of doc_subtypes
 		    $docSubTypeArr = array(0,1,2,3,4,5);
 		echo $this->Form->input("DocSubType",
 		     array(
 		     'multiple'=>'true',
-		     'options'=>$docSubTypes,
+		     'options'=>$doc_subtypes,  # provide by controller.
 		     'selected'=>$docSubTypeArr,
 		     'div'=>false)
 		    );
