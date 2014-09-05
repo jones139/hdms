@@ -70,9 +70,10 @@ class DocsController extends AppController {
                         $searchStr = $this->request->query['title'];
                         #echo $searchStr;
                         $this->Paginator->settings['conditions']['OR']=
-                            array('Doc.title LIKE'=> "%$searchStr%");
-                        $this->Paginator->settings['conditions']['OR']=
-                            array('Doc.docNo LIKE'=> "%$searchStr%");
+                            array(
+				'Doc.title LIKE'=> "%$searchStr%",
+			    	'Doc.docNo LIKE'=> "%$searchStr%"
+				);
                     }
 
                     $this->set('query',$this->request->query);
