@@ -63,7 +63,7 @@
                                     'action'=>'download_file',$issued_rev['id'],
 				    'native'=>true)));
                          }
-		      	 echo "<br/>".$this->Html->link("Edit Rev",
+		      	 echo "<br/>".$this->Html->link("View Rev",
 			    array('controller'=>'revisions',
                             'action'=>'edit',$issued_rev['id']),
                             array('class'=>'actions')
