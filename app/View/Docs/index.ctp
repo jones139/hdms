@@ -159,26 +159,14 @@
 	<table cellpadding="0" cellspacing="0">
 	<thead>
 	<tr>
-			<th><?php echo $this->Paginator->sort('facilty_id','Facility'); ?></th>
-			<th><?php echo $this->Paginator->sort('doc_type_id','Type'); ?></th>
-			<th><?php echo $this->Paginator->sort('doc_subtype_id','Sub-Type'); ?></th>
 			<th><?php echo $this->Paginator->sort('docNo','Doc. No.'); ?></th>
 			<th><?php echo $this->Paginator->sort('title','Title'); ?></th>
-			<th><?php echo "Issued"; ?></th>
+			<th><?php echo "Issued Revision"; ?></th>
 	</tr>
 	</thead>
 	<tbody>
 	<?php foreach ($docs as $doc): ?>
 	<tr>
-		<td>
-			<?php echo $doc['Facility']['title']; ?>
-		</td>
-		<td>
-			<?php echo $doc['DocType']['title']; ?>
-		</td>
-		<td>
-			<?php echo $doc['DocSubtype']['title']; ?>
-		</td>
 		<td><?php echo h($doc['Doc']['docNo']); ?>&nbsp;</td>
 		<td><?php echo h($doc['Doc']['title']); ?>&nbsp;</td>
 		<td>
@@ -255,11 +243,60 @@
 	?>
 	</div>
 
+	
 	<?php
+		########################################################
+		# Search Form
 		echo $this->Form->create(null,array(
 		     'action'=>'index',
 		     'type'=>'get'
 		));
+		echo $this->Html->link('Show All', array(
+		     'controller' => 'docs', 
+		     'action' => 'index'));
+
+		# FIXME - Really we should set this from the database.
+		$facilities = array(0=>'HAT',1=>'CA',2=>'CF');
+		if (isSet($query['Facility']))
+		    $facArr = $query['Facility'];
+		else
+		    $facArr = array(0,1,2);
+		echo $this->Form->input("Facility",
+		     array(
+		     'multiple'=>'true',
+		     'options'=>$facilities,
+		     'selected'=>$facArr,
+		     'div'=>false)
+		    );
+
+		# FIXME - Really we should set this from the database.
+		$docTypes = array(0=>'MSM',1=>'POL',2=>'PROC',3=>'FORM',4=>'REC');
+		if (isSet($query['DocType']))
+		    $docTypeArr = $query['DocType'];
+		else
+		    $docTypeArr = array(0,1,2,3,4);
+		echo $this->Form->input("DocType",
+		     array(
+		     'multiple'=>'true',
+		     'options'=>$docTypes,
+		     'selected'=>$docTypeArr,
+		     'div'=>false)
+		    );
+
+		# FIXME - Really we should set this from the database.
+		$docSubTypes = array(0=>'GOV',1=>'FIN',2=>'HR',3=>'H&S',4=>'FAC',5=>'EDU');
+		if (isSet($query['DocSubType']))
+		    $docSubTypeArr = $query['DocSubType'];
+		else
+		    $docSubTypeArr = array(0,1,2,3,4,5);
+		echo $this->Form->input("DocSubType",
+		     array(
+		     'multiple'=>'true',
+		     'options'=>$docSubTypes,
+		     'selected'=>$docSubTypeArr,
+		     'div'=>false)
+		    );
+
 		if (isSet($query['title'])) 
 		   $searchStr = $query['title'];
 		else
@@ -269,54 +306,11 @@
 		    'label'=>'Title/Doc. No. Search:',
 		    'default'=>$searchStr));
 		echo $this->Form->submit('Search',array('div'=>false));
-echo $this->Html->link('Show All', array('controller' => 'docs', 'action' => 'index'));		echo $this->Form->end();
+		echo $this->Html->link('Show All', array(
+		     'controller' => 'docs', 
+		     'action' => 'index'));
+		echo $this->Form->end();
 	?>
-
-
-     <div class='Facility_filter'>
-     Select Facility
-     <ul id='facility'> 
-     <li><?php echo $this->Html->link('HAT', array('controller' => 'docs', 'action' => 'index','facility'=>0)); ?></li>
-     <li><?php echo $this->Html->link('CA', array('controller' => 'docs', 'action' => 'index','facility'=>1)); ?></li>
-     <li><?php echo $this->Html->link('CF', array('controller' => 'docs', 'action' => 'index','facility'=>2)); ?></li>
-     </ul>
-     </div>
-
-     <div class='Doc_type_filter'>
-     Select Doc Type
-     <ul>
-     <li><?php echo $this->Html->link('MSM', array('controller' => 'docs', 'action' => 'index','doc_type'=>0)); ?></li>
-     <li><?php echo $this->Html->link('POL', array('controller' => 'docs', 'action' => 'index','doc_type'=>1)); ?></li>
-     <li><?php echo $this->Html->link('PROC', array('controller' => 'docs', 'action' => 'index','doc_type'=>2)); ?></li>
-     </ul>
-     </div>
-
-<!--
-     <div class='Doc_subType_filter'>
-     Select Doc Sub-Type
-     <ul>
-     <li><?php echo $this->Html->link('All', array('controller' => 'docs', 'action' => 'index')); ?></li>
-     <li><?php echo $this->Html->link('GOV', array('controller' => 'docs', 'action' => 'index','doc_subtype'=>0)); ?></li>
-     <li><?php echo $this->Html->link('FIN', array('controller' => 'docs', 'action' => 'index','doc_subtype'=>1)); ?></li>
-     <li><?php echo $this->Html->link('HR', array('controller' => 'docs', 'action' => 'index','doc_subtype'=>2)); ?></li>
-     <li><?php echo $this->Html->link('H&S', array('controller' => 'docs', 'action' => 'index','doc_subtype'=>3)); ?></li>
-     <li><?php echo $this->Html->link('FAC', array('controller' => 'docs', 'action' => 'index','doc_subtype'=>4)); ?></li>
-     </ul>
-     </div>
-
-     <button onclick='applyFilter()'>Apply Filter</button>
-
-     <script>
-     applyFilter = function() {
-        facility = $('#facility').val();
-        docType = $('#docType').val();
-        
-	newURL = $(location).attr('href')+'docType:'+docType;
-	alert(newURL);
-	$(document).load(newURL);
-     }
-     </script>
--->
 
 
 </div>

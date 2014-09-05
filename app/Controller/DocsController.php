@@ -68,47 +68,42 @@ class DocsController extends AppController {
                 if ($this->request->is('get')) {
                     if (isSet($this->request->query['title'])) {
                         $searchStr = $this->request->query['title'];
-                        #echo $searchStr;
-                        $this->Paginator->settings['conditions']['OR']=
-                            array(
+                        $searchClause =     array(
 				'Doc.title LIKE'=> "%$searchStr%",
 			    	'Doc.docNo LIKE'=> "%$searchStr%"
 				);
-                    }
+                    } else
+                        $searchClause = array();
 
+                    if (isSet($this->request->query['Facility'])) 
+                        $facArr = $this->request->query['Facility'];
+                    else
+                        $facArr = array(0,1,2);
+
+                    if (isSet($this->request->query['DocType'])) 
+                        $docTypeArr = $this->request->query['DocType'];
+                    else
+                        $docTypeArr = array(0,1,2,3);
+
+                    if (isSet($this->request->query['DocSubType'])) 
+                        $docSubTypeArr = $this->request->query['DocSubType'];
+                    else
+                        $docSubTypeArr = array(0,1,2,3);
+
+                    echo var_dump($facArr);
+                    $conditions = array(
+                        'AND'=>array(
+                            'Doc.Facility_id'=>$facArr,
+                            'Doc.Doc_Type_id'=>$docTypeArr,
+                            'Doc.Doc_SubType_id'=>$docSubTypeArr
+                        ),
+                        'OR'=>$searchClause
+                        );
+                    $this->Paginator->settings['conditions']=$conditions;
                     $this->set('query',$this->request->query);
                 }
 
-
-		if (isset($this->params[ 'named' ][ 'facility' ])) {
-		   $facility = $this->params[ 'named' ][ 'facility' ];
-		   if ($facility != "All") {
-		      $this->Paginator->settings['conditions']['Doc.facility_id']=
-			$facility;
-		   }
-		} 
-		if (isset($this->params[ 'named' ][ 'doc_type' ])) {
-		   $docType = $this->params[ 'named' ][ 'doc_type' ];
-		   if ($docType != "All") {
-		      $this->Paginator->settings['conditions']['Doc.doc_type_id']=
-			$docType;
-		   }
-		} 
-		if (isset($this->params[ 'named' ][ 'doc_subtype' ])) {
-		   $docSubType = $this->params[ 'named' ][ 'doc_subtype' ];
-		   if ($docSubType != "All") {
-		       $this->Paginator->settings['conditions']['Doc.doc_subtype_id']=
-			$docSubType;
-                   }
-		} 
-		if (isset($this->params[ 'named' ][ 'issued' ])) {
-	   	      $this->Paginator->settings['contain']=array(
-			  'Revision'=>array(
-				'order'=> 'Revision.id ASC',
-				'limit'=>1
-				));
-		} 
-
+                
 		$docs = $this->Paginator->paginate();
 		$this->set('docs', $docs);
 	}
