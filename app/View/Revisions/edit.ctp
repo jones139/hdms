@@ -28,8 +28,8 @@
       }
       echo '</p>';
       # Only show check-in/out buttons if the revision is a draft.
+      echo '<p class="actions">';
       if ($this->request->data['DocStatus']['id']==0) {   
-      	 echo '<p>';
       	 if ($this->request->data['Revision']['is_checked_out']) {
             echo "File checked out by ".$users[$this->request->data['Revision']['check_out_user_id']]." on ".$this->request->data['Revision']['check_out_date'];
 	    echo '<nbrsp/> ';
@@ -57,14 +57,15 @@
                  array('controller'=>'revisions','action'=>'attach_file',
 			    $this->request->data['Revision']['id']));
 	    }
-         echo '</p>';
          }
       } else {
          # If it is not a draft, we just show a view/download button
       	    echo $this->Html->link('View File',
-                 array('controller'=>'revisions','action'=>'download_file',
+                 array('controller'=>'revisions',
+		        'action'=>'download_file',
 			    $this->request->data['Revision']['id']));       
       }
+      echo '</p>';
 
       ######################
       # Route List Section #
@@ -73,14 +74,19 @@
       	 echo '<h3>Route List Number '.$lastRouteList_id.' - status = '.$routeListStatuses[$lastRouteList_status].'</h3>';
          echo '<p>';
           if (isset($routeListEntries)) {
-	     echo "<ol>";
+	     echo "<table>";
+	     echo "<tr>";
+	     echo "<th>User</th><th>Response</th><th>Date</th><th>Comment</th>";
+	     echo "</tr>";
 	     foreach ($routeListEntries as $rle) {
-	        echo "<li>".$users[$rle['RouteListEntries']['user_id']];
-		echo " : ".$responses[$rle['RouteListEntries']['response_id']];
-		echo " : ".$rle['RouteListEntries']['response_date'];
-		echo " : ".$rle['RouteListEntries']['response_comment'];
+	        echo "<tr>";
+	        echo "<td>".$users[$rle['RouteListEntries']['user_id']]."</td>";
+		echo "<td>".$responses[$rle['RouteListEntries']['response_id']]."</td>";
+		echo "<td>".$rle['RouteListEntries']['response_date']."</td>";
+		echo "<td>".$rle['RouteListEntries']['response_comment']."</td>";
 		# Only show approve buttons if route list is in 'submitted'
 		# status.
+		echo "<td class='actions'>";
 	        if ($lastRouteList_status==1) {
 		   if ($authUserData['id'] == $rle['RouteListEntries']['user_id'] && (!$rle['RouteListEntries']['response_id']>0)) {
       		      echo $this->Html->link('Approve/Reject Revision',
@@ -96,9 +102,11 @@
 		          $lastRouteList_id,'forUser'=>$rle['RouteListEntries']['user_id']));
 		   }
 		}
-		echo "</li>";
+		echo "</td>";
+		echo "</tr>";
 	     }
-	     echo "</ol>";
+	     echo "</table>";
+	     echo "<p class='actions'>";
 	     # Allow the user to edit or submit draft or cancelled route lists.
 	     if ($lastRouteList_status==0 || $lastRouteList_status==3) {
       	       echo $this->Html->link('Edit Route List',
