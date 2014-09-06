@@ -26,6 +26,13 @@ class User extends AppModel {
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
+		),
+		'Position' => array(
+			'className' => 'Position',
+			'foreignKey' => 'position_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
 		)
 	);
 

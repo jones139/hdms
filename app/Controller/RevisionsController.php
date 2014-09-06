@@ -146,8 +146,19 @@ class RevisionsController extends AppController {
         
 	#################################	
 	# Send the view the list of users
-	$this->loadModel('Users');
-	$users = $this->Users->find('list');
+        # Send the view the list of active users (role != 0)
+        # NOTE this uses model 'User' not 'Users' - ignores associations
+        # if you use 'Users'!!!!!
+        $this->loadModel('User');
+        $options = array('conditions'=>array('User.role_id != '=>0));
+        $usersArr = $this->User->find('all',$options);
+        
+        # Simplify it to give title as ('Name (position)')
+        $users = array();
+        foreach ($usersArr as $ua) {
+            $users[$ua['User']['id']] = $ua['User']['title'].
+            ' ('.$ua['Position']['title'].')';
+        }
         
 	#################################	
 	# Send the view the list of responses

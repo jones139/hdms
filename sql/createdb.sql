@@ -4,6 +4,12 @@ CREATE TABLE roles (
     title VARCHAR(50)
 );
 
+drop table if exists positions;
+CREATE TABLE positions (
+    id INT UNSIGNED PRIMARY KEY,
+    title VARCHAR(50)
+);
+
 drop table if exists users;
 CREATE TABLE users (
     id INT UNSIGNED auto_increment PRIMARY KEY,
@@ -13,6 +19,7 @@ CREATE TABLE users (
     email varchar(100),
     email_verified bool default false,
     role_id int,
+    position_id int,
     created DATETIME default null,
     modified datetime default null
 );
@@ -120,6 +127,12 @@ insert into roles (id,title) values (0,'Disabled');
 insert into roles (id,title) values (1,'Administrator');
 insert into roles (id,title) values (2,'User');
 
+insert into positions (id,title) values (0,'None');
+insert into positions (id,title) values (1,'Staff');
+insert into positions (id,title) values (2,'SLT');
+insert into positions (id,title) values (3,'Governor');
+insert into positions (id,title) values (4,'Director');
+
 insert into doc_statuses (id,title) values (0,'Draft');
 insert into doc_statuses (id,title) values (1,'Waiting Approval');
 insert into doc_statuses (id,title) values (2,'Issued');
@@ -155,10 +168,10 @@ insert into facilities (id,title,description) values (1,'CA','Catcote Academy');
 insert into facilities (id,title,description) values (2,'CF','Catcote Futures');
 
 
-insert into users (username,title,role_id,password) values ("Admin","Administrator",1,"afcf02f321a501cf9cff31f022455dade82cd3f4");
-insert into users (username,title,role_id,password) values ("User1","User 1",2,"afcf02f321a501cf9cff31f022455dade82cd3f4");
-insert into users (username,title,role_id,password) values ("User2","User 2",2,"afcf02f321a501cf9cff31f022455dade82cd3f4");
-insert into users (username,title,role_id,password) values ("banned","Banned User",0,"afcf02f321a501cf9cff31f022455dade82cd3f4");
+insert into users (username,title,role_id,position_id,password) values ("Admin","Administrator",1,1,"afcf02f321a501cf9cff31f022455dade82cd3f4");
+insert into users (username,title,role_id,position_id,password) values ("User1","User 1",2,1,"afcf02f321a501cf9cff31f022455dade82cd3f4");
+insert into users (username,title,role_id,position_id,password) values ("User2","User 2",2,1,"afcf02f321a501cf9cff31f022455dade82cd3f4");
+insert into users (username,title,role_id,position_id,password) values ("banned","Banned User",0,0,"afcf02f321a501cf9cff31f022455dade82cd3f4");
 
 insert into docs (facility_id,doc_type_id,doc_subtype_id,docNo,title) values (0,1,0,"xxx/yyy/zzz","title 1");
 insert into docs (facility_id,doc_type_id,doc_subtype_id,docNo,title) values (0,1,2,"HAT/POL/FIN/xxx","Finance Policy xxx");
