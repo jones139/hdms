@@ -1,14 +1,26 @@
 <div class="revisions form">
 <?php echo $this->Form->create('Revision'); ?>
 	<fieldset>
-		<legend><?php echo __('Editing Revision '.$this->request->data['Revision']['major_revision'].'_'.$this->request->data['Revision']['minor_revision'].' of document "'.$this->request->data['Doc']['title'].'" ('.$this->request->data['Doc']['docNo'].') - Revision Status = '.$this->request->data['DocStatus']['title']);  ?></legend>
+		<legend><?php echo __('Revision '.$this->request->data['Revision']['major_revision'].'_'.$this->request->data['Revision']['minor_revision'].' of document "'.$this->request->data['Doc']['title'].'" ('.$this->request->data['Doc']['docNo'].') <br/> Revision Status = '.$this->request->data['DocStatus']['title']);  ?></legend>
 	<?php
+		$this->Form->inputDefaults(array(
+			'div' => false,
+    			)
+		);
 		echo $this->Form->hidden('doc_status_id');
 		echo $this->Form->hidden('id');
 		echo $this->Form->hidden('doc_id');
 		echo $this->Form->hidden('major_revision');
 		echo $this->Form->hidden('minor_revision');
 		echo $this->Form->hidden('user_id');
+		if ($this->request->data['Revision']['doc_status_id']==0) {
+		   echo $this->Form->input('comment',array('label'=>'Revision Summary (Changes from last Major Revision)'));
+		   echo $this->Form->submit('Update Revision Summary');
+		} else {
+		   echo $this->Form->input('comment',
+		   	array('label'=>'Revision Summary (Changes from last Major Revision)',
+			'disabled'=>true));
+		}
 	?>
 	</fieldset>
 <?php echo $this->Form->end(); ?>

@@ -24,15 +24,21 @@ CREATE TABLE users (
     modified datetime default null
 );
 
+##############################################################
+# Notification of something relating to a revision
+#  These are usually requesting a user to approve a revision.
 drop table if exists notifications;
 create table notifications (
        id int unsigned auto_increment PRIMARY KEY,
        user_id int,
        body_text varchar(256),
        active bool,
-       revision_id int
+       revision_id int default 0,  # 0 is the most common approval request.
+       notification_type_id int
 );
 
+#############################################################
+# list of facilities (business units)
 drop table if exists facilities;
 create table facilities (
        id int unsigned primary key,
@@ -77,6 +83,7 @@ CREATE TABLE revisions (
     doc_id integer,
     major_revision int,
     minor_revision int,
+    comment text,
     user_id int,
     is_checked_out bool default false,
     check_out_date datetime,
@@ -113,7 +120,7 @@ create table route_list_entries (
        user_id integer,
        response_id integer default 0,
        response_date datetime,
-       response_comment varchar(256)
+       response_comment text
 );
 
 drop table if exists responses;
