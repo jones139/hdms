@@ -360,6 +360,8 @@ class Revision extends AppModel {
             }
 	    $lastrev['Revision']['doc_status_id']=0;
 	    $lastrev['Revision']['doc_status_date']=date('Y-m-d H:i:s');
+            # We don't copy the pdf from old revision.
+            $lastrev['Revision']['has_pdf']=false;  
 	    $this->save($lastrev);
 	    $newrev_id = $this->getInsertID();
 	    if ($lastrev['Revision']['has_native']) {
@@ -390,6 +392,7 @@ class Revision extends AppModel {
 	    $newrev['Revision']['major_revision']=1;
 	    $newrev['Revision']['minor_revision']=1;
 	    $newrev['Revision']['has_native']=false;
+	    $newrev['Revision']['has_pdf']=false;
 	    $newrev['Revision']['doc_status_id']=0;
 	    $newrev['Revision']['doc_status_date']=date('Y-m-d H:i:s');
 	    $this->save($newrev);
