@@ -166,16 +166,17 @@
 	</thead>
 	<tbody>
 	<?php foreach ($docs as $doc): ?>
-	<tr>
-		<td><?php echo h($doc['Doc']['docNo']); ?>&nbsp;</td>
-		<td><?php echo h($doc['Doc']['title']); ?>&nbsp;</td>
-		<td>
 		<?php 
 		      $issued_rev = null;
 		      foreach ($doc['Revision'] as $rev) {
 		      	      if ($rev['doc_status_id']==2) $issued_rev = $rev;
 		      }
 		      if ($issued_rev != null) {
+
+		      	 echo "<tr>";
+			 echo "<td>".h($doc['Doc']['docNo'])."</td>";
+			 echo "<td>".h($doc['Doc']['title'])."</td>";
+			 echo "<td>";
 		      	 echo $issued_rev['major_revision'].'_'.
 				$issued_rev['minor_revision'].' ';
 
@@ -198,13 +199,10 @@
 
 			 echo '<br/>(',$this->Time->niceShort($issued_rev['doc_status_date']),')';
 
-
-		      } else {
-		         echo "none";
-		      }
-		 ?>&nbsp;</td>
-
-	</tr>
+			 echo "</td>";
+			 echo "</tr>";
+			 }
+			 ?>
 <?php endforeach; ?>
 	</tbody>
 	</table>
