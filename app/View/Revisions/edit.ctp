@@ -57,12 +57,12 @@
       	       echo $this->Html->link('Check Out File',
                  array('controller'=>'revisions','action'=>'checkout_file',
 			    $this->request->data['Revision']['id']));
-               echo "<br/>";
-      	       echo $this->Html->link('Upload PDF Version of File',
-                 array('controller'=>'revisions','action'=>'attach_file',
-			    $this->request->data['Revision']['id'],
-			    'pdf'=>'true'),
-                     array('class'=>'button'));
+               #echo "<br/>";
+      	       #echo $this->Html->link('Upload PDF Version of File',
+               #  array('controller'=>'revisions','action'=>'attach_file',
+	       #		    $this->request->data['Revision']['id'],
+		#	    'pdf'=>'true'),
+                #     array('class'=>'button'));
 
 	    } else {
       	       echo $this->Html->link('Attach File',
