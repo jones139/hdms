@@ -8,6 +8,7 @@
 			<th><?php echo $this->Paginator->sort('body_text'); ?></th>
 			<th>Document</th>
 			<th><?php echo $this->Paginator->sort('revision_id','Revision'); ?></th>
+			<th><?php echo $this->Paginator->sort('sent_date','Date'); ?></th>
 			<th class="actions"><?php echo __('Actions'); ?></th>
 	</tr>
 	</thead>
@@ -34,6 +35,10 @@
                                   $notification['Revision']['id'])); ?>
 		</td>
 
+		<td>
+			<?php
+			echo $notification['Notification']['sent_date'];
+			?>
 
 		<td class="actions">
 			<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $notification['Notification']['id']), array(), __('Are you sure you want to delete # %s?', $notification['Notification']['id'])); ?>

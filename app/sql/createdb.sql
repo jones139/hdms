@@ -1,3 +1,12 @@
+drop table if exists settings;
+create table settings (
+    id INT UNSIGNED PRIMARY KEY,
+    email_enabled bool,   # globally enable or disable email notifications.
+    pdf_url varchar(256),  # url of pdf generator
+    pdf_user varchar(50),  # username for pdf generator
+    pdf_passwd varchar(50) # password for pdf generator
+);
+
 drop table if exists roles;
 CREATE TABLE roles (
     id INT UNSIGNED PRIMARY KEY,
@@ -34,7 +43,8 @@ create table notifications (
        body_text varchar(256),
        active bool,
        revision_id int default 0,  # 0 is the most common approval request.
-       notification_type_id int
+       notification_type_id int,
+       sent_date datetime default null
 );
 
 #############################################################
@@ -129,6 +139,7 @@ create table responses (
        title varchar(50)
 );
 
+insert into settings(id,email_enabled) values (0,true);
 
 insert into roles (id,title) values (0,'Disabled');
 insert into roles (id,title) values (1,'Administrator');
@@ -182,7 +193,7 @@ insert into users (username,title,role_id,position_id,password) values ("banned"
 
 insert into docs (facility_id,doc_type_id,doc_subtype_id,docNo,title) values (0,1,0,"xxx/yyy/zzz","title 1");
 insert into docs (facility_id,doc_type_id,doc_subtype_id,docNo,title) values (0,1,2,"HAT/POL/FIN/xxx","Finance Policy xxx");
-insert into revisions (doc_id,major_revision,minor_revision,user_id,doc_status_id) values (1,1,1,1,1);
+insert into revisions (doc_id,major_revision,minor_revision,user_id,doc_status_id) values (1,1,1,1,0);
 
 insert into route_lists(revision_id) values (1);
 insert into route_list_entries (route_list_id,user_id) values (1,1);

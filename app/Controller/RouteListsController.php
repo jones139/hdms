@@ -411,7 +411,12 @@ class RouteListsController extends AppController {
         $revisionArr = $this->RouteList->find('list', $options);
         $revision_id = reset($revisionArr);  # get first element
         foreach ($userlist as $user_id) {
-            $this->Notification->send($user_id,$revision_id,"Please Approve Revision");	   
+            $this->Notification->send(
+                $user_id,
+                $revision_id,
+                "Please Approve Revision",
+                0   #  Approval type notification
+            );	   
         }
         $this->set(compact('userlist','revisionArr','revision_id'));
     } 

@@ -12,11 +12,12 @@
 		echo $this->Form->input('password');
 		echo $this->Form->input('confirm_password',array('type'=>'password'));
 		echo $this->Form->input('title',array('label'=>'Full Name'));
+
+		echo $this->Form->input('email_verified',array('label'=>'Enable Email Notifications'));
 		echo $this->Form->input('email');
 
 		# Some fields can only be edited by an administrator
 		if ($authUserData['role_id']==1) {
-		   echo $this->Form->input('email_verified');
 		   echo $this->Form->input('role_id');
 		   echo $this->Form->input('position_id');
 		}
