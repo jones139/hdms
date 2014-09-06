@@ -99,7 +99,11 @@
                                     'action'=>'download_file',$latest_rev['id'],
 				    'native'=>true)));
                          }
-		      	 echo "<br/>".$this->Html->link("Edit Rev",
+			 if ($latest_rev['doc_status_id']==0)
+			    $buttonCaption = "Edit Rev";
+			 else
+			    $buttonCaption = "View Rev";
+		      	 echo "<br/>".$this->Html->link($buttonCaption,
 			    array('controller'=>'revisions',
                             'action'=>'edit',$latest_rev['id']),
                             array('class'=>'button')
@@ -112,22 +116,24 @@
 		      }
 		?> </td>
                 <td class="actions"> <?php
-                  echo $this->Form->postLink('Major',
-			array('controller'=>'revisions',
-			      'action'=>'create_new_revision',$doc['Doc']['id'],
-			      'major'=>'true'),
-			      array(),__('Create Major Revision?'));
-
                   # if the latest revision is the issued revision, we can
-                  # only create a new major revision, so do not show minor
-		  # rev button.
+                  # only create a new major revision
+		  # If it is not the latest major revision is not issued, so
+		  # we only show minor rev button.
 		  if ($latest_rev['id']!=$issued_rev['id']) {	      
-                    echo ":";
                     echo $this->Form->postLink('Minor',
 			array('controller'=>'revisions',
-                              'action'=>'create_new_revision',$doc['Doc']['id']),
-			array(),__('Create Minor Revision?'));
-                    }
+                              'action'=>'create_new_revision',
+			      $doc['Doc']['id'])
+			   );
+                    } else {
+		        echo $this->Form->postLink('Major',
+			array('controller'=>'revisions',
+			      'action'=>'create_new_revision',
+			      $doc['Doc']['id'],
+			      'major'=>'true')
+			      );
+		    }
 		?>
 		</td>
 		<td class="actions">
