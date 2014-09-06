@@ -91,7 +91,8 @@ class UsersController extends AppController {
                 }
             }
             $roles = $this->User->Role->find('list');
-            $this->set(compact('roles'));
+            $positions = $this->User->Position->find('list');
+            $this->set(compact('roles','positions'));
         } else {
             $this->Session->setFlash(__('Only an Administrator can do that!'));
             return $this->redirect($this->referer());          
@@ -146,7 +147,8 @@ class UsersController extends AppController {
             unset($this->request->data['User']['password']);
             
             $roles = $this->User->Role->find('list');
-            $this->set(compact('roles'));
+            $positions = $this->User->Position->find('list');
+            $this->set(compact('roles','positions'));
         } else {
             $this->Session->setFlash(__('Only an Administrator can do that!'));
             return $this->redirect($this->referer());          

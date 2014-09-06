@@ -10,7 +10,7 @@
 		   echo $this->Form->input('username',array('disabled'=>'disabled'));
 		}
 		echo $this->Form->input('password');
-		echo $this->Form->input('confirm_password');
+		echo $this->Form->input('confirm_password',array('type'=>'password'));
 		echo $this->Form->input('title',array('label'=>'Full Name'));
 		echo $this->Form->input('email');
 
@@ -18,6 +18,7 @@
 		if ($authUserData['role_id']==1) {
 		   echo $this->Form->input('email_verified');
 		   echo $this->Form->input('role_id');
+		   echo $this->Form->input('position_id');
 		}
 	?>
 	</fieldset>
