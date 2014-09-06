@@ -226,6 +226,11 @@ class RouteListsController extends AppController {
         if ($this->request->is(array('post', 'put'))) {
             $this->request->data['RouteList']['route_list_status_id']=1;
             if ($this->RouteList->save($this->request->data)) {
+                # Check if the route list is approved - it won't be,
+                # but this function sets the document status correctly so
+                # we call it now anyway.
+                # FIXME - probably  best to have a setRevisionStatus function..
+                $approved = $this->RouteList->isApproved($id);
                 $this->Session->setFlash(__('The route list submited'));
                 $this->_notify_route_list_approvers($id);
                 return $this->redirect(
@@ -289,9 +294,12 @@ class RouteListsController extends AppController {
 
     /*
      * approve method - approve route list $id as the current user.
+     *  An administrator can provide a 'forUser' parameter to approve
+     *  on behalf of another user.
      *
      */
     public function approve($id = null) {
+
         $this->RouteList->recursive = 2;  #Needed to make sure we get Doc data in query.
         $this->loadModel('RouteListEntry');
         $this->loadModel('Responses');
@@ -309,10 +317,20 @@ class RouteListsController extends AppController {
             'conditions' => 
                 array('RouteListEntry.route_list_id' => $id));
             $rle = $this->RouteListEntry->find('first', $options);
-            $this->request->data['RouteListEntry']['response_date'] = 
-                date('Y-m-d H:i:s');
+
+            ##
+            # Check we are either the correct user, or an administrator before
+            # approving/rejecting.
+            if ($this->request->data['RouteListEntry']['user_id']!=
+            $this->Auth->user('id') and $this->Auth->user('role_id')!=1) {
+                $this->Session->setFlash(
+                    __('You are not being asked to approve this revision! How did you get here???'));
+                return $this->redirect($this->referer());
+            }
             #
             # Save the data
+            $this->request->data['RouteListEntry']['response_date'] = 
+                date('Y-m-d H:i:s');
             if ($this->RouteListEntry->save($this->request->data)) {
                 if ($this->RouteList->isComplete($id)) {
                     if ($this->RouteList->isApproved($id)) {
@@ -337,11 +355,27 @@ class RouteListsController extends AppController {
                 'action'=>'edit',
                 $rle['RouteList']['revision_id']));
         } else {
+            # Don't display the approve form if a non-admin user
+            # is trying to approve it for someone else.
+            if(isset($this->request->params['named']['forUser'])) {
+                if ($this->Auth->user('role_id')!=1) {
+                    $this->Session->setFlash(__('Only an Administrator can approve'.
+                    ' documents for other users!'));
+                    return $this->redirect($this->referer());          
+                } else {
+                    $user_id = $this->request->params['named']['forUser'];
+                }
+            } else {
+                $user_id = $this->Auth->user('id');
+            }
+
+            # Get the route list entry data so we can check who is being
+            # asked to approve it.
             $options = array(
                 'conditions' => 
                 array('RouteListEntry.route_list_id' => $id,
                 'RouteListEntry.user_id'=>
-                $this->Auth->user('id')));
+                $user_id));
             $this->request->data = $this->RouteListEntry->
                 find('first', $options);
             # 

@@ -83,7 +83,7 @@
 		# status.
 	        if ($lastRouteList_status==1) {
 		   if ($authUserData['id'] == $rle['RouteListEntries']['user_id'] && (!$rle['RouteListEntries']['response_id']>0)) {
-      		      echo $this->Html->link('Approve Revision',
+      		      echo $this->Html->link('Approve/Reject Revision',
       		          array('controller'=>'routeLists','action'=>'approve',
 		          $lastRouteList_id));
 		   }
@@ -91,9 +91,9 @@
 		   if (($authUserData['role_id']==1) &&
 		      ($authUserData['id'] != $rle['RouteListEntries']['user_id']) && 
 		      (!$rle['RouteListEntries']['response_date'])) {
-      		      echo $this->Html->link('Approve Revision as Administrator',
+      		      echo $this->Html->link('Approve/Reject Revision as Administrator',
       		          array('controller'=>'routeLists','action'=>'approve',
-		          $lastRouteList_id));
+		          $lastRouteList_id,'forUser'=>$rle['RouteListEntries']['user_id']));
 		   }
 		}
 		echo "</li>";

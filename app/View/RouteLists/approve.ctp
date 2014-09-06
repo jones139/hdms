@@ -9,6 +9,7 @@
 	<?php
 		echo $this->Form->hidden('id');
 		echo $this->Form->hidden('route_list_id');
+		echo $this->Form->hidden('user_id');
 		echo $this->Form->input('response_id');
 		echo $this->Form->input('response_comment');
 	?>
