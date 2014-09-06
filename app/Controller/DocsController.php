@@ -61,7 +61,8 @@ class DocsController extends AppController {
 	public function index() {
 		$this->Doc->recursive = 1;
                 $this->Paginator->settings = array(
-		   			      'conditions'=>array());
+                    'conditions'=>array(),
+                    'limit'=>10);
 
                 ################################################
                 # Deal with a get query string to filter results.
