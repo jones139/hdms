@@ -124,7 +124,7 @@ class RouteListsController extends AppController {
     
     
 /**
- * edit method - adds an approver (route list entry) to 
+ * edit route list method - adds an approver (route list entry) to 
  *  a route list.
  *
  * @return void
@@ -155,9 +155,12 @@ class RouteListsController extends AppController {
                 'RouteListEntry'=>array('route_list_id'=>$id));
         }
 
-        # Send the view the list of users
+        # Send the view the list of active users (role != 0)
         $this->loadModel('Users');
-        $users = $this->Users->find('list');
+        $options = array('conditions'=>array(
+            'Users.role_id != '=>0)
+        );
+        $users = $this->Users->find('list',$options);
         
         # Send the view the list of existing route list entries
         $this->loadModel('RouteListEntries');
