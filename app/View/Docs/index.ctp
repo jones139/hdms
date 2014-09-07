@@ -264,7 +264,7 @@
 		    $facArr = $query['Facility'];
 		else
 		    # FIXME - should depend on size of $facilities
-		    $facArr = array(0,1,2);
+		    $facArr = array(1,2,3);
 		echo $this->Form->input("Facility",
 		     array(
 		     'multiple'=>'true',
@@ -277,7 +277,7 @@
 		    $docTypeArr = $query['DocType'];
 		else
 		    # FIXME - should depend on size of $doc_types
-		    $docTypeArr = array(0,1,2,3,4);
+		    $docTypeArr = array(1,2,3,4,5);
 		echo $this->Form->input("DocType",
 		     array(
 		     'multiple'=>'true',
@@ -290,7 +290,7 @@
 		    $docSubTypeArr = $query['DocSubType'];
 		else
 		    # FIXME - should depend on size of doc_subtypes
-		    $docSubTypeArr = array(0,1,2,3,4,5);
+		    $docSubTypeArr = array(1,2,3,4,5,6);
 		echo $this->Form->input("DocSubType",
 		     array(
 		     'multiple'=>'true',

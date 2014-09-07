@@ -191,8 +191,8 @@ insert into users (username,title,role_id,position_id,password) values ("User1",
 insert into users (username,title,role_id,position_id,password) values ("User2","User 2",2,1,"afcf02f321a501cf9cff31f022455dade82cd3f4");
 insert into users (username,title,role_id,position_id,password) values ("banned","Banned User",0,0,"afcf02f321a501cf9cff31f022455dade82cd3f4");
 
-insert into docs (facility_id,doc_type_id,doc_subtype_id,docNo,title) values (0,1,0,"xxx/yyy/zzz","title 1");
-insert into docs (facility_id,doc_type_id,doc_subtype_id,docNo,title) values (0,1,2,"HAT/POL/FIN/xxx","Finance Policy xxx");
+insert into docs (facility_id,doc_type_id,doc_subtype_id,docNo,title) values (1,1,1,"xxx/yyy/zzz","title 1");
+insert into docs (facility_id,doc_type_id,doc_subtype_id,docNo,title) values (2,1,2,"HAT/POL/FIN/xxx","Finance Policy xxx");
 insert into revisions (doc_id,major_revision,minor_revision,user_id,doc_status_id) values (1,1,1,1,0);
 
 insert into route_lists(revision_id) values (1);

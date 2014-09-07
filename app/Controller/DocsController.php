@@ -79,17 +79,17 @@ class DocsController extends AppController {
                     if (isSet($this->request->query['Facility'])) 
                         $facArr = $this->request->query['Facility'];
                     else
-                        $facArr = array(0,1,2);
+		      $facArr = array(1,2,3);
 
                     if (isSet($this->request->query['DocType'])) 
                         $docTypeArr = $this->request->query['DocType'];
                     else
-                        $docTypeArr = array(0,1,2,3);
+		      $docTypeArr = array(1,2,3,4);
 
                     if (isSet($this->request->query['DocSubType'])) 
                         $docSubTypeArr = $this->request->query['DocSubType'];
                     else
-                        $docSubTypeArr = array(0,1,2,3);
+		      $docSubTypeArr = array(1,2,3,4);
 
                     # Build the query from the various components.
                     $conditions = array(

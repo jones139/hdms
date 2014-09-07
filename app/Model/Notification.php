@@ -61,37 +61,41 @@ class Notification extends AppModel {
         * $nType is the notification type default 0 = approve, or 1 = for info.
 	*/
 	public function send($user_id,$revision_id,$message,$nType = 0) {
-	    $data = array('user_id'=>$user_id,
-			  'revision_id'=>$revision_id,
-			  'body_text'=>$message,
-                          'sent_date'=>date('Y-m-d H:i:s'),
-                          'notification_type_id'=>$nType,
-			  'active'=>true
-			  );
-	    $this->create();
-	    $this->save($data);
-
-            App::import('Model','Setting');
-            $SettingsModel = new Setting();
-            $settings = $SettingsModel->findById(0);
-            #echo var_dump($settings);
-
-            # Send email notification
-            $user = $this->User->findById($user_id);
-            #echo var_dump($user);
-            if ($user['User']['email_verified']) {
-                $email = $user['User']['email'];
-                $bodyTxt = "Please Approve document ".
-                    "<a href='".
-                    Router::url(array(
-                        'controller'=>'revisions',
-                        'action'=>'edit',
-                        $revision_id),true).
-                    "'>here</a>".var_dump($settings).
-                    ".";
-                mail($email,"HDMS Notification",$bodyTxt);
-            }
-        }
+	  $retval = array();
+	  $data = array('user_id'=>$user_id,
+			'revision_id'=>$revision_id,
+			'body_text'=>$message,
+			'sent_date'=>date('Y-m-d H:i:s'),
+			'notification_type_id'=>$nType,
+			'active'=>true
+			);
+	  $this->create();
+	  $this->save($data);
+	  
+	  App::import('Model','Setting');
+	  $SettingsModel = new Setting();
+	  $settings = $SettingsModel->findById(1)['Setting'];
+	  echo var_dump($settings);
+	  
+	  #########################################
+	    # Send email notification
+	  if ($settings['email_enabled']) {
+	    $user = $this->User->findById($user_id);
+	    #echo var_dump($user);
+	    if ($user['User']['email_verified']) {
+	      $email = $user['User']['email'];
+	      $bodyTxt = "Please Approve document ".
+		"<a href='".
+		Router::url(array(
+				  'controller'=>'revisions',
+				  'action'=>'edit',
+				  $revision_id),true).
+		"'>here</a>".var_dump($settings).
+		".";
+	      mail($email,"HDMS Notification",$bodyTxt);
+	    }
+	  }
+	}
 
 	/**
 	* Cancel notification to a user, refering to revision $revision_id
