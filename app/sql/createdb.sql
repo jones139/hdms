@@ -139,17 +139,17 @@ create table responses (
        title varchar(50)
 );
 
-insert into settings(id,email_enabled) values (0,true);
+insert into settings(id,email_enabled) values (1,true);
 
 insert into roles (id,title) values (0,'Disabled');
 insert into roles (id,title) values (1,'Administrator');
 insert into roles (id,title) values (2,'User');
 
-insert into positions (id,title) values (0,'None');
 insert into positions (id,title) values (1,'Staff');
 insert into positions (id,title) values (2,'SLT');
 insert into positions (id,title) values (3,'Governor');
 insert into positions (id,title) values (4,'Director');
+insert into positions (id,title) values (5,'Other');
 
 insert into doc_statuses (id,title) values (0,'Draft');
 insert into doc_statuses (id,title) values (1,'Waiting Approval');
@@ -167,23 +167,23 @@ insert into responses (id,title) values (1,"Approve");
 insert into responses (id,title) values (2,"Reject");
 
 
-insert into doc_types (id,title,description) values (0,'MSM','High level management system documents');
-insert into doc_types (id,title,description) values (1,'POL','Policy documents');
-insert into doc_types (id,title,description) values (2,'PROC','Procedures');
-insert into doc_types (id,title,description) values (3,'FORM','Forms');
-insert into doc_types (id,title,description) values (4,'REC','Records - usually completed forms');
+insert into doc_types (id,title,description) values (1,'MSM','High level management system documents');
+insert into doc_types (id,title,description) values (2,'POL','Policy documents');
+insert into doc_types (id,title,description) values (3,'PROC','Procedures');
+insert into doc_types (id,title,description) values (4,'FORM','Forms');
+insert into doc_types (id,title,description) values (5,'REC','Records - usually completed forms');
 
-insert into doc_subtypes (id,title,description) values (0,'GOV','Governance Documents');
-insert into doc_subtypes (id,title,description) values (1,'FIN','Finance Documents');
-insert into doc_subtypes (id,title,description) values (2,'HR','Human Resources Documents');
-insert into doc_subtypes (id,title,description) values (3,'H&S','Health and Safety Documents');
-insert into doc_subtypes (id,title,description) values (4,'FAC','Facilities Management Documents');
-insert into doc_subtypes (id,title,description) values (5,'EDU','Education / Curriculum Documents');
+insert into doc_subtypes (id,title,description) values (1,'GOV','Governance Documents');
+insert into doc_subtypes (id,title,description) values (2,'FIN','Finance Documents');
+insert into doc_subtypes (id,title,description) values (3,'HR','Human Resources Documents');
+insert into doc_subtypes (id,title,description) values (4,'H&S','Health and Safety Documents');
+insert into doc_subtypes (id,title,description) values (5,'FAC','Facilities Management Documents');
+insert into doc_subtypes (id,title,description) values (6,'EDU','Education / Curriculum Documents');
 
 
-insert into facilities (id,title,description) values (0,'HAT','Hartlepool Aspire Trust');
-insert into facilities (id,title,description) values (1,'CA','Catcote Academy');
-insert into facilities (id,title,description) values (2,'CF','Catcote Futures');
+insert into facilities (id,title,description) values (1,'HAT','Hartlepool Aspire Trust');
+insert into facilities (id,title,description) values (2,'CA','Catcote Academy');
+insert into facilities (id,title,description) values (3,'CF','Catcote Futures');
 
 
 insert into users (username,title,role_id,position_id,password) values ("Admin","Administrator",1,1,"afcf02f321a501cf9cff31f022455dade82cd3f4");
