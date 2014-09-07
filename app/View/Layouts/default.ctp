@@ -75,6 +75,10 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
         if ($authUserData['id']) { # Logged in users
            if ($authUserData['role_id']==1) {  # Administrators only
 	      echo "Admin Menu: ";
+	      echo $this->Html->link('Settings',
+	      	   	             array('controller'=>'settings',
+				           'action'=>'index'));
+	      echo "; ";
 	      echo $this->Html->link('Add/Edit Users',
 	      	   	             array('controller'=>'users',
 				           'action'=>'index'));
