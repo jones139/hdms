@@ -17,11 +17,11 @@ class OdmDoc extends AppModel {
         '2' => null,
         '3' => null, 
         '4' => null,
-        '5' => 0,   # MSM
-        '6' => 1,   # POL
-        '7' => 2,   # PROC
-        '8' => 3,   # FORM
-        '9' => 4    # REC
+        '5' => 1,   # MSM
+        '6' => 2,   # POL
+        '7' => 3,   # PROC
+        '8' => 4,   # FORM
+        '9' => 5    # REC
     );
 
     /**
@@ -30,19 +30,19 @@ class OdmDoc extends AppModel {
      */
     public function docNo2subType($docNo) {
         if (strpos($docNo,'GOV') !== false) {
-            return 0;
-        } elseif (strpos($docNo,'MSM') !== false) {
-            return 0;  # Treat all MSM docs as Governance ones.
-        } elseif (strpos($docNo,'FIN') !== false) {
             return 1;
-        } elseif (strpos($docNo,'HR') !== false) {
+        } elseif (strpos($docNo,'MSM') !== false) {
+            return 1;  # Treat all MSM docs as Governance ones.
+        } elseif (strpos($docNo,'FIN') !== false) {
             return 2;
-        } elseif (strpos($docNo,'HS') !== false) {
+        } elseif (strpos($docNo,'HR') !== false) {
             return 3;
-        } elseif (strpos($docNo,'FAC') !== false) {
+        } elseif (strpos($docNo,'HS') !== false) {
             return 4;
-        } elseif (strpos($docNo,'EDU') !== false) {
+        } elseif (strpos($docNo,'FAC') !== false) {
             return 5;
+        } elseif (strpos($docNo,'EDU') !== false) {
+            return 6;
         } else {
             return null;
         }     

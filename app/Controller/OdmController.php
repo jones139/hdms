@@ -62,7 +62,7 @@ class OdmController extends AppController {
             #####################################
             # Create the document
             $docData = array(
-                'facility_id' => 0,  # HAT by default
+                'facility_id' => 1,  # HAT by default
                 'doc_type_id' => $this->OdmDoc->cat2docType[$odmD['category']],
                 'doc_subtype_id' => $this->OdmDoc->docNo2subType($odmD['odm_udftbl_DocNo']),
                 'docNo' => $odmD['odm_udftbl_DocNo'],
