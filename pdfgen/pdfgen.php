@@ -35,9 +35,9 @@ $DEBUG = True;
 error_reporting(E_ALL);
 // Physical location of data directory.
 // $DATADIR = "/home/graham/odm_git/pdfgen/data";
-$DATADIR = "/home/disk2/graham/opendocman-git/pdfgen/data";
+$DATADIR = "/home/disk2/graham/hdms/pdfgen/data";
 // URI used to access this data directory.
-$DATAURL = "/odm/pdfgen/data";
+$DATAURL = "/pdfgen/data";
 
 ///////////////////////////////////////////////////////////
 if (!isset($_POST['submit']))
@@ -99,7 +99,7 @@ else
       if ($DEBUG) echo "Suffix is .pdf, so not doing anything";
     } else {
       // Do conversion to pdf using the libreoffice 'soffice' application.
-      $cmdline = "/usr/bin/soffice --headless --convert-to pdf --outdir ".$DATADIR." ".$nativefname;
+      $cmdline = "export HOME=/tmp && /usr/bin/soffice --headless --convert-to pdf --outdir ".$DATADIR." ".$nativefname." >/tmp/pdfgen.out 2>&1";
       if ($DEBUG) echo $cmdline."<br/>";
       // Execute the external command.
       $retStr = exec($cmdline, $retval);
