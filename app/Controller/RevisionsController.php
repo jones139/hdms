@@ -297,24 +297,29 @@ class RevisionsController extends AppController {
     
     
 /**
- * checkout_file method
+ * checkout_file method:   Marks the file as checked out so that view will
+ * present user who checked out the file with a download option.
  *
  * @return void
  */
     public function checkout_file($id) {
         $filepath = $this->Revision->checkout_file($id,$this->Auth->user());
         if ($filepath) {
-            echo "<pre>".$filepath."</pre>";
-            $this->response->file(
-                $filepath,
-                array(
-                    'download' => true, 
-                    'name' => $this->Revision->filename)
-            );
-            return $this->response;
+            $this->Session->setFlash(
+                 __('Checkout Successful - Use download link to download file for editing.'));
+            #echo "<pre>".$filepath."</pre>";
+            #$this->response->file(
+            #    $filepath,
+            #    array(
+            #        'download' => true, 
+            #        'name' => $this->Revision->filename)
+            #);
+            #return $this->response;
         } else {
-            return $this->redirect(array('action' => 'edit',$id));
+            $this->Session->setFlash(
+                 __('Checkout Failed - Not sure why....sorry....'));
         }
+        return $this->redirect(array('action' => 'edit',$id));
     }
     
 /**
@@ -346,12 +351,27 @@ class RevisionsController extends AppController {
     
     
 /**
- * cancel_download_file method
+ * cancel_checkout_file method:   Cancel the check-out - will also
+ * Only works for administrator or the user who checked out the file.
  *
  * @return void
  */
     public function cancel_checkout_file($id) {
+        if (!$this->Revision->exists($id)) {
+            throw new NotFoundException(__('Invalid revision'));
+        }
+        $rev = $this->Revision->findById($id);
+        if ($rev['Revision']['check_out_user_id']!=$this->Auth->User('id')
+              and $this->Auth->user('role_id')!=1) {
+           $this->Session->setFlash(
+                 __('You can not cancel someone else\'s check out unless you are an Administrator!'));
+                 return $this->redirect(array('action' => 'edit',$id));
+        }
+
+        # To get here we must be allowed to cancel the check-out, so do it.
         $this->Revision->cancel_checkout_file($id);
+           $this->Session->setFlash(
+                 __('Check out cancelled'));
         return $this->redirect(array('action' => 'edit',$id));
     }
     

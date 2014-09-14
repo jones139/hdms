@@ -44,11 +44,20 @@
       if ($this->request->data['DocStatus']['id']==0) {   
       	 if ($this->request->data['Revision']['is_checked_out']) {
             echo "File checked out by ".$users[$this->request->data['Revision']['check_out_user_id']]." on ".$this->request->data['Revision']['check_out_date'];
-	    echo '<nbrsp/> ';
-            echo $this->Html->link('Check In File',
-             	 array('controller'=>'revisions','action'=>'checkin_file',
+	    echo '<br/> ';
+	    # Only show download and check-in buttons to the user
+	    # who has the document checked out.
+	    if ($this->request->data['Revision']['check_out_user_id'] == 
+	          $authUserData['id']) {
+            	  echo $this->Html->link('Download File',
+             	       array('controller'=>'revisions','action'=>'download_file',
 	                   $this->request->data['Revision']['id']));
-	    echo '<nbrsp/> ';
+	    	  echo '<nbrsp/> ';
+            	  echo $this->Html->link('Check In File',
+             	       array('controller'=>'revisions','action'=>'checkin_file',
+	                   $this->request->data['Revision']['id']));
+	    	  echo '<nbrsp/> ';
+	    }
             echo $this->Html->link('Cancel Check Out',
              	 array('controller'=>'revisions','action'=>'cancel_checkout_file',
 	                   $this->request->data['Revision']['id']));
