@@ -1,0 +1,43 @@
+<?php
+/*
+pdfgen.php - creates a pdf of an uploaded file using libreOffice.
+Copyright (C) 2013 Graham Jones
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+
+INSTALLATION NOTES
+==================
+Copy this file to pdfgen_config.php and modify $DATADIR and $DATAURL to suit
+your system set up.
+
+$DATADIR (defined below) must be writable by the 
+web server process owner (usually www-data).
+
+Also /tmp must be writable by the web server process owner (www-data).
+
+*/
+
+///////////////////////////////////////////////////////////////////////
+// Configuration
+// set to True to enable detailed debugging output.
+$DEBUG = True;
+error_reporting(E_ALL);
+// Physical location of data directory.
+// $DATADIR = "/home/graham/odm_git/pdfgen/data";
+$DATADIR = "/home/graham/hdms/pdfgen/data";
+// URI used to access this data directory.
+$DATAURL = "/pdfgen/data";
+
+?>

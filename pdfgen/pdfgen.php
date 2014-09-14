@@ -19,25 +19,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 INSTALLATION NOTES
 ==================
-For this to work, $DATADIR (defined below) must be writable by the 
-web server process owner (usually www-data).
-Also ~www-data/.config must exist and be writable by www-data 
-(often /var/www/.config)
-
-The .config requirement is necessary to avoid an obscure '77' return code 
-with no helpful error message!
+See instructions in pdfgen_config.php.template
 */
 
 ///////////////////////////////////////////////////////////////////////
 // Configuration
-// set to True to enable detailed debugging output.
-$DEBUG = True;
-error_reporting(E_ALL);
-// Physical location of data directory.
-// $DATADIR = "/home/graham/odm_git/pdfgen/data";
-$DATADIR = "/home/disk2/graham/hdms/pdfgen/data";
-// URI used to access this data directory.
-$DATAURL = "/pdfgen/data";
+include('pdfgen_config.php');
 
 ///////////////////////////////////////////////////////////
 if (!isset($_POST['submit']))

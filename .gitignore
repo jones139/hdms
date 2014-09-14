@@ -3,5 +3,7 @@
 app/tmp
 app/tmp/*
 data
+pdfgen/data
+pdfgen/pdfgen_config.php
 
 
