@@ -61,7 +61,7 @@
 			            'width'=>16,
 				    'url'=>array('controller'=>'revisions',
                                     'action'=>'download_file',$issued_rev['id'],
-				    'native'=>true)));
+				    'type'=>'native')));
                          }
 		      	 echo "<br/>".$this->Html->link("View Rev",
 			    array('controller'=>'revisions',
@@ -97,7 +97,7 @@
 			            'width'=>16,
 				    'url'=>array('controller'=>'revisions',
                                     'action'=>'download_file',$latest_rev['id'],
-				    'native'=>true)));
+				    'type'=>'native')));
                          }
 			 if ($latest_rev['doc_status_id']==0)
 			    $buttonCaption = "Edit Rev";
@@ -200,7 +200,7 @@
 			            'width'=>16,
 				    'url'=>array('controller'=>'revisions',
                                     'action'=>'download_file',$issued_rev['id'],
-				    'native'=>true)));
+				    'type'=>'native')));
                          }
 
 			 echo '<br/>(',$this->Time->niceShort($issued_rev['doc_status_date']),')';

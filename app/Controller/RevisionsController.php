@@ -238,22 +238,34 @@ class RevisionsController extends AppController {
     
 /**
  * attach_file method
- * Upload a file and attach it to revision number $id.
- * if named parameter 'pdf' is set, the file is uploaded as a PDF version
- * not the native version of the file.
+ * Upload a native file and attach it to revision number $id.
  *
  * @return void
  */
     public function attach_file($id) {
-        $pdf = false;
-        if (isset($this->params[ 'named' ][ 'pdf' ])) 
-            $pdf=true;
-        
+        # Check the requested revision exists before we get too far.
+        $rev = $this->Revision->findById($id);
+        if (!$rev) {
+            $this->Session->setFlash(
+                __('Invalid Revision Number'));           
+            return $this->redirect(array('action' => 'edit',$id));
+        }
+
+        # If we are trying to upload a native file, but there is already
+        # one attaced, tell the user to use checkout/checkin instead.
+        if ($rev['Revision']['has_native']) {
+            $this->Session->setFlash(
+                __('There is already a native file attached - use checkout_file/checkin_file instead.'));           
+            return $this->redirect(array('action' => 'edit',$id));
+        } 
+      
+        # If we have submitted a form, process the data, otherwise we
+        # display the form.
         if ($this->request->is(array('post','put'))) {
             if ($this->Revision->attach_file(
                 $this->request->data,
-                $this->Auth->User(),
-                $pdf)) 
+                $this->Auth->User()
+                )) 
                 {
                     $this->Session->setFlash(
                         __('File Uploaded.'));
@@ -268,8 +280,83 @@ class RevisionsController extends AppController {
         $options = array('conditions' => array(
             'Revision.' . $this->Revision->primaryKey => $id));
         $this->request->data = $this->Revision->find('first', $options);
-        $this->set(compact('pdf'));
-    }
+}
+    
+/**
+ * attach_pdf method
+ * Upload a pdf file and attach it to revision number $id.
+ *
+ * @return void
+ */
+    public function attach_pdf($id) {
+        # Check the requested revision exists before we get too far.
+        $rev = $this->Revision->findById($id);
+        if (!$rev) {
+            $this->Session->setFlash(
+                __('Invalid Revision Number'));           
+            return $this->redirect(array('action' => 'edit',$id));
+        }
+
+        # If we have submitted a form, process the data, otherwise we
+        # display the form.
+        if ($this->request->is(array('post','put'))) {
+            if ($this->Revision->attach_pdf(
+                $this->request->data,
+                $this->Auth->User()
+                )) 
+                {
+                    $this->Session->setFlash(
+                        __('PDF Uploaded.'));
+                    return $this->redirect(array(
+                        'action' => 'edit',$id));
+                } else {
+                $this->Session->setFlash(
+                    __('PDF Upload Failed.'));
+                return $this->redirect(array('action' => 'edit',$id));
+            }
+        }
+        $options = array('conditions' => array(
+            'Revision.' . $this->Revision->primaryKey => $id));
+        $this->request->data = $this->Revision->find('first', $options);
+}
+    
+/**
+ * attach_extras method
+ * Upload an extras .zip file and attach it to revision number $id.
+ *
+ * @return void
+ */
+    public function attach_extras($id) {
+        # Check the requested revision exists before we get too far.
+        $rev = $this->Revision->findById($id);
+        if (!$rev) {
+            $this->Session->setFlash(
+                __('Invalid Revision Number'));           
+            return $this->redirect(array('action' => 'edit',$id));
+        }
+
+        # If we have submitted a form, process the data, otherwise we
+        # display the form.
+        if ($this->request->is(array('post','put'))) {
+            if ($this->Revision->attach_extras(
+                $this->request->data,
+                $this->Auth->User()
+                )) 
+                {
+                    $this->Session->setFlash(
+                        __('Extras Uploaded.'));
+                    return $this->redirect(array(
+                        'action' => 'edit',$id));
+                } else {
+                $this->Session->setFlash(
+                    __('Extras Upload Failed.'));
+                return $this->redirect(array('action' => 'edit',$id));
+            }
+        }
+        $options = array('conditions' => array(
+            'Revision.' . $this->Revision->primaryKey => $id));
+        $this->request->data = $this->Revision->find('first', $options);
+}
     
     
     
@@ -283,17 +370,35 @@ class RevisionsController extends AppController {
             if ($this->Revision->checkin_file(
                 $this->request->data,$this->Auth->User())) {
                 $this->Session->setFlash(
-                    __('File Uploaded.'));
+                    __('File Checked-In OK.'));
                 return $this->redirect(array('action' => 'edit',$id));
             } else {
                 $this->Session->setFlash(
-                    __('File Upload Failed.'));
+                    __('File Check-In Failed.'));
             }
         }
         $options = array('conditions' => array(
             'Revision.' . $this->Revision->primaryKey => $id));
         $this->request->data = $this->Revision->find('first', $options);
     }
+    
+/**
+ * generate_pdf method - use remote web service to generate a PDF version of
+ * the native file associated with this revision.
+ *
+ * @return void
+ */
+    public function generate_pdf($id) {
+            if ($this->Revision->generate_pdf($id)) {
+                $this->Session->setFlash(
+                    __('Generate PDF Successful'));
+
+            } else {
+                $this->Session->setFlash(
+                    __('Generate PDF Failed.'));
+            }
+        $this->redirect(array('action'=>'edit',$id));
+        }
     
     
 /**
@@ -327,17 +432,22 @@ class RevisionsController extends AppController {
  * native is set, in which case it returns the native file.
  * 
  * @param id - revision id of file to download.
- * @param native - named parameter in url to request download of native file.
+ * @param type - 'native','pdf','extras' - defaults to 'pdf' if not specified.
  * @return void
  */
     public function download_file($id) {
-        $native = false;
-        if (isset($this->params[ 'named' ][ 'native' ])) {
-            $native = true;
+        $filetype = 'pdf';
+        if (isset($this->params[ 'named' ][ 'type' ])) {
+           if ($this->params['named']['type'] == 'native') {
+              $filetype = 'native';
+           }
+           if ($this->params['named']['type'] == 'extras') {
+              $filetype = 'extras';
+           }
         }
-        $filepath = $this->Revision->get_filepath($id,$native);
+        $filepath = $this->Revision->get_filepath($id,$filetype);
         if ($filepath) {
-            echo "<pre>".$filepath."</pre>";
+            echo "<pre>filetype=".$filetype.", path=".$filepath."</pre>";
             $this->response->file(
                 $filepath,
                 array('download' => true, 'name' => $this->Revision->filename)

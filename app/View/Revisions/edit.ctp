@@ -30,11 +30,11 @@
       #############################
       # File Check out/in section #
       #############################
-      echo '<h3>Document File</h3>';
+      echo '<h3>Attached File</h3>';
 
       echo '<p>';
       if ($this->request->data['Revision']['has_native']) {
-      	 echo 'Current File is '.$this->request->data['Revision']['filename'].' (uploaded at '.$this->request->data['Revision']['native_file_date'].').';
+      	 echo 'Current File is '.$this->request->data['Revision']['filename'].' (uploaded at '.$this->request->data['Revision']['native_file_date'].').  Checked in by '.$users[$this->request->data['Revision']['user_id']].'.';
       } else {
       	 echo 'No File Attached';
       }
@@ -51,7 +51,8 @@
 	          $authUserData['id']) {
             	  echo $this->Html->link('Download File',
              	       array('controller'=>'revisions','action'=>'download_file',
-	                   $this->request->data['Revision']['id']));
+	                   $this->request->data['Revision']['id'],
+			   'type'=>'native'));
 	    	  echo '<nbrsp/> ';
             	  echo $this->Html->link('Check In File',
              	       array('controller'=>'revisions','action'=>'checkin_file',
@@ -84,9 +85,71 @@
       	    echo $this->Html->link('View File',
                  array('controller'=>'revisions',
 		        'action'=>'download_file',
-			    $this->request->data['Revision']['id']));       
+			    $this->request->data['Revision']['id'],
+			    'type'=>'native'));       
       }
       echo '</p>';
+
+
+      #############################
+      # PDF File section #
+      #############################
+      echo '<h3>PDF Version of File</h3>';
+      echo '<p class="actions">';
+      if ($this->request->data['Revision']['has_pdf']) {
+      	 echo $this->Html->link('View PDF File',
+      	 array('controller'=>'revisions',
+            'action'=>'download_file',
+	    $this->request->data['Revision']['id'],
+				    'type'=>'pdf'));
+      }
+
+      # Only show PDF manipulation options for draft documents.
+      if ($this->request->data['DocStatus']['id']==0) {   
+         if ($this->request->data['Revision']['has_pdf']) {
+
+      	    echo $this->Html->link('Re-generate PDF File',
+      	    array('controller'=>'revisions',
+              'action'=>'generate_pdf',
+	      $this->request->data['Revision']['id']));
+         } else {
+            echo 'No PDF File Attached ';
+      	    echo $this->Html->link('Generate PDF File',
+      	    array('controller'=>'revisions',
+              'action'=>'generate_pdf',
+	      $this->request->data['Revision']['id']));
+         }
+         if ($authUserData['role_id']==1) {
+             echo $this->Html->link('Manually Upload PDF',
+                array('controller'=>'revisions','action'=>'attach_pdf',
+			    $this->request->data['Revision']['id']));
+	 }
+      }
+      echo '</p>';
+
+
+      #############################
+      # Extras File section #
+      #############################
+      echo '<h3>Extra File associated with Revision</h3>';
+      echo '<p class="actions">';
+      if ($this->request->data['Revision']['has_extras']) {
+      	 echo $this->Html->link('View Extras',
+      	 array('controller'=>'revisions',
+            'action'=>'download_file',
+	    $this->request->data['Revision']['id'],
+				    'type'=>'extras'));
+      }
+
+      # Only show Extras manipulation options for draft documents.
+      if ($this->request->data['DocStatus']['id']==0) {   
+             echo $this->Html->link('Upload Extras File',
+                array('controller'=>'revisions','action'=>'attach_extras',
+			    $this->request->data['Revision']['id']));
+      }
+      echo '</p>';
+				 
+
 
       ######################
       # Route List Section #
@@ -154,6 +217,9 @@
 			    'revision'=>$this->request->data['Revision']['id']));
       }
       echo '</p>';
+
+
+
 
 ?>
 

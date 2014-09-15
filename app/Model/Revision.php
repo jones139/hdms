@@ -111,10 +111,13 @@ class Revision extends AppModel {
 		}
 	}
 
-	public function save_file($tmpnam,$fname,$doc_id,$major_rev,$minor_rev,$pdf=false) {
+	/**
+	 * Save the file $tmpname to revision number $rev_id as file type 
+	 * $filetype (pdf,native,extras).
+	 */
+	public function save_file($tmpnam,$rev_id,$filetype='pdf') {
 	       $this->logDebug("save_file - tmpnam=".$tmpnam);
-	       $this->logDebug("save_file - fname=".$fname);
-	       $folder = $this->get_folder($doc_id,$major_rev,$minor_rev);
+	       $folder = $this->get_folder($rev_id);
 	       $this->logDebug("save_file - folder=".$folder);
 	       if (!is_dir($folder)) {
 	          $this->logDebug("Attempting to create directory ".$folder);
@@ -125,11 +128,7 @@ class Revision extends AppModel {
 		     return false;
 		  }
                }
-               if (!$pdf) {
-                   $fpath = $folder.'/'.$fname;
-               } else {
-                   $fpath = $folder.'/'.$fname.'.pdf';
-               }
+	       $fpath = $this->get_filepath($rev_id,$filetype);
 	       if (copy($tmpnam,$fpath)) {
 		     $this->logDebug("copied file");
 		     return true;
@@ -141,7 +140,11 @@ class Revision extends AppModel {
 	       return false;
         }
 
-	public function save($data = NULL, $validate = true, $fieldList = Array()) {
+	/**
+	 * save method.
+	 * I the data provided includes an uploaded file, process it.
+	 */
+	/*	public function save($data = NULL, $validate = true, $fieldList = Array()) {
 	       if ($retval_parent = parent::save($data, $validate, $fieldList)) {
 	       	       if (isset($data['Document'])) {
 		          if ($this->isUploadedFile($data['Document']['submittedfile'])) {
@@ -154,9 +157,7 @@ class Revision extends AppModel {
 			     $majrev = $revdata['major_revision'];
 			     $minrev = $revdata['minor_revision'];
 			     $doc_id = $revdata['doc_id'];
-			     $this->save_file($tmpnam,$fname,
-					   $doc_id,
-					   $majrev,$minrev);
+			     $this->save_file($tmpnam,$revdata['id']);
 	               	     $this->logDebug('Save with file upload ok.');
 			     return true;
                           } else {
@@ -172,88 +173,98 @@ class Revision extends AppModel {
 		       return false;
 		}
         }
-
+	*/
 
 	/**
-	* Return the folder used to store files for document $doc_id,
-	* major revision $major_rev and minor revision $minor_rev.
+	* Return the folder used to store files for revision $rev_id,
 	*/
-	public function get_folder($doc_id,$major_rev,$minor_rev) {
-	       $this->logDebug("get_folder - appdir=".ROOT);
-	       $folder=ROOT.'/'.'data'.'/'.$doc_id.'/'.$major_rev.'/'.$minor_rev;
-	       return $folder;
+	public function get_folder($rev_id) {
+	  //$this->id = $rev_id;
+	  $data = $this->read(null,$rev_id)['Revision'];
+	  $doc_id = $data['doc_id'];
+	  $major_rev = $data['major_revision'];
+	  $minor_rev = $data['minor_revision'];
+	  $this->logDebug("get_folder - appdir=".ROOT);
+	  $folder=ROOT.'/'.'data'.'/'.$doc_id.'/'.$major_rev.'/'.$minor_rev;
+	  $this->logDebug("get_folder - folder=".$folder);
+	  return $folder;
 	}
 
 
-	public function get_filepath($id = NULL,$native=false) {
-		# Populate $this->data with data from revision.id=$id
-		$this->read(null, $id);
-		$folder = $this->get_folder(
-			$this->data['Revision']['doc_id'],
-			$this->data['Revision']['major_revision'],
-			$this->data['Revision']['minor_revision']);
-		# If we do not have a pdf file, return the native one.
-		if ($native or !$this->data['Revision']['has_pdf']) {
-		   $fpath = $folder.'/'.$this->data['Revision']['filename'];
-		} else {
-		   $fpath = $folder.'/'.$this->data['Revision']['filename'].'.pdf';
-		}   
-		   echo "fpath=".$fpath."<br/>";
-
-		return $fpath;
+	/**
+	 * get_filepath($id,$filetype)
+	 * returns the path to the file of type $filetype (extras,pdf,native)
+	 * associated with revision number $id
+	 */
+	public function get_filepath($id = NULL,$filetype='pdf') {
+	  // populate the $this->data arra with revision $id data.
+	  $this->read(null,$id);
+	  $folder = $this->get_folder($id);
+	  if ($filetype=='native') { 
+	    $fpath = $folder.'/'.$this->data['Revision']['filename'];
+	  } elseif ($filetype=='pdf') {
+	    $fpath = $folder.'/'.$this->data['Revision']['filename'].'.pdf';
+	  } elseif ($filetype=='extras') {
+	    $fpath = $folder.'/'.$this->data['Revision']['filename'].'.zip';
+	  } else {
+	    $this->logDebug("Revision->get_filepath() - Invalid file type ".$filetype.".");
+	  }
+	  return $fpath;
  	}
 
+	/**
+	 * Sets the revision status to checked_out to make it visible
+	 * to other users that someone is editing the file.
+	 */
 	public function checkout_file($id = NULL,$authUserData) {
 	       	$this->id = $id;
 		if (!$this->exists()) {
 		   return false;
 		}
-		# Populate $this->data with data from revision.id=$id
-		$this->read(null, $id);
-		$fpath = $this->get_filepath($id,true);  # native fle
-		# Update the revision data record.
+		// Populate $this->data with data from revision.id=$id
+		  $this->id = $id;
+		  $fpath = $this->get_filepath($id,'native');  // native file
+		// Update the revision data record.
 		echo "authuserdata->id=".$authUserData['id'];
 		$this->set(array(
+				 'id'=>$id,
 			'is_checked_out' => true,
 			'check_out_user_id' => $authUserData['id'],      
 			'check_out_date' => date('Y-m-d H:i:s')
 		));
-		# And save it
+		// And save it
 		$this->save();
 
-		# return the path to the checked out file.
+		// return the path to the checked out file.
 		return $fpath;		
 	}
 
 
+	/**
+	 * Cancel  a file checkout on revision id $id
+	 */
 	public function cancel_checkout_file($id = NULL) {
 	       	$this->id = $id;
 		if (!$this->exists()) {
 		   return false;
 		}
-		# Populate $this->data with data from revision.id=$id
+		// Populate $this->data with data from revision.id=$id
 		$this->read(null, $id);
-
-		# Update the revision data record.
+		// Update the revision data record.
 		$this->set(array(
 			'is_checked_out' => false,
-		));
-		# And save it
+				 ));
+		// And save it
 		$this->save();
-
 		return true;		
 	}
 
 
-	/* Attach a file to a revision that does not currently have a native
-	* file attached.
-	* It is attached as a pdf file if $pdf is true, otherwise it is assumed
-	* to be the native version of the file.
-	* FIXME:  pdf part doesn't work yet!
+	/* Attach a native file to a revision that does not currently have 
+	 * a native file attached.
 	*/
 	public function attach_file($data = NULL, 
 	       			    $authUserData = NULL, 
-				    $pdf = false,
 				    $validate = true) {
 	       if ($this->isUploadedFile($data['Document']['submittedfile'])) {
 		  	  $this->logDebug('Uploaded File');
@@ -261,32 +272,26 @@ class Revision extends AppModel {
 			  $revdata = $data['Revision'];
 			  $tmpnam = $filedata['tmp_name'];
 			  $fname  = $filedata['name'];
-			  if ($pdf)
-			      $fname = $fname.'.pdf';
-
 			  $majrev = $revdata['major_revision'];
 			  $minrev = $revdata['minor_revision'];
 			  $doc_id = $revdata['doc_id'];
-			  $this->save_file($tmpnam,$fname,
-					   $doc_id,
-					   $majrev,$minrev);
- 			  $this->read(null, $data['Revision']['id']);
-			  if ($pdf)
-			     $this->set(array(
-				'filename' => $fname,
-				'has_pdf' => true,
-				#'pdf_file_date' => date('Y-m-d H:i:s'),
-				'user_id' => $authUserData['id']
-			  ));
-			  else 
-			     $this->set(array(
-				'filename' => $fname,
-				'has_native' => true,
-				'native_file_date' => date('Y-m-d H:i:s'),
-				'is_checked_out' => false,
-				'user_id' => $authUserData['id']
-			  ));
+			  $this->id = $data['Revision']['id'];
+			  // Update revision record to reflect new file.
+			  // Note that has_pdf is set to false because adding
+			  // a new native file invalidates any current pdf
+			  // because it is now out of date so needs to be
+			  // re-generated.
+			  $this->set(array(
+					   'filename' => $fname,
+					   'has_native' => true,
+					   'native_file_date' => date('Y-m-d H:i:s'),
+					   'is_checked_out' => false,
+					   'has_pdf' => false, 
+					   'user_id' => $authUserData['id'],
+					   'check_out_user_id' => $authUserData['id']
+					   ));
 			  $this->save();
+			  $this->save_file($tmpnam,$revdata['id'],'native');
 			  return true;
 	       } else {
 	               	  $this->logDebug('File Upload Failed');
@@ -295,30 +300,57 @@ class Revision extends AppModel {
 	   } 
 
 
-	public function checkin_file($data = NULL, 
-	       			     $authUserData = NULL, 
-				     $validate = true, 
-				     $fieldList = Array()) {
+	/* Attach a PDF file to a revision 
+	*/
+	public function attach_pdf($data = NULL, 
+	       			    $authUserData = NULL, 
+				    $validate = true) {
 	       if ($this->isUploadedFile($data['Document']['submittedfile'])) {
 		  	  $this->logDebug('Uploaded File');
 			  $filedata = $data['Document']['submittedfile'];
 			  $revdata = $data['Revision'];
 			  $tmpnam = $filedata['tmp_name'];
-			  $fname  = $filedata['name'];			  
+			  $fname  = $revdata['filename']; // Use native file name.
 			  $majrev = $revdata['major_revision'];
 			  $minrev = $revdata['minor_revision'];
 			  $doc_id = $revdata['doc_id'];
-			  $this->save_file($tmpnam,$fname,
-					   $doc_id,
-					   $majrev,$minrev);
- 			  $this->read(null, $data['Revision']['id']);
+			  $this->save_file($tmpnam,$revdata['id'],'pdf');
+			  $this->id = $data['Revision']['id'];
+ 			  //$this->read(null, $data['Revision']['id']);
+			  // Update revision record to reflect new file.
 			  $this->set(array(
-				'filename' => $fname,
-				'has_native' => true,
-				'native_file_date' => date('Y-m-d H:i:s'),
-				'is_checked_out' => false,
-				'user_id' => $authUserData['id']
-			  ));
+					   'has_pdf' => true, 
+					   'user_id' => $authUserData['id'],
+					   ));
+			  $this->save();
+			  return true;
+	       } else {
+	               	  $this->logDebug('File Upload Failed');
+			  return false;
+	       }
+	   } 
+
+	/* Attach a Extras (zip) file to a revision 
+	*/
+	public function attach_extras($data = NULL, 
+	       			    $authUserData = NULL, 
+				    $validate = true) {
+	       if ($this->isUploadedFile($data['Document']['submittedfile'])) {
+		  	  $this->logDebug('Uploaded File');
+			  $filedata = $data['Document']['submittedfile'];
+			  $revdata = $data['Revision'];
+			  $tmpnam = $filedata['tmp_name'];
+			  $fname  = $revdata['filename']; // Use native file name.
+			  $majrev = $revdata['major_revision'];
+			  $minrev = $revdata['minor_revision'];
+			  $doc_id = $revdata['doc_id'];
+			  $this->save_file($tmpnam,$revdata['id'],'extras');
+			  $this->id = $data['Revision']['id'];
+			  // Update revision record to reflect new file.
+			  $this->set(array(
+					   'has_extras' => true, 
+					   'user_id' => $authUserData['id'],
+					   ));
 			  $this->save();
 			  return true;
 	       } else {
@@ -328,6 +360,150 @@ class Revision extends AppModel {
 	   } 
 
 
+	/*
+	 * checkin_file()
+	 * Receive an uploaded file, save it in the appropriate place
+	 * and update the revision database record to reflect the
+	 * newly attached file.
+	 * Expects $data['Revision']['id'] to be the revision id to which
+	 * the file is to be associated.
+	 */
+	public function checkin_file($data = NULL, 
+	       			     $authUserData = NULL, 
+				     $validate = true, 
+				     $fieldList = Array()) {
+	  if ($this->isUploadedFile($data['Document']['submittedfile'])) {
+	    $this->logDebug('Uploaded File');
+	    $filedata = $data['Document']['submittedfile'];
+	    $revdata = $data['Revision'];
+	    $tmpnam = $filedata['tmp_name'];
+	    $fname  = $filedata['name'];			  
+	    $majrev = $revdata['major_revision'];
+	    $minrev = $revdata['minor_revision'];
+	    $doc_id = $revdata['doc_id'];
+	    $this->read(null, $data['Revision']['id']);
+	    $this->set(array(
+			     'id'=>$data['Revision']['id'],
+			     'filename' => $fname,
+			     'has_native' => true,
+			     'native_file_date' => date('Y-m-d H:i:s'),
+			     'is_checked_out' => false,
+			     'has_pdf' => false,
+			     'user_id' => $authUserData['id'],
+			     'check_out_user_id' => $authUserData['id']
+			     ));
+	    $this->save();
+	    $this->save_file($tmpnam,$revdata['id'],'native');
+	    return true;
+	  } else {
+	    $this->logDebug('File Upload Failed');
+	    return false;
+	  }
+	} 
+	
+	
+	/**
+	 * set_pdf - set the has_pdf field of revision $id to value $value.
+	 */
+	public function set_pdf($id=null,$value=false) {
+	  $this->id = $id;
+	  $this->data['Revision']['has_pdf'] = $value;
+	  $this->save();
+	}
+
+	/**
+	 * Attempt to generate a PDF version of the file associated
+	 *  with revision id $id.   Uses the external 'pdfgen' web service
+	 *  to do this.
+	 */
+	public function generate_pdf($id = null) {
+	  $this->logDebug("generate_pdf, id=".$id);
+	  $this->id = $id;
+	  if (!$this->exists()) {
+	    $this->logDebug("generate_pdf, id=".$id." not found - exiting.");
+	    return false;
+	  }
+
+	  // Get PDF Generator settings from the database
+	  App::import('Model','Setting');
+	  $SettingsModel = new Setting();
+	  $settings = $SettingsModel->findById(1)['Setting'];
+	  $pdf_url = $settings['pdf_url'];
+	  $pdf_user = $settings['pdf_user'];
+	  $pdf_passwd = $settings['pdf_passwd'];
+	  
+	  
+	  // Submit file to an external pdf generator service using curl.
+	  $ltmpfilename = $this->get_filepath($id,'native');
+	  $this->logDebug("generate_pdf, ltmpfilename=".$ltmpfilename);
+	  $this->logDebug("generate_pdf, pdf_url=".$pdf_url);
+	  $postData = array('file'=>'@'.$ltmpfilename,'submit'=>'True'); 
+	  $ch = curl_init(); 
+	  curl_setopt($ch, CURLOPT_URL,$pdf_url); 
+	  curl_setopt($ch, CURLOPT_POST,1); 
+	  curl_setopt($ch, CURLOPT_POSTFIELDS, $postData); 
+	  curl_setopt($ch, CURLOPT_RETURNTRANSFER, True); 
+	  $result=curl_exec ($ch); 
+	  curl_close ($ch); 
+	  
+	  if ($result == False) {
+	    $this->logDebug("Error from PDF creation web service.");
+	    $this->set_pdf($id,false);
+	    return(false);
+	  }
+	  
+	  // The result contains a URL to the PDF file.
+	  // Extract the 'href' from the html using regular expression
+	  // from http://stackoverflow.com/questions/5397531/parsing-html-source-to-extract-anchor-and-link-tags-href-value
+	  preg_match_all('/href=[\'"]?([^\s\>\'"]*)[\'"\>]/', $result, $matches);
+	  $hrefs = ($matches[1] ? $matches[1] : false);
+	  $this->logDebug("generate_pdf, href=".$hrefs[0]);
+
+	  // Now use CURL to download the PDF file.
+	  $ch = curl_init(); 
+	  curl_setopt($ch, CURLOPT_URL,$hrefs[0]); 
+	  curl_setopt($ch, CURLOPT_RETURNTRANSFER, True); 
+	  $result=curl_exec ($ch); 
+	  curl_close ($ch); 
+	  if ($result == false) {
+	    $this->logDebug("Error downloading pdf from PDF creation web service.");
+	    $this->set_pdf($id,false);
+	    return(false);
+	  }
+	  
+	  // Save result to PDF file in correct place
+	  // copy temporary file to DATADIR and give it the correct suffix.
+	  $pdfFname = $this->get_filepath($id,'pdf');
+	  $this->logDebug("saving pdf to ".$pdfFname);
+	  $lfhandler = fopen ($pdfFname, "w");
+	  if ($lfhandler == False) {
+	    $this->logDebug("Error opening file ".$pdfFname." for writing.");
+	    return(false);
+	  }
+	  if (!fwrite($lfhandler, $result)) {
+	    $this->logDebug("Error writing data to file ".$pdfFname);
+	    $this->set_pdf($id,false);
+	    return(false);
+	  }
+	  fclose ($lfhandler);
+	  
+	  // Update the revision data record.
+	  $this->id = $id;
+	  $this->set(array(
+			   'id'=>$id,
+			   'has_pdf' => true,
+			   ));
+	  // And save it
+	  if ($this->save()) {
+            $this->logDebug("generate_pdf: Updated revision data record");
+	    return true;
+          }
+	  else {
+            $this->logDebug("generate_pdf: Failed to save revision data record");
+	    return false;
+          }
+	}
+	
 /**
  * create_new_revision of document $docid.  If a named parameter 'major' is set, it creates
  *   a major revision, otherwise it creates a minor revision.
@@ -365,9 +541,7 @@ class Revision extends AppModel {
 	    $this->save($lastrev);
 	    $newrev_id = $this->getInsertID();
 	    if ($lastrev['Revision']['has_native']) {
-	       $folder = $this->get_folder($lastrev['Revision']['doc_id'],
-					   $lastrev['Revision']['major_revision'],
-					   $lastrev['Revision']['minor_revision']);
+	       $folder = $this->get_folder($lastrev_id);
 	       if (!is_dir($folder)) {
 	          $this->logDebug("Attempting to create directory ".$folder);
 	       	  if (mkdir($folder,0777,true)) {
@@ -378,8 +552,8 @@ class Revision extends AppModel {
 		  }
                }
 	       # Copy native files
-	       copy($this->get_filepath($lastrev_id,true),
-		    $this->get_filepath($newrev_id,true));	       
+	       copy($this->get_filepath($lastrev_id,'native'),
+		    $this->get_filepath($newrev_id,'native'));	       
 	    }
    	 } else {
 	    # there was no previous revision, so create one from scratch.
