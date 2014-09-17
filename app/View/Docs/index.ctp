@@ -272,6 +272,9 @@
 	      if ($authUserData['role_id']==1) {  # Administrators
 		  echo "<li>".$this->Html->link(__('Create New Doc'), 
 		                   array('action' => 'add'))."</li>";
+		  echo "<li>".$this->Html->link(__('Reports'), 
+		                   array('controller'=>'reports',
+				         'action' => 'index'))."</li>";
 	      }
 	?>
 	</div>
