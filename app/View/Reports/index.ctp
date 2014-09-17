@@ -6,6 +6,11 @@
                             'action'=>'recent'
 			   )); ?>
 </li>
+<li>	<?php echo $this->Html->link("Draft Documents",
+			    array('controller'=>'reports',
+                            'action'=>'drafts'
+			   )); ?>
+</li>
 
 </ul>
 </div>

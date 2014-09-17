@@ -80,9 +80,19 @@ class ReportsController extends AppController {
 	    $this->set('data',$data);
 
 	  }
+	}
 
-
-
+	/**
+	 * drafts function - return list of draft revisions.
+	 */
+	public function drafts() {
+	  $this->loadModel('Revision');
+	  $conditions= array(
+			     'Revision.doc_status_id'=>array(0,1)
+			     );
+	  $data = $this->Revision->find('all',array('conditions'=>$conditions));
+	  $this->set('data',$data);
+	  
 	}
 
 }
