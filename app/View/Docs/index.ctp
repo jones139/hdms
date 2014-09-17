@@ -50,6 +50,7 @@
 			 if ($issued_rev['has_pdf']) {
 			     echo $this->Html->image('download_icon.png',
                                  array('alt'=>'Download Icon',
+				    'title'=>'Download PDF file',
 			            'width'=>16,
 				    'url'=>array('controller'=>'revisions',
                                     'action'=>'download_file',$issued_rev['id'])));
@@ -58,11 +59,23 @@
 			 if ($issued_rev['has_native']) {
 			     echo $this->Html->image('document_icon.png',
                                  array('alt'=>'Document Icon',
+				    'title'=>'Download Native File',
 			            'width'=>16,
 				    'url'=>array('controller'=>'revisions',
                                     'action'=>'download_file',$issued_rev['id'],
 				    'type'=>'native')));
                          }
+
+			 if ($issued_rev['has_extras']) {
+			     echo $this->Html->image('archive_icon.png',
+                                 array('alt'=>'Archive Icon',
+				    'title'=>'Download Extra Files',
+			            'width'=>16,
+				    'url'=>array('controller'=>'revisions',
+                                    'action'=>'download_file',$issued_rev['id'],
+				    'type'=>'extras')));
+                         }
+
 		      	 echo "<br/>".$this->Html->link("View Rev",
 			    array('controller'=>'revisions',
                             'action'=>'edit',$issued_rev['id']),
@@ -86,6 +99,7 @@
 			 if ($latest_rev['has_pdf']) {
 			     echo $this->Html->image('download_icon.png',
                                  array('alt'=>'Download Icon',
+				    'title'=>'Download PDF File',
 			            'width'=>16,
 				    'url'=>array('controller'=>'revisions',
                                     'action'=>'download_file',$latest_rev['id'])));
@@ -94,11 +108,24 @@
 			 if ($latest_rev['has_native']) {
 			     echo $this->Html->image('document_icon.png',
                                  array('alt'=>'Document Icon',
+				    'title'=>'Download Native File',
 			            'width'=>16,
 				    'url'=>array('controller'=>'revisions',
                                     'action'=>'download_file',$latest_rev['id'],
 				    'type'=>'native')));
                          }
+
+			 if ($latest_rev['has_extras']) {
+			     echo $this->Html->image('archive_icon.png',
+                                 array('alt'=>'Archive Icon',
+				    'title'=>'Download Extra Files',
+			            'width'=>16,
+				    'url'=>array('controller'=>'revisions',
+                                    'action'=>'download_file',$latest_rev['id'],
+				    'type'=>'extras')));
+                         }
+
+
 			 if ($latest_rev['doc_status_id']==0)
 			    $buttonCaption = "Edit Rev";
 			 else
@@ -189,6 +216,7 @@
 			 if ($issued_rev['has_pdf']) {
 			     echo $this->Html->image('download_icon.png',
                                  array('alt'=>'Download Icon',
+				    'title'=>'Download PDF File',
 			            'width'=>16,
 				    'url'=>array('controller'=>'revisions',
                                     'action'=>'download_file',$issued_rev['id'])));
@@ -197,6 +225,7 @@
 			 if ($issued_rev['has_native']) {
 			     echo $this->Html->image('document_icon.png',
                                  array('alt'=>'Document Icon',
+				    'title'=>'Download Native File',
 			            'width'=>16,
 				    'url'=>array('controller'=>'revisions',
                                     'action'=>'download_file',$issued_rev['id'],
