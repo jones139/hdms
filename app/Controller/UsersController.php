@@ -217,13 +217,19 @@ class UsersController extends AppController {
     public function login() {
         if ($this->request->is('post')) {
             if ($this->Auth->login()) {
-                $this->Session->setFlash(__('Login Successful'));
-                return($this->redirect(array(
-                    'controller'=>'docs',
-                    'action'=>'index'
+                if ($this->Auth->user('role_id')>0) {
+                    $this->Session->setFlash(__('Login Successful'));
+                    return($this->redirect(array(
+                        'controller'=>'docs',
+                        'action'=>'index'
                 )));
+                } else {
+                    $this->Session->setFlash(__('Account Disabled - Please Contact an Administrator'));
+                    $this->Auth->logout();
+                }
+            } else {
+                $this->Session->setFlash(__('Invalid username or password'));
             }
-            $this->Session->setFlash(__('Invalid username or password'));
         }
     }
 
