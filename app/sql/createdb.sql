@@ -104,8 +104,9 @@ CREATE TABLE revisions (
     doc_status_id int,
     doc_status_date datetime,
     has_native bool default false,
-    native_file_date datetime,
+    native_date datetime,
     has_pdf bool default false,
+    pdf_date datetime,
     has_extras bool default false
 );
 
