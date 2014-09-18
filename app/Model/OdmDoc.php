@@ -9,7 +9,7 @@ class OdmDoc extends AppModel {
     // SET THIS TO MATCH YOUR SYSTEM INSTALLATION!!!!
     ////////////////////////////////////////////////////
     var $odmFolder = '/home/graham/odm/';
-    //var $odmFolder = '/home/sites/catcotegb.co.uk/odm';
+    //var $odmFolder = '/home/sites/catcotegb.co.uk/odm/';
 
 
 
