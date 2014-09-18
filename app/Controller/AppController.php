@@ -85,13 +85,20 @@ class AppController extends Controller {
 
 	       $this->set('testing','testing');
 	       $this->set('authUserData', $this->Auth->user());
-	       #$this['authUserData']['isAdmin'] = $this->Users->isAdmin($this->Auth->user()['id']);
 
 	       # Get detailed information about the logged in user (e.g. notifications for that user etc.)
 	       Controller::loadModel('Notifications');
 		$options = array('conditions' => array('Notifications.user_id' => $this->Auth->user('id'),
 			   		      	       'Notifications.active' => 1));
 		$this->set('authUserExtraData', $this->Notifications->find('all', $options));	    
+                
+                // If the user needs to re-set her password, redirect to the
+                // edit user page.
+                if ($this->Auth->user('require_new_password') and $this->request->controller!='users') {
+                    $this->redirect(array('controller'=>'users',
+                    'action'=>'edit',
+                    $this->Auth->user('id')));
+                }
 	       }
 
 	public function beforeRender() {

@@ -3,6 +3,7 @@ create table settings (
     id INT UNSIGNED PRIMARY KEY,
     version varchar(10),  # hdms version number.
     email_enabled bool,   # globally enable or disable email notifications.
+    issue_notify_list varchar(2000) # list of email addresses (semicolon separated) that are notified of a document issue.
     pdf_url varchar(256),  # url of pdf generator
     pdf_user varchar(50),  # username for pdf generator
     pdf_passwd varchar(50) # password for pdf generator

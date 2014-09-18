@@ -10,6 +10,8 @@
 		echo $this->Form->input('password',array('required'=>true));
 		echo $this->Form->input('confirm_password',
 		     array('type'=>'password','required'=>true));
+		echo $this->Form->input('require_new_password',
+		     array('label'=>'Require New Password at next login'));
 		echo $this->Form->input('email');
 		echo $this->Form->input('email_verified');
 		echo $this->Form->input('role_id');

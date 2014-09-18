@@ -135,7 +135,21 @@ class UsersController extends AppController {
                     "The passwords don't match." );
                     $this->User->invalidate( 'confirm_password', 
                     "The passwords don't match." );
-                } else {  # Passwords match, so save data
+                } else {  // Passwords match, so save data
+                    // if we have provided a password
+                    // clear the require_new_password flag.
+                    // Unless we are an administrator editing another user's
+                    // data, in which case we still want the user to change
+                    // the password.
+                    if (!empty($this->request->data['User']['password']) and
+                       $this->Auth->User('id')==
+                       $this->request->data['User']['id']) {
+                        $this->request->data['User']['require_new_password'] = false;
+                        $this->logDebug("resetting require_new_password - auth_id=".$this->Auth->User('id')." editing user ".$this->request->data['User']['id']);
+                    } else {
+                        $this->logDebug( "Not changing require_new_password - auth_id=".
+                        $this->Auth->User('id')." editing user ".$this->request->data['User']['id']);
+                    }
                     if ($this->User->save($this->request->data)) {
                         $this->Session->setFlash(__('The user has been saved.  Log out and in again for changes to take effect.'));
                         if ($this->Auth->user('role_id')==1) {
