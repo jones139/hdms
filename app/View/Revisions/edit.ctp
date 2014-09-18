@@ -34,7 +34,10 @@
 
       echo '<p>';
       if ($this->request->data['Revision']['has_native']) {
-      	 echo 'Current File is '.$this->request->data['Revision']['filename'].' (uploaded at '.$this->request->data['Revision']['native_file_date'].').  Checked in by '.$users[$this->request->data['Revision']['user_id']].'.';
+      	 echo 'Current File is '.$this->request->data['Revision']['filename'].
+	 ' (uploaded at '.$this->request->data['Revision']['native_date'].
+	 ').  Checked in by '.
+	 $users[$this->request->data['Revision']['user_id']].'.';
       } else {
       	 echo 'No File Attached';
       }

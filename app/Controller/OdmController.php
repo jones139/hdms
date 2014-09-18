@@ -94,13 +94,18 @@ class OdmController extends AppController {
                 'doc_id' => $docId,
                 'major_revision' => $major_revision,
                 'minor_revision' => '1',
-                'user_id' => null,
+                'user_id' => $this->Auth->user('id'),
                 'is_checked_out' => false,
+                'check_out_date' => $odmD['created'],
                 'filename' => $odmD['realname'],
                 'doc_status_id' => $status,  
                 'doc_status_date' => $odmD['created'],
                 'has_native' => file_exists($odmNativeFname),
+                'native_date' => $odmD['created'],
                 'has_pdf' => file_exists($odmPDFFname),
+                'pdf_date' => $odmD['created'],
+                'has_extras'=>false,
+                'comment'=>'Imported from OpenDocMan',
             );
             # Create Revision record
             $this->Revision->create();

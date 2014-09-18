@@ -1,6 +1,7 @@
 drop table if exists settings;
 create table settings (
     id INT UNSIGNED PRIMARY KEY,
+    version varchar(10),  # hdms version number.
     email_enabled bool,   # globally enable or disable email notifications.
     pdf_url varchar(256),  # url of pdf generator
     pdf_user varchar(50),  # username for pdf generator
@@ -139,7 +140,7 @@ create table responses (
        title varchar(50)
 );
 
-insert into settings(id,email_enabled) values (1,true);
+insert into settings(id,version,email_enabled) values (1,"0.1",true);
 
 insert into roles (id,title) values (0,'Disabled');
 insert into roles (id,title) values (1,'Administrator');
@@ -191,11 +192,11 @@ insert into users (username,title,role_id,position_id,password) values ("User1",
 insert into users (username,title,role_id,position_id,password) values ("User2","User 2",2,1,"afcf02f321a501cf9cff31f022455dade82cd3f4");
 insert into users (username,title,role_id,position_id,password) values ("banned","Banned User",0,0,"afcf02f321a501cf9cff31f022455dade82cd3f4");
 
-insert into docs (facility_id,doc_type_id,doc_subtype_id,docNo,title) values (1,1,1,"xxx/yyy/zzz","title 1");
-insert into docs (facility_id,doc_type_id,doc_subtype_id,docNo,title) values (2,1,2,"HAT/POL/FIN/xxx","Finance Policy xxx");
-insert into revisions (doc_id,major_revision,minor_revision,user_id,doc_status_id) values (1,1,1,1,0);
+#insert into docs (facility_id,doc_type_id,doc_subtype_id,docNo,title) values (1,1,1,"xxx/yyy/zzz","title 1");
+#insert into docs (facility_id,doc_type_id,doc_subtype_id,docNo,title) values (2,1,2,"HAT/POL/FIN/xxx","Finance Policy xxx");
+#insert into revisions (doc_id,major_revision,minor_revision,user_id,doc_status_id) values (1,1,1,1,0);
 
-insert into route_lists(revision_id) values (1);
-insert into route_list_entries (route_list_id,user_id) values (1,1);
-insert into route_list_entries (route_list_id,user_id) values (1,2);
-insert into route_list_entries (route_list_id,user_id) values (1,3);
+# insert into route_lists(revision_id) values (1);
+# insert into route_list_entries (route_list_id,user_id) values (1,1);
+# insert into route_list_entries (route_list_id,user_id) values (1,2);
+# insert into route_list_entries (route_list_id,user_id) values (1,3);
