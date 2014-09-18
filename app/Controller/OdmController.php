@@ -109,6 +109,7 @@ class OdmController extends AppController {
                     __('The revision record could not be saved...'));
                 return $this->redirect(array('action'=>'index'));
             }
+            $revId = $this->Revision->getInsertID();
 
             #########################################
             # Copy the files into the HDMS directory.
@@ -116,24 +117,16 @@ class OdmController extends AppController {
             if ($revData['has_native']) {
                 $this->Revision->save_file(
                     $odmNativeFname,
-                    $revData['filename'],
-                    $revData['doc_id'],
-                    $revData['major_revision'],
-                    $revData['minor_revision'],
-                    false
-                );
+                    $revId,
+                    'native');
             }
 
             # - PDF File
             if ($revData['has_pdf']) {
                 $this->Revision->save_file(
                     $odmPDFFname,
-                    $revData['filename'],
-                    $revData['doc_id'],
-                    $revData['major_revision'],
-                    $revData['minor_revision'],
-                    true
-                );
+                    $revId,
+                    'pdf');
             }
             
 

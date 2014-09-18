@@ -5,6 +5,9 @@ class OdmDoc extends AppModel {
     var $useTable = 'odm_data';
     var $primaryKey = 'id';
 
+    ////////////////////////////////////////////////////
+    // SET THIS TO MATCH YOUR SYSTEM INSTALLATION!!!!
+    ////////////////////////////////////////////////////
     var $odmFolder = '/home/graham/odm/';
 
 
