@@ -114,6 +114,7 @@ class Revision extends AppModel {
 	/**
 	 * Save the file $tmpname to revision number $rev_id as file type 
 	 * $filetype (pdf,native,extras).
+         * Does not alter the revision record in the database.
 	 */
 	public function save_file($tmpnam,$rev_id,$filetype='pdf') {
 	       $this->logDebug("save_file - tmpnam=".$tmpnam);
@@ -284,7 +285,7 @@ class Revision extends AppModel {
 			  $this->set(array(
 					   'filename' => $fname,
 					   'has_native' => true,
-					   'native_file_date' => date('Y-m-d H:i:s'),
+					   'native_date' => date('Y-m-d H:i:s'),
 					   'is_checked_out' => false,
 					   'has_pdf' => false, 
 					   'user_id' => $authUserData['id'],
@@ -320,6 +321,7 @@ class Revision extends AppModel {
 			  // Update revision record to reflect new file.
 			  $this->set(array(
 					   'has_pdf' => true, 
+					   'pdf_date' => date('Y-m-d H:i:s'),
 					   'user_id' => $authUserData['id'],
 					   ));
 			  $this->save();
@@ -349,6 +351,7 @@ class Revision extends AppModel {
 			  // Update revision record to reflect new file.
 			  $this->set(array(
 					   'has_extras' => true, 
+					   'extras_date' => date('Y-m-d H:i:s'),
 					   'user_id' => $authUserData['id'],
 					   ));
 			  $this->save();
@@ -386,7 +389,7 @@ class Revision extends AppModel {
 			     'id'=>$data['Revision']['id'],
 			     'filename' => $fname,
 			     'has_native' => true,
-			     'native_file_date' => date('Y-m-d H:i:s'),
+			     'native_date' => date('Y-m-d H:i:s'),
 			     'is_checked_out' => false,
 			     'has_pdf' => false,
 			     'user_id' => $authUserData['id'],
@@ -491,6 +494,7 @@ class Revision extends AppModel {
 	  $this->id = $id;
 	  $this->set(array(
 			   'id'=>$id,
+                           'pdf_date' => date('Y-m-d H:i:s'),
 			   'has_pdf' => true,
 			   ));
 	  // And save it

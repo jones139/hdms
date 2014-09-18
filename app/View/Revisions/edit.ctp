@@ -34,10 +34,10 @@
 
       echo '<p>';
       if ($this->request->data['Revision']['has_native']) {
-      	 echo 'Current File is '.$this->request->data['Revision']['filename'].
-	 ' (uploaded at '.$this->request->data['Revision']['native_date'].
-	 ').  Checked in by '.
-	 $users[$this->request->data['Revision']['user_id']].'.';
+      	 echo 'Attached File is <b>'.$this->request->data['Revision']['filename'].
+	 '</b> (uploaded at '.$this->request->data['Revision']['native_date'].
+	 ').  <br/>Checked in by <b>'.
+	 $users[$this->request->data['Revision']['user_id']].'</b>.';
       } else {
       	 echo 'No File Attached';
       }
@@ -100,6 +100,15 @@
       echo '<h3>PDF Version of File</h3>';
       echo '<p class="actions">';
       if ($this->request->data['Revision']['has_pdf']) {
+         echo "PDF file uploaded at ".
+	      $this->request->data['Revision']['pdf_date'];
+	 if ($this->Time->fromstring(
+	       $this->request->data['Revision']['pdf_date']) < 
+	     $this->Time->fromstring(
+               $this->request->data['Revision']['native_date'])) {
+	       echo "<br/> <b>*** PDF File is Out of Date ***</b>";
+ 	 }
+	 echo "<br/>";
       	 echo $this->Html->link('View PDF File',
       	 array('controller'=>'revisions',
             'action'=>'download_file',
@@ -142,6 +151,8 @@
             'action'=>'download_file',
 	    $this->request->data['Revision']['id'],
 				    'type'=>'extras'));
+      } else {
+         echo "No Extra File Attached.  ";
       }
 
       # Only show Extras manipulation options for draft documents.
@@ -159,7 +170,7 @@
       ######################
       if ($lastRouteList_id) {
       	 echo '<h3>Route List Number '.$lastRouteList_id.' - status = '.$routeListStatuses[$lastRouteList_status].'</h3>';
-         echo '<p>';
+         echo '<p class="actions">';
           if (isset($routeListEntries)) {
 	     echo "<table>";
 	     echo "<tr>";
@@ -214,10 +225,14 @@
           }
       } else {
          echo "<h3>Route List</h3>";
-         echo 'No Route List data present - ';
-      	 echo $this->Html->link('Create Route List',
-             array('controller'=>'route_lists','action'=>'add',
-			    'revision'=>$this->request->data['Revision']['id']));
+         echo '<p class="actions">No Route List data present.  ';
+	 // Only show create route list button for draft revisions.
+	 if ($this->request->data['DocStatus']['id']==0) {
+      	    	echo $this->Html->link('Create Route List',
+             	     array('controller'=>'route_lists','action'=>'add',
+			    'revision'=>$this->request->data['Revision']['id']));	
+	} 
+	echo '</p>';
       }
       echo '</p>';
 
