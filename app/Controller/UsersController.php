@@ -82,12 +82,23 @@ class UsersController extends AppController {
     public function add() {
         if ($this->Auth->user('role_id')==1) {
             if ($this->request->is('post')) {
-                $this->User->create();
-                if ($this->User->save($this->request->data)) {
-                    $this->Session->setFlash(__('The user has been saved.'));
-                    return $this->redirect(array('action' => 'index'));
-                } else {
-                    $this->Session->setFlash(__('The user could not be saved. Please, try again.'));
+                # Check passwords both match - manual fiddle rather than
+                # a proper cakephp validation rule...
+                if ($this->request->data[ 'User' ][ 'password' ] 
+                != $this->request->data[ 'User' ][ 'confirm_password' ] ) {
+                    # passwords do not match, so invalidate them on the form.
+                    $this->User->invalidate( 'password', 
+                    "The passwords don't match." );
+                    $this->User->invalidate( 'confirm_password', 
+                    "The passwords don't match." );
+                } else {  # Passwords match, so create user record
+                    $this->User->create();
+                    if ($this->User->save($this->request->data)) {
+                        $this->Session->setFlash(__('The user has been saved.'));
+                        return $this->redirect(array('action' => 'index'));
+                    } else {
+                        $this->Session->setFlash(__('The user could not be saved. Please, try again.'));
+                    }
                 }
             }
             $roles = $this->User->Role->find('list');

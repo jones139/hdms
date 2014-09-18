@@ -30,6 +30,7 @@ CREATE TABLE users (
     email_verified bool default false,
     role_id int,
     position_id int,
+    require_new_password bool default false,
     created DATETIME default null,
     modified datetime default null
 );

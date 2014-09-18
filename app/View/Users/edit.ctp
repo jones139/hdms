@@ -6,6 +6,7 @@
 		echo $this->Form->input('id');
 		if ($authUserData['role_id']==1) {   # Administrator
 		   echo $this->Form->input('username');
+		   echo $this->Form->input('require_new_password',array('label'=>'Require New Password at next login'));
 		} else {
 		   echo $this->Form->input('username',array('disabled'=>'disabled'));
 		}

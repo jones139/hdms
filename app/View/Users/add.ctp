@@ -3,9 +3,13 @@
 	<fieldset>
 		<legend><?php echo __('Add User'); ?></legend>
 	<?php
-		echo $this->Form->input('title');
-		echo $this->Form->input('username');
-		echo $this->Form->input('password');
+		echo $this->Form->input('title',array(
+		     'label'=>'Full Name',
+		     'required'=>true));
+		echo $this->Form->input('username',array('required'=>true));
+		echo $this->Form->input('password',array('required'=>true));
+		echo $this->Form->input('confirm_password',
+		     array('type'=>'password','required'=>true));
 		echo $this->Form->input('email');
 		echo $this->Form->input('email_verified');
 		echo $this->Form->input('role_id');
