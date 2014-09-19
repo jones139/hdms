@@ -92,7 +92,8 @@
 		     $latest_rev = null;
 		     if (sizeof($doc['Revision'])>0)
 		     	$latest_rev = $doc['Revision'][sizeof($doc['Revision'])-1];
-		      if ($latest_rev != null) {
+		      if ($latest_rev != null 
+                         and $latest_rev != $issued_rev) {
 		      	 echo "<b>".$latest_rev['major_revision'].'_'.
 				$latest_rev['minor_revision']."</b>";
 
