@@ -124,7 +124,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 				);
 			?>
 			<p>
-				Copyright &copy; 2014 <a href="mailto:graham.jones@catcotegb.co.uk?Subject=HDMS">Graham Jones</a></p>
+				HDMS Version <?php echo $settings['version']; ?>; Copyright &copy; 2014 <a href="mailto:graham.jones@catcotegb.co.uk?Subject=HDMS">Graham Jones</a> (Hartlepool Aspire Trust)</p>
 <p>HDMS is open source software.    Please submit any suggestions for improvement to the 
 			 <a href="https://github.com/jones139/hdms/issues"> HDMS GitHub repository</a>.
 			</p>
