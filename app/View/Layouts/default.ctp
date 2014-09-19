@@ -82,10 +82,10 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 	      echo $this->Html->link('Add/Edit Users',
 	      	   	             array('controller'=>'users',
 				           'action'=>'index'));
-	      echo "; ";
-	      echo $this->Html->link('Add/Edit Documents',
-	      	   	             array('controller'=>'docs',
-				           'action'=>'index'));
+	      #echo "; ";
+	      #echo $this->Html->link('Add/Edit Documents',
+	      #	   	             array('controller'=>'docs',
+	      #			           'action'=>'index'));
 	      echo " - ";
            }
 
