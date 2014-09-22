@@ -30,7 +30,7 @@
 	     <h2>Management System Manual</h2>
 	     <h3>Vision: To be an outstanding provider of education services to all learners</h3>
 	     <h3>Mission: Provide an environment where students are offered every opportunity to maximise their
-potential, <br/> grow in confidence and above all, be happy "Working together, achieving success"</h3>
+potential, grow in confidence and above all, be happy <br/>"Working together, achieving success"</h3>
 	   </td>
 </tr>
 <tr>

@@ -2,7 +2,7 @@ td h3,h2 {
   pointer-events:none;
 }
 
-.msm {
+.msm, h2{
   background: #ffaaaa;
   text-align:center;
 }
