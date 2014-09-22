@@ -9,7 +9,7 @@
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Foobar is distributed in the hope that it will be useful,
+ *   HDMS is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *   GNU General Public License for more details.
@@ -210,4 +210,22 @@ class DocsController extends AppController {
 		}
 		return $this->redirect(array('action' => 'index'));
 	}
+
+	/**
+	 * home function - displays a pretty home page with selectors
+	 * for facilities, doc types and subtypes.
+	 */
+	public function home() {
+	  $this->loadModel('Facilities');
+	  $this->loadModel('Doc_types');
+	  $this->loadModel('Doc_subtypes');
+
+	  $facilities = $this->Facilities->find('list',array('fields'=>array('title','description')));
+	  $docTypes = $this->Doc_types->find('all');
+	  $docSubTypes = $this->Doc_subtypes->find('all');
+
+	  $this->set(compact('facilities','docTypes','docSubTypes'));
+
+	}
+
 }
