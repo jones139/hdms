@@ -13,15 +13,20 @@ td h3,h2 {
   background:#dddddd;
 }
 
-.col a {
-    display: block;
-    width:100%;
-    height:100%;
-    padding: 0px;
+.col:hover, .msm:hover {
+  background:#101010;
+  color:#ffffff;
 }
-.col a:hover {
-    background: #ffffff;
-}
+
+#.col a {
+#    display: block;
+#    width:100%;
+#    height:100%;
+#    padding: 0px;
+#}
+#.col a:hover {
+#    background: #ffffff;
+#}
 
 .gov {
   background: #ffff00;

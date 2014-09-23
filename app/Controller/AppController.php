@@ -9,7 +9,7 @@
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Foobar is distributed in the hope that it will be useful,
+ *   HDMS is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *   GNU General Public License for more details.
@@ -54,11 +54,11 @@ class AppController extends Controller {
 	       		   'Auth'=>array(
 				'loginRedirect'=>array(
 					'controller'=>'docs',
-					'action'=>'index'
+					'action'=>'home'
 				),
 				'logoutRedirect'=>array(
 					'controller'=>'docs',
-					'action'=>'index'
+					'action'=>'home'
 				)
 # FIXME - controller authorisation gives 'hdmsController not found' errors!!!
 				#,'authorize' => array('Controller')
@@ -80,7 +80,7 @@ class AppController extends Controller {
             # By default we allow unauthenticated users to do nothing...
             # The individual controllers allow unauthenticated access
             # where they need to.
-            $this->Auth->allow(array());
+	      $this->Auth->allow(array('/','home'));
 
             $this->set('testing','testing');
             $this->set('authUserData', $this->Auth->user());

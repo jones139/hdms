@@ -1,3 +1,4 @@
+<div style="width:300px;float:left;">
 	<?php
 		echo $this->Html->css('homepage');
 		echo $this->fetch('css');
@@ -18,35 +19,44 @@
 		     'selected'=>$facArr,
 		     'div'=>false,
 		     'id'=>'facSel',
-		     'class'=>'col')
+		     'class'=>'col','width'=>'30px;')
 		    );
 		echo $this->Form->end();
         ?>
+</div>
+<div style="width:300px; float:left;">
+     Click on the boxes below to list the documents associated with the various Strategic Objectives, or 
+     <?php	echo $this->Html->link('click here to show all documents', array(
+		     'controller' => 'docs', 
+		     'action' => 'index'));
+		     ?>
 
+
+</div>
 <table>
 <tr>
 	<td class='col'><h3>MSM</h3></td>
 	<td  class="msm" id="Msm" colspan = 6>
 	     <h2>Management System Manual</h2>
 	     <h3>Vision: To be an outstanding provider of education services to all learners</h3>
-	     <h3>Mission: Provide an environment where students are offered every opportunity to maximise their
-potential, grow in confidence and above all, be happy <br/>"Working together, achieving success"</h3>
+	     <p>Mission: Provide an environment where students are offered every opportunity to maximise their
+potential, grow in confidence and above all, be happy <br/>"Working together, achieving success"</p>
 	   </td>
 </tr>
 <tr>
 	<td class='col'><h3>Strategic Objectives</h3></td>
-	<td class="gov col" id="Gov"> <h3>GOV - Governance</h3>Effective Governance and Oversight</td>
-	<td class="edu col" id="Edu"> <h3>EDU - Education</h3>Education / Curriculum</td>
-	<td class="hr col" id="HR"><h3>HR - Human Resources</h3>Engaged and Well Qualified Workforce</td>
-	<td class="hs col" id="HS"><h3>HS - Health and Safety</h3>Zero Harm to staff, students, visitors and the environment</td>
-	<td class="fac col" id="Fac"><h3>FAC - Facilities</h3>Provide high quality teaching and learning facilities</td>
-	<td class="fin col" id="Fin"><h3>FIN - Finance</h3>Financial Stability</td>
+	<td class="gov col" id="Gov"> <h3>GOV<br/>Governance</h3>Effective Governance and Oversight</td>
+	<td class="edu col" id="Edu"> <h3>EDU<br/>Education</h3>Education / Curriculum</td>
+	<td class="hr col" id="HR"><h3>HR<br/>Human Resources</h3>Engaged and Well Qualified Workforce</td>
+	<td class="hs col" id="HS"><h3>HS<br/>Health and Safety</h3>Zero Harm to staff, students, visitors and the environment</td>
+	<td class="fac col" id="Fac"><h3>FAC<br/>Facilities</h3>Provide high quality teaching and learning facilities</td>
+	<td class="fin col" id="Fin"><h3>FIN<br/>Finance</h3>Financial Stability</td>
 </tr>
 <tr>
 	<td class='col'><h3>Policies</h3></td>
-	<td class="gov col" id="GovPol">Policies on all aspects of Corporate Governance</td>
-	<td class="edu col" id="EduPol">Policies on Education Standards and Curriculum</td>
-	<td class="hr col" id="HRPol">Policies on Human Resources to achieve the "Engaged and Well Qualified Workforce" Objective.</td>
+	<td class="gov col" id="GovPol">Corporate Governance Policies</td>
+	<td class="edu col" id="EduPol">Education Standards and Curriculum Policies</td>
+	<td class="hr col" id="HRPol">Human Resources Policies</td>
 	<td class="hs col" id="HSPol">Health and Safety Policies</td>
 	<td class="fac col" id="FacPol">Facilities Management Policies</td>
 	<td class="fin col" id="FinPol">Financial Management Policies.</td>
