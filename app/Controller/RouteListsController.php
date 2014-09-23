@@ -335,6 +335,7 @@ class RouteListsController extends AppController {
                 if ($this->RouteList->isComplete($id)) {
                     if ($this->RouteList->isApproved($id)) {
                         $this->_remove_route_list_notifications($id);
+                        $this->_notify_document_issued($id);
                         $this->Session->setFlash(
                             __('Response Accepted - Revision Issued'));
                     } else {
@@ -390,6 +391,21 @@ class RouteListsController extends AppController {
         }		
     }
     
+
+	/**
+	 * Email users to inform them that a document has been issued.
+	 */
+	public function _notify_document_issued($id=null) {
+	  $this->loadModel('Notification');
+	  $options = array(
+			   'conditions' => array('RouteList.id' => $id),
+			   'fields' => array('revision_id'));
+	  $revisionArr = $this->RouteList->find('list', $options);
+	  $revision_id = reset($revisionArr);  // get first element
+
+	  $this->Notification->issue_notify($revision_id);	   
+	  
+	}
 /* 
  * Send a notification to each approver on route list $id to ask them to approve
  * the revision

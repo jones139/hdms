@@ -529,7 +529,7 @@ class Revision extends AppModel {
 	 #var_dump($lastrev);
 
 	 if ($lastrev>=0) {
-       	    # create the new revision
+	   // create the new revision
 	    $this->create(); 
 	    $lastrev['Revision']['id']=null;
 	    if ($major) {
@@ -540,12 +540,12 @@ class Revision extends AppModel {
             }
 	    $lastrev['Revision']['doc_status_id']=0;
 	    $lastrev['Revision']['doc_status_date']=date('Y-m-d H:i:s');
-            # We don't copy the pdf from old revision.
+            // We don't copy the pdf from old revision.
             $lastrev['Revision']['has_pdf']=false;  
 	    $this->save($lastrev);
 	    $newrev_id = $this->getInsertID();
 	    if ($lastrev['Revision']['has_native']) {
-	       $folder = $this->get_folder($lastrev_id);
+	       $folder = $this->get_folder($newrev_id);
 	       if (!is_dir($folder)) {
 	          $this->logDebug("Attempting to create directory ".$folder);
 	       	  if (mkdir($folder,0777,true)) {
@@ -555,7 +555,7 @@ class Revision extends AppModel {
 		     return false;
 		  }
                }
-	       # Copy native files
+	       // Copy native files
 	       copy($this->get_filepath($lastrev_id,'native'),
 		    $this->get_filepath($newrev_id,'native'));	       
 	    }

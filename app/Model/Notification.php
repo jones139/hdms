@@ -112,4 +112,24 @@ class Notification extends AppModel {
 	       }
         }
 
+	public function issue_notify($revision_id) {
+	  App::import('Model','Setting');
+	  $SettingsModel = new Setting();
+	  $settings = $SettingsModel->findById(1)['Setting'];
+	  //#########################################
+	  // Send email notification
+	  if ($settings['email_enabled']) {
+	    $emailArr = explode(';',$settings['issue_notify_list']);
+	    foreach ($emailArr as $email) {
+	      $bodyTxt = "For Information:  HDMS Document has been issued: ".
+		Router::url(array(
+				  'controller'=>'revisions',
+				  'action'=>'edit',
+				  $revision_id),true).
+		".";
+	      mail($email,"HDMS Notification",$bodyTxt);
+	    }
+	  }
+	}
+	
 }

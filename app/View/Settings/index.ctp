@@ -5,6 +5,8 @@
 	echo $this->Form->input('id');
 	echo $this->Form->input('email_enabled',array(
 	'label'=>'Enable Email Notifications'));
+	echo $this->Form->input('issue_notify_list',array(
+	'label'=>'Semicolon separated list of email addresses to notify of document issue'));
 	echo $this->Form->input('pdf_url');
 	echo $this->Form->input('pdf_user');
 	echo $this->Form->input('pdf_passwd');
