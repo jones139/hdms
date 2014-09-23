@@ -43,7 +43,8 @@
 
 /** General Style Info **/
 body {
-	background: #a0a0a0;   
+#	background: #a0a0a0;   
+        background: #182673;
 	color: #fff;
 	font-family:'lucida grande',verdana,helvetica,arial,sans-serif;
 	font-size:90%;
@@ -60,6 +61,7 @@ a:hover {
 }
 a img {
 	border:none;
+	background:#ffffff;
 }
 h1, h2, h3, h4 {
 	font-weight: normal;
