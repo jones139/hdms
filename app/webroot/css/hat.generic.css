@@ -166,6 +166,7 @@ div.actions h3 {
 }
 
 
+
 /** Tables **/
 table {
 	border-right:0;
@@ -324,6 +325,12 @@ form div {
 	padding: .5em;
 	vertical-align: text-top;
 }
+
+form div.floatleft {
+  clear:none;
+  float:left;
+}
+
 form .input {
 	color: #444;
 }
