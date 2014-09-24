@@ -9,7 +9,7 @@
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Foobar is distributed in the hope that it will be useful,
+ *   HDMS is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *   GNU General Public License for more details.
@@ -155,28 +155,28 @@ class RouteListsController extends AppController {
                 'RouteListEntry'=>array('route_list_id'=>$id));
         }
 
-        # Send the view the list of active users (role != 0)
-        # NOTE this uses model 'User' not 'Users' - ignores associations
-        # if you use 'Users'!!!!!
+        // Send the view the list of active users (role != 0)
+        // NOTE this uses model 'User' not 'Users' - ignores associations
+        // if you use 'Users'!!!!!
         $this->loadModel('User');
         $options = array('conditions'=>array('User.role_id != '=>0));
         $usersArr = $this->User->find('all',$options);
         
-        # Simplify it to give title as ('Name (position)')
+        // Simplify it to give title as ('Name (position)')
         $users = array();
         foreach ($usersArr as $ua) {
             $users[$ua['User']['id']] = $ua['User']['title'].
             ' ('.$ua['Position']['title'].')';
         }
         
-        # Send the view the list of existing route list entries
+        // Send the view the list of existing route list entries
         $this->loadModel('RouteListEntries');
         $options = array(
             'fields'=>array('user_id'),
             'conditions' => array('route_list_id' => $id));
         $entries = $this->RouteListEntries->find('list',$options);
         
-        # Send the view the id of the revision associated with this route list.
+        // Send the view the id of the revision associated with this route list.
         $options = array(
             'fields'=>array('revision_id'),
             'conditions' => array('RouteList.id' => $id));
@@ -226,33 +226,31 @@ class RouteListsController extends AppController {
         if ($this->request->is(array('post', 'put'))) {
             $this->request->data['RouteList']['route_list_status_id']=1;
             if ($this->RouteList->save($this->request->data)) {
-                # Check if the route list is approved - it won't be,
-                # but this function sets the document status correctly so
-                # we call it now anyway.
-                # FIXME - probably  best to have a setRevisionStatus function..
-                $approved = $this->RouteList->isApproved($id);
-                $this->Session->setFlash(__('The route list submited'));
-                $this->_notify_route_list_approvers($id);
-                return $this->redirect(
-                    array('controller'=>'revisions',
-                    'action'=>'edit',
-                    $this->request->data['RouteList']['revision_id']));
+	      // Check if the route list is approved - it won't be,
+	      // but this function sets the document status correctly so
+	      // we call it now anyway.
+	      // FIXME - probably  best to have a setRevisionStatus function..
+	      $approved = $this->RouteList->isApproved($id);
+	      $this->Session->setFlash(__('The route list submited'));
+	      $this->_notify_route_list_approvers($id);
+	      return $this->redirect(array(
+                       'controller'=>'revisions',
+		       'action'=>'edit',
+		       $this->request->data['RouteList']['revision_id']));
             } else {
-                $this->Session->setFlash(
-                    __('Oh no, failed to submit route list - dont know why!!!'));
-                return $this->redirect(
-                    array('controller'=>'revisions',
-                    'action'=>'edit',
-                    $this->request->data['RouteList']['revision_id']));
+	      $this->Session->setFlash(
+		      __('Oh no, failed to submit route list - dont know why!!!'));
+	      return $this->redirect(array(
+		     'controller'=>'revisions',
+		     'action'=>'edit',
+		     $this->request->data['RouteList']['revision_id']));
             }
         } else {
-            $options = array(
-                'conditions' => array(
-                    'RouteList.' . $this->RouteList->primaryKey => $id));
-            $this->request->data = $this->RouteList->find('first', $options);
+	  $options = array(
+			   'conditions' => array(
+						 'RouteList.' . $this->RouteList->primaryKey => $id));
+	  $this->request->data = $this->RouteList->find('first', $options);
         }
-        #$revisions = $this->RouteList->Revision->find('list');
-        #$this->set(compact('revisions'));
     }
         
 /**
@@ -332,6 +330,8 @@ class RouteListsController extends AppController {
             $this->request->data['RouteListEntry']['response_date'] = 
                 date('Y-m-d H:i:s');
             if ($this->RouteListEntry->save($this->request->data)) {
+                // notify the users on the routelist of the response.
+                $this->_notify_routelist_response($id);
                 if ($this->RouteList->isComplete($id)) {
                     if ($this->RouteList->isApproved($id)) {
                         $this->_remove_route_list_notifications($id);
@@ -406,6 +406,24 @@ class RouteListsController extends AppController {
 	  $this->Notification->issue_notify($revision_id);	   
 	  
 	}
+
+
+	/**
+	 * Email users on route list to inform them that a user has
+	 * responded to the route list request.
+	 */
+	public function _notify_routelist_response($id=null) {
+	  $this->logDebug("_notify_routelist_response()");
+	  $this->RouteList->recursive = 2;
+	  $this->loadModel('Notification');
+	  $revision_id = $this->RouteList->getRevisionId($id);
+	  $routeList = $this->RouteList->findById($id);
+	  foreach($routeList['RouteListEntry'] as $rle) {
+	    $email = $rle['User']['email'];
+	    $this->Notification->response_notify($email,$revision_id);
+	  }
+	}
+
 /* 
  * Send a notification to each approver on route list $id to ask them to approve
  * the revision
@@ -421,17 +439,13 @@ class RouteListsController extends AppController {
                 'RouteListEntry.route_list_id' => $id),
             'fields' => array('user_id'));
         $userlist = $this->RouteListEntry->find('list', $options);
-        $options = array(
-            'conditions' => array('RouteList.id' => $id),
-            'fields' => array('revision_id'));
-        $revisionArr = $this->RouteList->find('list', $options);
-        $revision_id = reset($revisionArr);  # get first element
+	$revision_id = $this->RouteList->getRevisionId($id);
         foreach ($userlist as $user_id) {
             $this->Notification->send(
                 $user_id,
                 $revision_id,
                 "Please Approve Revision",
-                0   #  Approval type notification
+                0   //  Approval type notification
             );	   
         }
         $this->set(compact('userlist','revisionArr','revision_id'));
@@ -450,10 +464,7 @@ class RouteListsController extends AppController {
         $options = array('conditions' => array('RouteListEntry.route_list_id' => $id),
         'fields' => array('user_id'));
         $userlist = $this->RouteListEntry->find('list', $options);
-        $options = array('conditions' => array('RouteList.id' => $id),
-        'fields' => array('revision_id'));
-        $revisionArr = $this->RouteList->find('list', $options);
-        $revision_id = reset($revisionArr);  # get first element
+	$revision_id = $this->RouteList->getRevisionId($id);
         foreach ($userlist as $user_id) {
             $this->Notification->cancel(
                 $user_id,
@@ -463,4 +474,4 @@ class RouteListsController extends AppController {
         $this->set(compact('userlist','revisionArr','revision_id'));
     } 
        
-} # End of class definition.
+    } // End of class definition.

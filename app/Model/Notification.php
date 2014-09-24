@@ -75,23 +75,19 @@ class Notification extends AppModel {
 	  App::import('Model','Setting');
 	  $SettingsModel = new Setting();
 	  $settings = $SettingsModel->findById(1)['Setting'];
-	  echo var_dump($settings);
 	  
 	  #########################################
 	    # Send email notification
 	  if ($settings['email_enabled']) {
 	    $user = $this->User->findById($user_id);
-	    #echo var_dump($user);
 	    if ($user['User']['email_verified']) {
 	      $email = $user['User']['email'];
 	      $bodyTxt = "Please Approve document ".
-		"<a href='".
 		Router::url(array(
 				  'controller'=>'revisions',
 				  'action'=>'edit',
 				  $revision_id),true).
-		"'>here</a>".var_dump($settings).
-		".";
+		".\n".$this->getDocInfo($revision_id);
 	      mail($email,"HDMS Notification",$bodyTxt);
 	    }
 	  }
@@ -126,10 +122,47 @@ class Notification extends AppModel {
 				  'controller'=>'revisions',
 				  'action'=>'edit',
 				  $revision_id),true).
-		".";
+		".\n".$this->getDocInfo($revision_id);
 	      mail($email,"HDMS Notification",$bodyTxt);
 	    }
 	  }
 	}
 	
+
+	public function response_notify($email,$revision_id) {
+	  App::import('Model','Setting');
+	  $SettingsModel = new Setting();
+	  $settings = $SettingsModel->findById(1)['Setting'];
+	  //#########################################
+	  // Send email notification
+	  if ($settings['email_enabled']) {
+	      $bodyTxt = "For Information:  A user has responded to HDMS Document Approval Request: ".
+		Router::url(array(
+				  'controller'=>'revisions',
+				  'action'=>'edit',
+				  $revision_id),true).
+		".\n".$this->getDocInfo($revision_id);
+	      $this->logDebug("response_notify: Sending Email to ".$email);
+	      mail($email,"HDMS Notification",$bodyTxt);
+	  }
+	}
+
+	public function getDocInfo($revisionId = null) {
+	  App::import('Model','Revision');
+	  $Revision = new Revision();
+
+	  $this->Revision->recursive = 3;
+	  $rev = $Revision->findById($revisionId);
+
+	  $docInfo = $rev['Doc']['title'].
+	    ' ('.
+	    $rev['Doc']['docNo'].
+	    ') Revision '.
+	    $rev['Revision']['major_revision'].
+	    '_'.
+	    $rev['Revision']['minor_revision'];
+	  return $docInfo;
+	    
+	}
+
 }
