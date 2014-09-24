@@ -165,6 +165,8 @@ class DocsController extends AppController {
  * @return void
  */
 	public function edit($id = null) {
+	        $this->Doc->recursive = 2;
+
 		if (!$this->Doc->exists($id)) {
 			throw new NotFoundException(__('Invalid doc'));
 		}

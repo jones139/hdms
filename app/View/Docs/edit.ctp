@@ -35,9 +35,9 @@
    foreach ($this->request->data['Revision'] as $rev) {
       echo "<tr>";
       echo "<td>".$rev['major_revision'].'_'.$rev['minor_revision']."</td>";
-      echo "<td>".$rev['doc_status_id']."</td>";
+      echo "<td>".$rev['DocStatus']['title']."</td>";
       echo "<td>".$rev['doc_status_date']."</td>";
-      echo "<td>".$rev['user_id']."</td>";
+      echo "<td>".$rev['User']['title']."</td>";
       echo "<td>".$rev['comment']."</td>";
       echo "</tr>";
    }
