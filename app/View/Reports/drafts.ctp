@@ -25,3 +25,19 @@
 
 ?>
 </div>
+<div class="actions">
+<?php
+###############
+# Back Button #
+###############
+echo $this->Html->link('Back',
+      array('controller'=>'docs','action'=>'index')); ?>
+</div>
+
+</div>
+<div class="actions">
+	<h3><?php echo __('Actions'); ?></h3>
+	<ul>
+		<li><?php echo $this->Html->link(__('List Docs'), array('controller' => 'docs', 'action' => 'index')); ?> </li>
+	</ul>
+</div>

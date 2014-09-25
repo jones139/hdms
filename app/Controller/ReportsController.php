@@ -87,10 +87,17 @@ class ReportsController extends AppController {
 	 */
 	public function drafts() {
 	  $this->loadModel('Revision');
-	  $conditions= array(
+	  $fields = '';  //give us everything.
+	  $order = array('Revision.id'=>'desc');
+	  $conditions= array( // Draft or waiting for approval
 			     'Revision.doc_status_id'=>array(0,1)
 			     );
-	  $data = $this->Revision->find('all',array('conditions'=>$conditions));
+	  $group=array('Revision.doc_id');
+	  $group='';
+	  $data = $this->Revision->find('all',array('fields'=>$fields,
+						    'order'=>$order,
+						    'conditions'=>$conditions,
+						    'group'=>$group));
 	  $this->set('data',$data);
 	  
 	}
