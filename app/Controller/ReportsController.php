@@ -87,18 +87,23 @@ class ReportsController extends AppController {
 	 */
 	public function drafts() {
 	  $this->loadModel('Revision');
-	  $fields = '';  //give us everything.
-	  $order = array('Revision.id'=>'desc');
-	  $conditions= array( // Draft or waiting for approval
-			     'Revision.doc_status_id'=>array(0,1)
-			     );
-	  $group=array('Revision.doc_id');
-	  $group='';
-	  $data = $this->Revision->find('all',array('fields'=>$fields,
-						    'order'=>$order,
-						    'conditions'=>$conditions,
-						    'group'=>$group));
+	  
+	  $maxRevs = $this->Revision->find('all',array('recursive'=>-1,
+						       'fields'=>array('max(doc_id) as doc_id','max(Revision.id) as rev_id'),
+		 'group'=>'Revision.doc_id',
+							));
+	  $data = array();
+	  foreach ($maxRevs as $revArr) {
+	    $rev = $this->Revision->findById($revArr[0]['rev_id']);
+	    if ($rev['Revision']['doc_status_id']=='0' or 
+                      $rev['Revision']['doc_status_id']=='1') {
+	      $data[] = $rev;
+	    }
+	  }
+
+
 	  $this->set('data',$data);
+	  $this->set('maxRevs',$maxRevs);
 	  
 	}
 
