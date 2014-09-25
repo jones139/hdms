@@ -299,7 +299,7 @@ form {
 }
 fieldset {
 	border: none;
-	margin-bottom: 1em;
+	#margin-bottom: 1em;
 	padding: 16px 10px;
 }
 fieldset legend {
@@ -308,8 +308,8 @@ fieldset legend {
 	font-weight: bold;
 }
 fieldset fieldset {
-	margin-top: 0;
-	padding: 10px 0 0;
+	#margin-top: 0;
+	#padding: 10px 0 0;
 }
 fieldset fieldset legend {
 	font-size: 120%;
@@ -317,12 +317,12 @@ fieldset fieldset legend {
 }
 fieldset fieldset div {
 	clear: left;
-	margin: 0 20px;
+	#margin: 0 0px;
 }
 form div {
 	clear: both;
-	margin-bottom: 1em;
-	padding: .5em;
+	margin-bottom: 5px;
+	padding: 2px;
 	vertical-align: text-top;
 }
 
@@ -345,19 +345,20 @@ form .required label:after {
 form div.submit {
 	border: 0;
 	clear: both;
-	margin-top: 10px;
 }
 label {
-	display: block;
-	font-size: 110%;
-	margin-bottom:3px;
+	display: inline;
+	font-size: 120%;
+	font-weight: bold;
+	margin-bottom:1px;
+	margin-right: 10px;
 }
 input, textarea {
 	clear: both;
-	font-size: 140%;
+	font-size: 120%;
 	font-family: "frutiger linotype", "lucida grande", "verdana", sans-serif;
-	padding: 1%;
-	width:98%;
+	padding: 2px;
+	width:50%;
 }
 select {
 	clear: both;
@@ -365,7 +366,7 @@ select {
 	vertical-align: text-bottom;
 }
 select[multiple=multiple] {
-	width: 100%;
+	#width: 100%;
 }
 option {
 	font-size: 120%;
@@ -404,7 +405,7 @@ form .submit input[type=submit] {
 	border-color: #2d6324;
 	color: #fff;
 	text-shadow: rgba(0, 0, 0, 0.5) 0px -1px 0px;
-	padding: 8px 10px;
+	#padding: 8px 10px;
 }
 form .submit input[type=submit]:hover {
 	background: #5BA150;

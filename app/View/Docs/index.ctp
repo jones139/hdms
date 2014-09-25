@@ -292,6 +292,7 @@
 		echo $this->Html->link('Show All', array(
 		     'controller' => 'docs', 
 		     'action' => 'index'));
+		echo "<br/>";
 
 		if (isSet($query['Facility']))
 		    $facArr = $query['Facility'];
@@ -305,6 +306,7 @@
 		     'selected'=>$facArr,
 		     'div'=>false)
 		    );
+		echo "<br/>";
 
 		if (isSet($query['DocType']))
 		    $docTypeArr = $query['DocType'];
@@ -318,6 +320,7 @@
 		     'selected'=>$docTypeArr,
 		     'div'=>false)
 		    );
+		echo "<br/>";
 
 		if (isSet($query['DocSubType']))
 		    $docSubTypeArr = $query['DocSubType'];
@@ -332,6 +335,7 @@
 		     'div'=>false)
 		    );
 
+		echo "<br/>";
 		if (isSet($query['title'])) 
 		   $searchStr = $query['title'];
 		else
@@ -340,6 +344,7 @@
 		    'div'=>false,
 		    'label'=>'Title/Doc. No. Search:',
 		    'default'=>$searchStr));
+		echo "<br/>";
 		echo $this->Form->submit('Search',array('div'=>false));
 		echo $this->Html->link('Show All', array(
 		     'controller' => 'docs', 
