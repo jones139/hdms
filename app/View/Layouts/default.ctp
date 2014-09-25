@@ -63,7 +63,9 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
       'alt' => 'Catcote Academy Logo',
       'url' => 'http://catcoteacademy.co.uk')); ?>
 	<h1>
-<?php echo $this->Html->link('***DEMO VERSION of Hartlepool Aspire Trust: Document Management System****', '/',array('style'=>'background:#ffff00;')); 
+<?php 
+#echo $this->Html->link('***DEMO VERSION of Hartlepool Aspire Trust: Document Management System****', '/',array('style'=>'background:#ffff00;')); 
+echo $this->Html->link('Hartlepool Aspire Trust: Document Management System****', '/',array('style'=>'background:transparent;')); 
 ?>
         </h1>
 
