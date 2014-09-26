@@ -106,22 +106,22 @@ p {
 #header h1 {
     display:inline;
 	#line-height:20px;
-	background: #ddddff;
-	color: #fff;
+	background: #182673;
+	color: #ffffff;
 	white-space: nowrap; #Prevent word wrapping
 	padding: 0px 0px;
 	position: absolute;
 	top: 10%;
 }
 #header h1 a {
-	color: #0000ff;
-	background: #ddddff;
+	color: #ffffff;
+	background: #182673;
 	font-weight: normal;
 	text-decoration: none;
 }
 #header h1 a:hover {
 	color: #0000ff;
-	background: #eeeeff;
+	background: #aaaaff;
 	text-decoration: underline;
 }
 
