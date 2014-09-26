@@ -19,14 +19,14 @@
 		     'selected'=>$facArr,
 		     'div'=>false,
 		     'id'=>'facSel',
-		     'class'=>'col','width'=>'30px;')
+		     'class'=>'col','style'=>'width:250px;')
 		    );
 		echo $this->Form->end();
         ?>
 </div>
 <div style="width:300px; float:left;">
-     Click on the boxes below to list the documents associated with the various Strategic Objectives, or 
-     <?php	echo $this->Html->link('click here to show all documents', array(
+     Click on the boxes below to list the documents associated with the various Strategic Objectives, or <br/>
+     <?php	echo $this->Html->link('Click here to show all documents', array(
 		     'controller' => 'docs', 
 		     'action' => 'index'));
 		     ?>
