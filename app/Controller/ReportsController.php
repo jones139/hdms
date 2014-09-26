@@ -9,7 +9,7 @@
  *   the Free Software Foundation, either version 3 of the License, or
  *   (at your option) any later version.
  *
- *   Foobar is distributed in the hope that it will be useful,
+ *   HDMS is distributed in the hope that it will be useful,
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *   GNU General Public License for more details.
@@ -88,23 +88,27 @@ class ReportsController extends AppController {
 	public function drafts() {
 	  $this->loadModel('Revision');
 	  
+	  // retrieve a list of the latest revision of each document.
 	  $maxRevs = $this->Revision->find('all',array('recursive'=>-1,
-						       'fields'=>array('max(doc_id) as doc_id','max(Revision.id) as rev_id'),
+		 'fields'=>array('max(doc_id) as doc_id',
+                                 'max(Revision.id) as rev_id'),
 		 'group'=>'Revision.doc_id',
+		 'order'=>'Revision.doc_status_id desc',
 							));
+	  // If a document is either draft, or waiting for approval,
+	  // add it to the output $data, because this means the latest
+	  // revision of a document has not yet been approved.
 	  $data = array();
 	  foreach ($maxRevs as $revArr) {
 	    $rev = $this->Revision->findById($revArr[0]['rev_id']);
-	    if ($rev['Revision']['doc_status_id']=='0' or 
-                      $rev['Revision']['doc_status_id']=='1') {
+	    // put draft docs at end of list
+	    if ($rev['Revision']['doc_status_id']=='0')
 	      $data[] = $rev;
-	    }
+	    // and 'waiting for approval' docs at start of list
+	    elseif ($rev['Revision']['doc_status_id']=='1')
+	      array_unshift($data,$rev);
 	  }
-
-
 	  $this->set('data',$data);
-	  $this->set('maxRevs',$maxRevs);
-	  
 	}
 
 }
