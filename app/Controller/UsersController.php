@@ -210,7 +210,7 @@ class UsersController extends AppController {
 
     public function beforeFilter() {
         parent::beforeFilter();
-        # The only thing an un-authenticated user can do is login.
+        // The only thing an un-authenticated user can do is login.
         $this->Auth->allow('login');
     }
 
@@ -219,10 +219,8 @@ class UsersController extends AppController {
             if ($this->Auth->login()) {
                 if ($this->Auth->user('role_id')>0) {
                     $this->Session->setFlash(__('Login Successful'));
-                    return($this->redirect(array(
-                        'controller'=>'docs',
-                        'action'=>'index'
-                )));
+                    return($this->redirect('/' 
+					   ));
                 } else {
                     $this->Session->setFlash(__('Account Disabled - Please Contact an Administrator'));
                     $this->Auth->logout();
