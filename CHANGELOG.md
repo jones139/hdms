@@ -9,5 +9,7 @@
   * Add revision history to doc/edit screen.
   * Add pretty front page showing document structure visually.
   * Email notification of document issue.
+  * Improvements to draft documents report.
+  * Changed style of forms to make them more compact.
 
 	

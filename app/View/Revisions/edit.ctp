@@ -1,7 +1,7 @@
 <div class="revisions form">
 <?php echo $this->Form->create('Revision'); ?>
 	<fieldset>
-		<legend><?php echo __('Revision '.$this->request->data['Revision']['major_revision'].'_'.$this->request->data['Revision']['minor_revision'].' of document "'.$this->request->data['Doc']['title'].'" ('.$this->request->data['Doc']['docNo'].') <br/> Revision Status = '.$this->request->data['DocStatus']['title']);  ?></legend>
+		<legend><?php echo __('"'.$this->request->data['Doc']['title'].'" ('.$this->request->data['Doc']['docNo'].') <br/>Rev. '.$this->request->data['Revision']['major_revision'].'_'.$this->request->data['Revision']['minor_revision'].' ('.$this->request->data['DocStatus']['title']).').';  ?></legend>
 	<?php
 		$this->Form->inputDefaults(array(
 			'div' => false,
@@ -169,7 +169,7 @@
       # Route List Section #
       ######################
       if ($lastRouteList_id) {
-      	 echo '<h3>Route List Number '.$lastRouteList_id.' - status = '.$routeListStatuses[$lastRouteList_status].'</h3>';
+      	 echo '<h3>Route List Status = '.$routeListStatuses[$lastRouteList_status].'</h3>';
          echo '<p class="actions">';
           if (isset($routeListEntries)) {
 	     echo "<table>";
@@ -214,11 +214,12 @@
       	       echo $this->Html->link('Submit Route List',
              	  array('controller'=>'route_lists','action'=>'submit',
 			    $lastRouteList_id));
-	     } else if ($lastRouteList_status==1) { # Only allow in-progress route lists to be cancelled.
-      	       echo $this->Html->link('Cancel Route List',
-             	  array('controller'=>'route_lists','action'=>'cancel',
-			    $lastRouteList_id));
-             }
+	     } 
+	     //else if ($lastRouteList_status==1) { # Only allow in-progress route lists to be cancelled.
+      	     //  echo $this->Html->link('Cancel Route List',
+             //	  array('controller'=>'route_lists','action'=>'cancel',
+	     //		    $lastRouteList_id));
+             //}
           } else {
             echo "<h3>Route List</h3>";
       	    echo 'No Route List Attached';
