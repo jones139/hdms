@@ -1,15 +1,33 @@
 # hdms - Hartlepool Aspire Trust Document Management System
 
-This repository contains the source code for the new Document Mananagement
-System for Hartlepool Aspire Trust ([Catcote Academy](http://catcoteacademy.co.uk)).
+HDMS is a [Document Management System](http://en.wikipedia.org/wiki/Document_management_system) that has been devloped for Hartlepool Aspire Trust ([Catcote Academy](http://catcoteacademy.co.uk)).
 
-It is a replacement for the [OpenDocMan](https://github.com/jones139/opendocman) based system that we used as part of the conversion to an Academy.
+It has been developed because the Trust is expected to have many policies
+to ensure compliance with statutory regulations, and these policies are
+implemented within the trust using procedures for detailed instructions, and
+forms to record information.
 
-While the [OpenDocMan](https://github.com/jones139/opendocman) based system has
-proved useful there are some shortfalls with it which we need to address to 
-give a long term solution, and I decided that rather than fix those it would 
-be better to produce a new system based on an established software framework 
-whcih will be easier to maintain in the future.
+It is important that the latest versions of the Policies, Procedures and Forms
+are available to staff and key stakeholders, and that changes between versions
+can be tracked and communicated to stakeholders so they know what has changed
+when a new document is issued.
+
+HDMS has been developed to store the Trust's documents in a single repository
+(a web server) and present the latest version of documents to interested
+parties.   Draft versions of documents are not publicly visible, but can be
+viewed by authorised users.   Approval and issue of documents is managed by
+the draft document being sent electronically to reviewers/approvers.  
+The document is issued and becomes the latest version once all the 
+reviewers/approvers have approved the document.
+
+The system stores both 'native' (e.g. MS Word) documents and PDF documents.
+By default the PDF version is delivered to the public, as this can not be
+modified accidentally.   The system can also store 'extra' files, which may
+be the source files for drawings or tables of data that are used in the
+document - this is useful for future updates so the author can obtain all the 
+data used to produce the original document.
+
+The software is quite general so may be of use to other small and medium size organisations who wish to manage their documentation in a systematic way.
 
 ## HDMS Features
 * Uses the [CakePHP](http://www.cakephp.org/) framework so it should be easy 
@@ -19,6 +37,7 @@ for other people to maintain in the future if necessary.
   - User checks out document.
   - Other users can see who is working on it.
   - User checks in document making changes visible to ther users (but not the public).
+  - User requests the system to create a PDF version of the document, or manually attaches a PDF file.
 * It uses a defined approval workflow
   - User creates a 'Route List' that identifies who must approve the document 
     for it to be issued.
@@ -38,13 +57,11 @@ presentation](https://github.com/jones139/hdms/blob/master/doc/HAT_DMS.pdf?raw=t
 There is a demonstration installation of the system available for testing on the [catcotegb web site](http://catcotegb.co.uk/hdms_demo).
 
 ## Future additions
-* Store both a native and an issued document (ie .docx and .pdf files)
 * Each document should have a security classification that determines whether non-authenticated users can view it or not.
 * Enforce some admin controls in code such as:
   * number of reviewers for a document
   * prevent submitting a route list if no document attached
   * prevent submitting a route list if document is checked out
-* Add search functionality to make it easier to find the required documents.
 * Extend the system to store 'Records' - ie filled in versions of forms etc. - 
   this is not trivial because we will have to be much more careful with data
   security as may records will contain personal data.
