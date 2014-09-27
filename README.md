@@ -19,7 +19,12 @@ document structure.
 ![Screenshot Image](https://github.com/jones139/hdms/raw/v1.2/doc/home_page_screenshot.png)
 The user clicks on parts of the graphical summary to 
 search for specific types of documents (such as Financial Procedures, 
-or Human Resources Policies).
+or Human Resources Policies).  This gives  a list of documents, showing the 
+latest revision number with date of issue, with clickable icons to download
+either the PDF version or native version of the file.   
+![Screenshot Image](https://github.com/jones139/hdms/raw/v1.2/doc/document_list_screenshot.png)
+Authorised users
+have options to create new revisions, or edit existing draft documents.
 
 
 Draft versions of documents are not publicly visible, but can be
