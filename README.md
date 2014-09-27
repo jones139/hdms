@@ -14,7 +14,15 @@ when a new document is issued.
 
 HDMS has been developed to store the Trust's documents in a single repository
 (a web server) and present the latest version of documents to interested
-parties.   Draft versions of documents are not publicly visible, but can be
+parties.   Users are initially presented with a graphical summary of the
+document structure.  
+![Screenshot Image](https://github.com/jones139/hdms/raw/v1.2/doc/home_page_screenshot.png)
+The user clicks on parts of the graphical summary to 
+search for specific types of documents (such as Financial Procedures, 
+or Human Resources Policies).
+
+
+Draft versions of documents are not publicly visible, but can be
 viewed by authorised users.   Approval and issue of documents is managed by
 the draft document being sent electronically to reviewers/approvers.  
 The document is issued and becomes the latest version once all the 
@@ -27,7 +35,9 @@ be the source files for drawings or tables of data that are used in the
 document - this is useful for future updates so the author can obtain all the 
 data used to produce the original document.
 
-The software is quite general so may be of use to other small and medium size organisations who wish to manage their documentation in a systematic way.
+The live version of the system is running at (http://catcotegb.co.uk/hdms).
+
+The software is quite general so may be of use to other small and medium size organisations who wish to manage their documentation in a systematic way.  There is a demonstration version of the system available at http://catcotegb.co.uk/hdms_demo - login as 'user1' with password 'test').
 
 ## HDMS Features
 * Uses the [CakePHP](http://www.cakephp.org/) framework so it should be easy 
