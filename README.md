@@ -44,6 +44,12 @@ The live version of the system is running at (http://catcotegb.co.uk/hdms).
 
 The software is quite general so may be of use to other small and medium size organisations who wish to manage their documentation in a systematic way.  There is a demonstration version of the system available at http://catcotegb.co.uk/hdms_demo - login as 'user1' with password 'test').
 
+A brief Developers Guide can be found [here](https://github.com/jones139/hdms/blob/master/doc/DEV_GUIDE.md) 
+to help new developers find 
+their way around the code.  But really you need to understand 
+[CakePHP](http://cakephp.org) to be able to follow the code properly, so a 
+CakePHP tutorial would be a good start.
+
 ## HDMS Features
 * Uses the [CakePHP](http://www.cakephp.org/) framework so it should be easy 
 for other people to maintain in the future if necessary.
