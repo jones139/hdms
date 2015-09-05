@@ -35,7 +35,7 @@ Create a mysql database and user for the hdms application.
   > Ctrl-C
 
 ### Set up tables
-> cd hdms/sql
+> cd hdms/app/sql
 
 > mysql -u hat -p hat   (enter password when prompted)
 
@@ -52,7 +52,7 @@ Add the following Directory block to /etc/apache2/sites-enabled/000-default.
 
 It is required to get url re-writing working, otherwise you get odd cakephp errors....
 
->      `<Directory />
+>      `<Directory /var/www/html/hdms>
 >		Options FollowSymLinks
 >		AllowOverride All
 >	</Directory>`
@@ -63,6 +63,10 @@ Enable mod-rewrite by linking /etc/apache2/mods-enabled/rewrite.load to/etc/apac
 
 ## Configuration
 Edit hdms/app/Config/database.php (copy database.php.default if necessary) to match your mysql username and password etc.
+
+Create temporary storage directory and give the web server permission to write to it:
+`mkdir hdms/app/tmp`
+`sudo chgrp www-data hdms/app/tmp`
 
 Create data directory and give the web server permission to write to it:
 `mkdir hdms/data`
