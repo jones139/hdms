@@ -219,7 +219,7 @@ class UsersController extends AppController {
             if ($this->Auth->login()) {
                 if ($this->Auth->user('role_id')>0) {
                     $this->Session->setFlash(__('Login Successful'));
-                    return($this->redirect('/' 
+                    return($this->redirect($this->Auth->redirect() 
 					   ));
                 } else {
                     $this->Session->setFlash(__('Account Disabled - Please Contact an Administrator'));
