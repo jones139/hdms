@@ -513,6 +513,7 @@ class Revision extends AppModel {
  *   a major revision, otherwise it creates a minor revision.
  *
  * @var $docid - the id of the document for which a new revision is required.
+ * @ret  returns the id of the new revision that was created.
  */
 
     public function create_new_revision($docid = null,$major=false) {
@@ -577,7 +578,7 @@ class Revision extends AppModel {
 	 }
 
 
-	 return $revs;
+	 return $newrev_id;
     	   
     }
 

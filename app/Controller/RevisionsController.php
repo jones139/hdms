@@ -497,9 +497,8 @@ class RevisionsController extends AppController {
         if (isset($this->params[ 'named' ][ 'major' ])) {
             $major_rev = true;
         } 
-        $this->Revision->create_new_revision($docid,$major_rev);
-        return $this->redirect(array('controller'=>'docs',
-        'action' => 'index'));
+        $new_id = $this->Revision->create_new_revision($docid,$major_rev);
+        return $this->redirect(array('action' => 'edit',$new_id));
     }	    
 
 } # End of class definition.
