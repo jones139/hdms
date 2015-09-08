@@ -228,14 +228,18 @@
              	  array('controller'=>'route_lists','action'=>'submit',
 			    $lastRouteList_id));
 	     } 
-	     //else if ($lastRouteList_status==1) { # Only allow in-progress route lists to be cancelled.
-      	     //  echo $this->Html->link('Cancel Route List',
-             //	  array('controller'=>'route_lists','action'=>'cancel',
-	     //		    $lastRouteList_id));
-             //}
+	     else if ($lastRouteList_status==1) {
+	     # Only allow in-progress route lists to be cancelled
+	     # by an administrator.
+	       if ($authUserData['role_id']==1) {
+      	          echo $this->Html->link('Cancel Route List',
+             	    array('controller'=>'route_lists','action'=>'cancel',
+	     		    $lastRouteList_id));
+               }
+	     }
           } else {
             echo "<h3>Route List</h3>";
-      	    echo 'No Route List Attached';
+            echo 'No Route List Attached';
           }
       } else {
          echo "<h3>Route List</h3>";
