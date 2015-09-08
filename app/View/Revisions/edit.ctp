@@ -116,7 +116,8 @@
 				    'type'=>'pdf'));
       }
 
-      # Only show PDF manipulation options for draft documents.
+      # Only show PDF manipulation options for draft documents, or
+      #   for admin users.
       if ($this->request->data['DocStatus']['id']==0) {   
          if ($this->request->data['Revision']['has_pdf']) {
 
@@ -136,6 +137,18 @@
                 array('controller'=>'revisions','action'=>'attach_pdf',
 			    $this->request->data['Revision']['id']));
 	 }
+      } else {
+      	# Always show PDF Upload Button for Admin users (even for approved
+      	# Documents)
+      	if ($authUserData['role_id']==1) {
+      	    echo $this->Html->link('Generate PDF File',
+      	    array('controller'=>'revisions',
+              'action'=>'generate_pdf',
+	      $this->request->data['Revision']['id']));
+      	    echo $this->Html->link('Manually Upload PDF (Admin)',
+            array('controller'=>'revisions','action'=>'attach_pdf',
+			$this->request->data['Revision']['id']));
+      	}
       }
       echo '</p>';
 
