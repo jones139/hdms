@@ -24,12 +24,12 @@ App::uses('AppController', 'Controller');
 App::uses('CakeSchema', 'Model');
 App::uses('Folder', 'Utility');
 App::uses('File', 'Utility');
+
 /**
  * BackupRestoreController - Controller to handle backing up and restoring
  * the HDMS database and data.
  *
  */
-
 class BackupRestoreController extends AppController {
 	var $name = 'BackupRestore';
 	var $uses = array('Doc', 'Revision');
@@ -37,7 +37,7 @@ class BackupRestoreController extends AppController {
 	var $dataDir = ROOT.DS.'data';     // Folder where all the actual document files are stored.
 	var $backupDir = APP . DS . 'Backups';   // Folder for the backup zip archives to be stored.
 	var $tmpRestoreDir = APP . DS . 'tmp'. DS . 'data_restore';   // temporary folder for restoring backups.
-	var $tmpDataBackupDir = APP . DS . 'tmp'. DS . 'data_old';   // temporary folder for storing data directory
+	var $tmpBackupDir = APP . DS . 'tmp'. DS . 'data_old';   // temporary folder for storing data directory
 	                                                             // before doing restore (just in case!) 
 
 	/**
@@ -46,8 +46,23 @@ class BackupRestoreController extends AppController {
 	 * another archive.
 	 */
 	function index() {
-		# $odmDocs = $this->OdmDoc->find('all');
-		# $this->set('odmDocs',$odmDocs);
+		$msgs[] = 'Listing backup files in backup directory '.$this->backupDir;
+		$fileList = scandir($this->backupDir);
+		foreach ($fileList as $file) {
+			if ($file!='.' && $file!='..') {
+    			$fileParts = explode(".",$file);
+    			if(isset($fileParts[count($fileParts)-1]) && $fileParts[count($fileParts)-1]=='zip'){
+					$files[] = $file;
+				}
+			}
+		}
+		$this -> set('msgs', $msgs);
+		$this -> set('files', $files);
+	}
+	
+	function download($fname) {
+    	$this->response->file($this->backupDir.DS.$fname);
+    return $this->response;
 	}
 
 	/**
@@ -73,7 +88,6 @@ class BackupRestoreController extends AppController {
 
 			$msgs[]='Restoring file: '.$archive_fname;
     		$fileParts = explode(".",$archive_fname);
-    		$msgs[] = 'fileparts length = '.count($fileParts);
     		if(isset($fileParts[count($fileParts)-1]) && $fileParts[count($fileParts)-1]=='zip'){
     			$msgs[]='Unzipping File';
     			if (class_exists('ZipArchive')) {
@@ -92,7 +106,6 @@ class BackupRestoreController extends AppController {
     				#$this->_stop();
     			}
     		} else {
-				$msgs[] = var_dump($fileParts);
     			$msgs[] = "***ERROR - filename does not end in .zip***";
     		}
     		if (($sql_content = file_get_contents($filename = $unzipped_file)) !== false){
@@ -113,15 +126,33 @@ class BackupRestoreController extends AppController {
 
 		/* Copy the Files */
 		/* Erase the contents of the temporary backup directory */	
+		if (!is_writable($this->tmpBackupDir)) {
+				trigger_error('The path "' . $this->tmpBackupDir . '" isn\'t writable!', E_USER_ERROR);
+			} else {
+				$msgs[] = "Temporary backup directory ".$this->tmpBackupDir." writeable - OK!";
+		}
 		$files = scandir($this->tmpBackupDir);
+		$msgs[] = 'Deleting files from temporary backup directory '.$this->tmpBackupDir;
 		foreach ($files as $file) {
 			if ($file!='.' && $file!='..') {
+				$msgs[] = '   - Deleting '.$this->tmpBackupDir.DS.$file;
 				rrmdir($this->tmpBackupDir.DS.$file);
 			}
 		}
 			
+		/* move the contents of the on-line data directory to the temporary backup directory */
+		$files = scandir($this->dataDir);
+		$msgs[] = 'Copying on-line files to temporary backup directory '.$this->tmpBackupDir;
+		foreach ($files as $file) {
+			if ($file!='.' && $file!='..') {
+				$msgs[] = '  - Backing up - '.$file.'...';
+				rename($this->dataDir.DS.$file,$this->tmpBackupDir.DS.$file);
+			}
+		}
 		
+		/* now copy the restored files on-line */
 		$files = scandir($this->tmpRestoreDir);
+		$msgs[] = 'Copying files from backup on-line, to '.$this->dataDir;
 		foreach ($files as $file) {
 			if ($file!='.' && $file!='..') {
 				$msgs[] = '  - Restored - '.$file.' - copying it on-line';
@@ -130,7 +161,6 @@ class BackupRestoreController extends AppController {
 		}
 		
 
-		/* Restore the Database */
 
 		/* Check Integrity between files and database */
 
