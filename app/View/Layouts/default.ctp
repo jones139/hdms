@@ -107,7 +107,7 @@ echo $this->Html->link('Hartlepool Aspire Trust: Document Management System', '/
 	  # If not logged in, include link to login page.
 	  echo $this->Html->link('login',
              	array('controller'=>'users','action'=>'login',
-	           ));
+	           ),array('id'=>'login_link'));
 	}     
 	?>
 		</div>
@@ -126,7 +126,7 @@ echo $this->Html->link('Hartlepool Aspire Trust: Document Management System', '/
 				);
 			?>
 			<p>
-				HDMS Version <?php echo $settings['version']; ?>; Copyright &copy; 2014 <a href="mailto:graham.jones@catcotegb.co.uk?Subject=HDMS">Graham Jones</a> (Hartlepool Aspire Trust)</p>
+				HDMS Version <?php echo $settings['version']; ?>; Copyright &copy; 2015 <a href="mailto:graham.jones@catcotegb.co.uk?Subject=HDMS">Graham Jones</a> (Hartlepool Aspire Trust)</p>
 <p>HDMS is open source software.    Please submit any suggestions for improvement to the 
 			 <a href="https://github.com/jones139/hdms/issues"> HDMS GitHub repository</a>.
 			</p>

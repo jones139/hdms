@@ -785,3 +785,19 @@ pre {
 #url-rewriting-warning {
 	display:none;
 }
+
+#header #login_link {
+    font-size:150%;
+    margin:0px;
+    padding:5px;
+    border-radius:10px;
+    background:#ff0;
+    color:#00f;
+}
+
+#header #login_link:hover {
+    background:#dd0;
+    color:#55f;
+}
+
+
