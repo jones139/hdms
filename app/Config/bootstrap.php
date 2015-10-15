@@ -107,3 +107,13 @@ CakeLog::config('error', array(
 	'types' => array('warning', 'error', 'critical', 'alert', 'emergency'),
 	'file' => 'error',
 ));
+
+# We define constants here, rather than class variables because php5 threw syntax errors using
+# string concatenation in a class variable declaration.
+define ('DB_DUMP_FNAME','dbDump.sql');    #Filename used for SQL data backup dump.
+define ('DATA_DIR',ROOT.DS.'data');       # folder used to store app data (document files)
+define ('BACKUP_DIR',ROOT.DS.'Backups');  # Folder used to store backup archives
+define ('TMP_RESTORE_DIR',APP.DS.'tmp'.DS.'data_restore');   # Temporary folder for restoring backup archives.
+define ('TMP_BACKUP_DIR',APP.DS.'tmp'.DS.'data_old');     # Temporary folder to store on-line files before restoring backup.
+
+ini_set('memory_limit', '-1'); 

@@ -30,17 +30,11 @@ App::uses('File', 'Utility');
  * the HDMS database and data.
  *
  */
+
 class BackupRestoreController extends AppController {
 	var $name = 'BackupRestore';
 	var $uses = array('Doc', 'Revision');
 	
-	var $dbDumpFname = "dbDump.sql";   // filename of database sql dump file.	
-	var $dataDir = ROOT.DS.'data';     // Folder where all the actual document files are stored.
-	var $backupDir = ROOT . DS . 'Backups';   // Folder for the backup zip archives to be stored.
-	var $tmpRestoreDir = APP . DS . 'tmp'. DS . 'data_restore';   // temporary folder for restoring backups.
-	var $tmpBackupDir = APP . DS . 'tmp'. DS . 'data_old';   // temporary folder for storing data directory
-	                                                             // before doing restore (just in case!) 
-
 	/**
 	 * default action - just redirects to listBackups
 	 */	
@@ -60,27 +54,27 @@ class BackupRestoreController extends AppController {
 		}
 
 		# Check backup directory exists.
-		if (!is_dir($this->backupDir)) {
-			trigger_error('The path "' . $this->backupDir . '" does not exist - please create it.', E_USER_ERROR);
+		if (!is_dir(BACKUP_DIR)) {
+			trigger_error('The path "' . BACKUP_DIR . '" does not exist - please create it.', E_USER_ERROR);
 		} else {
-			$msgs[] = "Backup directory ".$this->backupDir." exists - OK!";
+			$msgs[] = "Backup directory ".BACKUP_DIR." exists - OK!";
 		}
 
 		# Check we can write to backup directory.
-		if (!is_writable($this->backupDir)) {
-			trigger_error('The path "' . $this->backupDir . '" isn\'t writable!', E_USER_ERROR);
+		if (!is_writable(BACKUP_DIR)) {
+			trigger_error('The path "' . BACKUP_DIR . '" isn\'t writable!', E_USER_ERROR);
 		} else {
-			$msgs[] = "Backup directory ".$this->backupDir." writeable - OK!";
+			$msgs[] = "Backup directory ".BACKUP_DIR." writeable - OK!";
 		}
 		
 		$files = array();
-		$msgs[] = 'Listing backup files in backup directory '.$this->backupDir;
-		$fileList = scandir($this->backupDir);
+		$msgs[] = 'Listing backup files in backup directory '.BACKUP_DIR;
+		$fileList = scandir(BACKUP_DIR);
 		foreach ($fileList as $file) {
 			if ($file!='.' && $file!='..') {
     			$fileParts = explode(".",$file);
     			if(isset($fileParts[count($fileParts)-1]) && $fileParts[count($fileParts)-1]=='zip'){
-					$files[] = $file;
+					$files[] = [$file,filesize(BACKUP_DIR.DS.$file)];
 				}
 			}
 		}
@@ -102,7 +96,7 @@ class BackupRestoreController extends AppController {
 			return $this -> redirect($this -> referer());
 		}
 
-    	$this->response->file($this->backupDir.DS.$fname);
+    	$this->response->file(BACKUP_DIR.DS.$fname);
     return $this->response;
 	}
 
@@ -114,8 +108,8 @@ class BackupRestoreController extends AppController {
 	
 		if ($this->request->is(array('post','put'))) {
 			$fname = $this->request->data['fname'];
-		 	if (is_file($this->backupDir.DS.$fname)) {
-		 		unlink($this->backupDir.DS.$fname);
+		 	if (is_file(BACKUP_DIR.DS.$fname)) {
+		 		unlink(BACKUP_DIR.DS.$fname);
 				$this -> Session -> setFlash(__('File Deleted'));
 		 	} else {
 				$this -> Session -> setFlash(__('File '.$fname.' does not exist in backup directory'));
@@ -142,7 +136,7 @@ class BackupRestoreController extends AppController {
         	echo var_dump ($this->request->data);
         	echo var_dump ($this->request->form);
         	  $result = move_uploaded_file($this->request->form['uploadedFile']['tmp_name'],
-        	  			$this->backupDir.DS.$this->request->form['uploadedFile']['name']);
+        	  			BACKUP_DIR.DS.$this->request->form['uploadedFile']['name']);
 
             if ($result) 
                 {
@@ -167,7 +161,7 @@ class BackupRestoreController extends AppController {
 			}
         if ($this->request->is(array('post','put'))) {
 				$fname = $this->request->data['fname'];
-				if (is_file($this->backupDir.DS.$fname)) {
+				if (is_file(BACKUP_DIR.DS.$fname)) {
 					$this->Restore($fname);
 				} else {
          		$this->Session->setFlash(
@@ -192,47 +186,47 @@ class BackupRestoreController extends AppController {
 			}
 						
 			# Check the folder we use to restore the backup exists.
-			if (!is_dir($this->tmpRestoreDir)) {
-				trigger_error('The directory "' . $this->tmpRestoreDir . '" does not exist - please create it!', E_USER_ERROR);
+			if (!is_dir(TMP_RESTORE_DIR)) {
+				trigger_error('The directory "' . TMP_RESTORE_DIR . '" does not exist - please create it!', E_USER_ERROR);
 			} else {
-				$msgs[] = "Temporary output directory ".$this->tmpRestoreDir." exists - ok!";
+				$msgs[] = "Temporary output directory ".TMP_RESTORE_DIR." exists - ok!";
 			}
 			# ...and is writeable.
-			if (!is_writable($this->tmpRestoreDir)) {
-				trigger_error('The path "' . $this->tmpRestoreDir . '" isn\'t writable!', E_USER_ERROR);
+			if (!is_writable(TMP_RESTORE_DIR)) {
+				trigger_error('The path "' . TMP_RESTORE_DIR . '" isn\'t writable!', E_USER_ERROR);
 			} else {
-				$msgs[] = "Temporary output directory ".$this->tmpRestoreDir." writeable - OK!";
+				$msgs[] = "Temporary output directory ".TMP_RESTORE_DIR." writeable - OK!";
 			}
 
 			# Check our temporary backup directory exists, and is writeable.
-			if (!is_dir($this->tmpBackupDir)) {
-					trigger_error('The directory "' . $this->tmpBackupDir . '" does not exist - please create it!', E_USER_ERROR);
+			if (!is_dir(TMP_BACKUP_DIR)) {
+					trigger_error('The directory "' . TMP_BACKUP_DIR . '" does not exist - please create it!', E_USER_ERROR);
 				} else {
-					$msgs[] = "Temporary backup directory ".$this->tmpBackupDir." exists - ok!";
+					$msgs[] = "Temporary backup directory ".TMP_BACKUP_DIR." exists - ok!";
 			}
-			if (!is_writable($this->tmpBackupDir)) {
-					trigger_error('The path "' . $this->tmpBackupDir . '" isn\'t writable!', E_USER_ERROR);
+			if (!is_writable(TMP_BACKUP_DIR)) {
+					trigger_error('The path "' . TMP_BACKUP_DIR . '" isn\'t writable!', E_USER_ERROR);
 				} else {
-					$msgs[] = "Temporary backup directory ".$this->tmpBackupDir." writeable - OK!";
+					$msgs[] = "Temporary backup directory ".TMP_BACKUP_DIR." writeable - OK!";
 			}
 
 			# Check if main data directory exists, and is writeable.
-			if (!is_dir($this->dataDir)) {
-				trigger_error('The directory "' . $this->dataDir . '" does not exist - please create it!', E_USER_ERROR);
+			if (!is_dir(DATA_DIR)) {
+				trigger_error('The directory "' . DATA_DIR . '" does not exist - please create it!', E_USER_ERROR);
 			} else {
-				$msgs[] = "Main data directory ".$this->dataDir." exists - ok!";
+				$msgs[] = "Main data directory ".DATA_DIR." exists - ok!";
 			}
-			if (!is_writable($this->dataDir)) {
-				trigger_error('The directory "' . $this->dataDir . '" isn\'t writable!', E_USER_ERROR);
+			if (!is_writable(DATA_DIR)) {
+				trigger_error('The directory "' . DATA_DIR . '" isn\'t writable!', E_USER_ERROR);
 			} else {
-				$msgs[] = "Main data directory ".$this->dataDir." writeable - OK!";
+				$msgs[] = "Main data directory ".DATA_DIR." writeable - OK!";
 			}
 
 
 	      App::import('Model', 'AppModel');          
          $model = new AppModel(false, false);
 
-			$zipfile = $this->backupDir . DS . $archive_fname;
+			$zipfile = BACKUP_DIR . DS . $archive_fname;
 			$msgs[]='Restoring file: '.$archive_fname;
     		$fileParts = explode(".",$archive_fname);
     		if(isset($fileParts[count($fileParts)-1]) && $fileParts[count($fileParts)-1]=='zip'){
@@ -240,8 +234,8 @@ class BackupRestoreController extends AppController {
     			if (class_exists('ZipArchive')) {
     				$zip = new ZipArchive;
     				if($zip->open($zipfile) === TRUE){
-    					$zip->extractTo($this->tmpRestoreDir);
-    					#$unzipped_file = $this->tmpRestoreDir.DS.$zip->getNameIndex(0);
+    					$zip->extractTo(TMP_RESTORE_DIR);
+    					#$unzipped_file = TMP_RESTORE_DIR.DS.$zip->getNameIndex(0);
     					$zip->close();
     					$msgs[] = 'Successfully Unzipped';
     				} else {
@@ -255,7 +249,7 @@ class BackupRestoreController extends AppController {
     		} else {
     			$msgs[] = "***ERROR - filename does not end in .zip***";
     		}
-    		if (($sql_content = file_get_contents($filename = $this->tmpRestoreDir.DS.$this->dbDumpFname)) !== false){
+    		if (($sql_content = file_get_contents($filename = TMP_RESTORE_DIR.DS.DB_DUMP_FNAME)) !== false){
     			$msgs[] = 'Restoring Database';
     			$sql = explode("\n\n", $sql_content);
     			foreach ($sql as $key => $s) {
@@ -265,8 +259,8 @@ class BackupRestoreController extends AppController {
     			}
     			#unlink($unzipped_file);
     		} else {
-				trigger_error('Could not open database Dump file "' . $this->tmpRestoreDir.DS.$this->dbDumpFname. '"', E_USER_ERROR);
-    			$msgs[] = "Couldn't load contents of file {$this->dbDumpFname}, aborting...";
+				trigger_error('Could not open database Dump file "' . TMP_RESTORE_DIR.DS.DB_DUMP_FNAME. '"', E_USER_ERROR);
+    			$msgs[] = "Couldn't load contents of file {DB_DUMP_FNAME}, aborting...";
     			#unlink($unzipped_file);
          	#$this->_stop();
     		}
@@ -274,32 +268,32 @@ class BackupRestoreController extends AppController {
 
 		/* Copy the Files */
 		/* Erase the contents of the temporary backup directory */	
-		$files = scandir($this->tmpBackupDir);
-		$msgs[] = 'Deleting files from temporary backup directory '.$this->tmpBackupDir;
+		$files = scandir(TMP_BACKUP_DIR);
+		$msgs[] = 'Deleting files from temporary backup directory '.TMP_BACKUP_DIR;
 		foreach ($files as $file) {
 			if ($file!='.' && $file!='..') {
-				$msgs[] = '   - Deleting '.$this->tmpBackupDir.DS.$file;
-				rrmdir($this->tmpBackupDir.DS.$file);
+				$msgs[] = '   - Deleting '.TMP_BACKUP_DIR.DS.$file;
+				rrmdir(TMP_BACKUP_DIR.DS.$file);
 			}
 		}
 			
 		/* move the contents of the on-line data directory to the temporary backup directory */
-		$files = scandir($this->dataDir);
-		$msgs[] = 'Copying on-line files to temporary backup directory '.$this->tmpBackupDir;
+		$files = scandir(DATA_DIR);
+		$msgs[] = 'Copying on-line files to temporary backup directory '.TMP_BACKUP_DIR;
 		foreach ($files as $file) {
 			if ($file!='.' && $file!='..') {
 				$msgs[] = '  - Backing up - '.$file.'...';
-				rename($this->dataDir.DS.$file,$this->tmpBackupDir.DS.$file);
+				rename(DATA_DIR.DS.$file,TMP_BACKUP_DIR.DS.$file);
 			}
 		}
 		
 		/* now copy the restored files on-line */
-		$files = scandir($this->tmpRestoreDir);
-		$msgs[] = 'Copying files from backup on-line, to '.$this->dataDir;
+		$files = scandir(TMP_RESTORE_DIR);
+		$msgs[] = 'Copying files from backup on-line, to '.DATA_DIR;
 		foreach ($files as $file) {
 			if ($file!='.' && $file!='..') {
 				$msgs[] = '  - Restored - '.$file.' - copying it on-line';
-				rename($this->tmpRestoreDir.DS.$file,$this->dataDir.DS.$file);
+				rename(TMP_RESTORE_DIR.DS.$file,DATA_DIR.DS.$file);
 			}
 		}
 		
@@ -327,35 +321,35 @@ class BackupRestoreController extends AppController {
 		#$Folder = new Folder($path, true);
 
 		# Check if main data directory exists, and is writeable.
-		if (!is_dir($this->dataDir)) {
-			trigger_error('The directory "' . $this->dataDir . '" does not exist - please create it!', E_USER_ERROR);
+		if (!is_dir(DATA_DIR)) {
+			trigger_error('The directory "' . DATA_DIR . '" does not exist - please create it!', E_USER_ERROR);
 		} else {
-			$msgs[] = "Main data directory ".$this->dataDir." exists - ok!";
+			$msgs[] = "Main data directory ".DATA_DIR." exists - ok!";
 		}
-		if (!is_writable($this->dataDir)) {
-			trigger_error('The directory "' . $this->dataDir . '" isn\'t writable!', E_USER_ERROR);
+		if (!is_writable(DATA_DIR)) {
+			trigger_error('The directory "' . DATA_DIR . '" isn\'t writable!', E_USER_ERROR);
 		} else {
-			$msgs[] = "Main data directory ".$this->dataDir." writeable - OK!";
+			$msgs[] = "Main data directory ".DATA_DIR." writeable - OK!";
 		}
 
 		# Check our backup directory exists, and is writeable.
-		if (!is_dir($this->backupDir)) {
-				trigger_error('The directory "' . $this->backupDir . '" does not exist - please create it!', E_USER_ERROR);
+		if (!is_dir(BACKUP_DIR)) {
+				trigger_error('The directory "' . BACKUP_DIR . '" does not exist - please create it!', E_USER_ERROR);
 			} else {
-				$msgs[] = "Backup directory ".$this->backupDir." exists - ok!";
+				$msgs[] = "Backup directory ".BACKUP_DIR." exists - ok!";
 		}
-		if (!is_writable($this->backupDir)) {
-				trigger_error('The path "' . $this->backupDir . '" isn\'t writable!', E_USER_ERROR);
+		if (!is_writable(BACKUP_DIR)) {
+				trigger_error('The path "' . BACKUP_DIR . '" isn\'t writable!', E_USER_ERROR);
 			} else {
-				$msgs[] = "Backup directory ".$this->backupDir." writeable - OK!";
+				$msgs[] = "Backup directory ".BACKUP_DIR." writeable - OK!";
 		}
 
 
 		$msgs[] = "Backing up...\n";
 
 		/* Dump the Database to a file */
-		$dbDumpFile = $this->dataDir . DS . $this->dbDumpFname;
-		$archiveFile = $this->backupDir. DS . date('Ymd\_His') . '.zip';
+		$dbDumpFile = DATA_DIR . DS . DB_DUMP_FNAME;
+		$archiveFile = BACKUP_DIR. DS . date('Ymd\_His') . '.zip';
 		$File = new File($dbDumpFile);
 		$db = ConnectionManager::getDataSource($dataSourceName);
 		$config = $db -> config;
@@ -414,7 +408,7 @@ class BackupRestoreController extends AppController {
 
 
 		/* Create backup archive */
-			Zip($this->dataDir,$archiveFile,false);
+			Zip(DATA_DIR,$archiveFile,false);
 
 			$msgs[] = "Zip \"" . $archiveFile . "\" Saved (" . filesize($archiveFile) . " bytes)\n";
 			$msgs[] = "Zipping Done!";

@@ -9,10 +9,12 @@ echo "<ul>\n";
 if (count($files)==0) {
    echo "<li>No Backup Files Found</li><br/>";
 }
-foreach ($files as $fname) {
+foreach ($files as $file) {
+	$fname = $file[0];
+	$fsize = $file[1];
 	echo "<li>".$this->Html->link($fname,
              	       array('controller'=>'BackupRestore','action'=>'download',
-	                   $fname))."</li>\n";
+	                   $fname)).", (".number_format($fsize/1e6,1)." MB)</li>\n";
 }
 echo "</ul>\n";
 
