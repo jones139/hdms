@@ -229,5 +229,56 @@ class DocsController extends AppController {
 	  $this->set(compact('facilities','docTypes','docSubTypes'));
 
 	}
+	
+	public function getIssuedRevId($id) {
+		$this->autoRender = false;
+		$rev_id = $this->Doc->getIssuedRevId($id);
+		#echo($rev_id);
+	
+		return(json_encode($rev_id));
+	}
+	
+/**
+ * getIssuedFile method - download file the latest issued version of the document.
+ *      By default, returns the pdf version of the file, unless parameter
+ *      type is set, in which case it returns the filetype specified by the parameter:
+ *       'pdf', 'native' or 'extras'.
+ * 
+ * @param id - document id of file to download.
+ * @param type - 'native','pdf','extras' - defaults to 'pdf' if not specified.
+ * @return void
+ */
+	public function getIssuedFile($id) {
+		#Checked for named parameters at the end of the url (e.g. .../Docs/getIssuedFile/8/type:native)
+      $filetype = 'pdf';
+		if (isset($this->params[ 'named' ][ 'type' ])) {
+           if ($this->params['named']['type'] == 'native') {
+              $filetype = 'native';
+           }
+           if ($this->params['named']['type'] == 'extras') {
+              $filetype = 'extras';
+           }
+      }
+
+		# Find the revision Id of the latest issued revision of this document.
+		$rev_id = $this->Doc->getIssuedRevId($id);
+		echo "rev_id=".$rev_id;
+
+		# then find the filepath to that revision's attached document.
+      $filepath = $this->Doc->getIssuedFilepath($id,$filetype);
+      if ($filepath) {
+			# if the file exists, return it for download.
+         $this->response->file(
+                $filepath,
+                array('download' => true, 'name' => $this->Revision->filename)
+         );
+         return $this->response;
+      } else {
+      	# if the file does not exist, show an error.
+      	$this->Session->setFlash(__('ERROR - Requested Document Not Found.'));
+         return $this->redirect(array('action' => 'home'));
+      }
+    }
+    
 
 }

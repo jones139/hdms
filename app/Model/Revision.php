@@ -195,22 +195,26 @@ class Revision extends AppModel {
 	/**
 	 * get_filepath($id,$filetype)
 	 * returns the path to the file of type $filetype (extras,pdf,native)
-	 * associated with revision number $id
+	 * associated with revision number $id, or false if $id is not found.
 	 */
 	public function get_filepath($id = NULL,$filetype='pdf') {
 	  // populate the $this->data arra with revision $id data.
-	  $this->read(null,$id);
-	  $folder = $this->get_folder($id);
-	  if ($filetype=='native') { 
-	    $fpath = $folder.'/'.$this->data['Revision']['filename'];
-	  } elseif ($filetype=='pdf') {
-	    $fpath = $folder.'/'.$this->data['Revision']['filename'].'.pdf';
-	  } elseif ($filetype=='extras') {
-	    $fpath = $folder.'/'.$this->data['Revision']['filename'].'.zip';
-	  } else {
-	    $this->logDebug("Revision->get_filepath() - Invalid file type ".$filetype.".");
-	  }
-	  return $fpath;
+	  $readOk = $this->read(null,$id);
+	  if ($readOk) {
+		  $folder = $this->get_folder($id);
+		  if ($filetype=='native') { 
+		    $fpath = $folder.'/'.$this->data['Revision']['filename'];
+		  } elseif ($filetype=='pdf') {
+		    $fpath = $folder.'/'.$this->data['Revision']['filename'].'.pdf';
+		  } elseif ($filetype=='extras') {
+		    $fpath = $folder.'/'.$this->data['Revision']['filename'].'.zip';
+		  } else {
+		    $this->logDebug("Revision->get_filepath() - Invalid file type ".$filetype.".");
+		  }
+		  return $fpath;
+		} else {
+			return false;
+		}
  	}
 
 	/**
