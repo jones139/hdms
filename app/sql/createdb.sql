@@ -32,7 +32,7 @@ create table settings (
 );
 insert into settings(id,version,email_enabled) 
        values (1,
-       "1.3",  # HDMS Version Number
+       "1.4",  # HDMS Version Number
        true    # Enable Email Notifications
        );
 

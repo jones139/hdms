@@ -101,6 +101,7 @@ class DocsController extends AppController {
                         'OR'=>$searchClause
                         );
                     $this->Paginator->settings['conditions']=$conditions;
+                    $this->Paginator->settings['order']=array('docNo'=>'asc');
 
                     # Send the query to the view so we can populate the
                     # form elements correctly.
