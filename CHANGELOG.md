@@ -12,4 +12,8 @@
   * Improvements to draft documents report.
   * Changed style of forms to make them more compact.
 
+1 v1.3 - Added URL to give latest issued revision of a document (docs/getIssuedFile/<docNo> or docs/getIssuedFile/<docNo>/type:native
+
+1 v1.4 - Sort documents into document number order in /docs page.
+
 	
