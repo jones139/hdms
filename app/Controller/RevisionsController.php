@@ -447,7 +447,7 @@ class RevisionsController extends AppController {
         }
         $filepath = $this->Revision->get_filepath($id,$filetype);
         if ($filepath) {
-            echo "<pre>filetype=".$filetype.", path=".$filepath."</pre>";
+            #echo "<pre>filetype=".$filetype.", path=".$filepath."</pre>";
             $this->response->file(
                 $filepath,
                 array('download' => true, 'name' => $this->Revision->filename)
